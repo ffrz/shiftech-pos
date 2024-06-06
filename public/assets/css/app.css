@@ -1,0 +1,48 @@
+/* App Styesheets */
+.table th {
+    text-align: center;
+}
+
+[class*=sidebar-light-] .nav-treeview>.nav-item>.nav-link:hover {
+    background-color: rgba(0, 0, 0, .2);
+    color: #212529;
+}
+
+.accordion .card-header .btn {
+    font-weight: normal;
+    color: inherit;
+    padding: 0;
+}
+
+.select2 {
+    width: 100% !important;
+}
+
+.table-sm td,
+.table-sm th {
+    padding-left: .5rem;
+    padding-riht: .5rem;
+}
+
+.table tr.empty td {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.table.info td {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 1px 3px;
+}
+
+.pos-editor #product-list input {
+    width: 100%;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid #888;
+}
