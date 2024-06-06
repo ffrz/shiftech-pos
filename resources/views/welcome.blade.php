@@ -8,7 +8,7 @@
     @vite([])
 </head>
 <body>
-    <h1>Welcome to Shift Computer</h1>
+    <h1>Welcome to {{ App\Models\Setting::value('company.name', 'My Company') }} </h1>
     <p>Sorry, our website is under construction. Please come back later.<p>
     <p><a href="admin">Enter Administration Area</a></p>
 </body>

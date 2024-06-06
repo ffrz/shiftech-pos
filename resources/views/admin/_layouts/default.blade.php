@@ -66,7 +66,7 @@
     </div>
     <footer class="main-footer">
       <div class="float-right d-none d-sm-inline">{{ env('APP_NAME') . ' v' . env('APP_VERSION_STR') }}</div>&copy;
-      Shift IT Solution 2024
+      Shiftech 2024 - <a href="https://shiftech.my.id" title="Shiftech">www.shiftech.my.id</a>
     </footer>
   </div>
   @if (!empty($form_action))
