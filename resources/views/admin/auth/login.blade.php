@@ -18,7 +18,7 @@
         <div>
           <span>Masuk <b>{{ env('APP_NAME') }}</b><sup><small> v{{ env('APP_VERSION_STR') }}</sup></small></span>
         </div>
-        <div class="h1"><b>{{-- App\Models\Setting::value('app.store_name', 'TokoKu') --}}</b></div>
+        <div class="h1"><b>{{ App\Models\Setting::value('company.name', 'My Store') }}</b></div>
       </div>
       <div class="card-body">
         @if (Session::has('error'))
@@ -65,7 +65,8 @@
       </div>
     </div>
   </div>
-  <div class="mt-4 text-muted">&copy; Shift IT Solution 2024    </div>
+  <div class="mt-4 text-muted">&copy; Shift IT Solution 2024</div>
+  <div class="mt-0 text-muted"><a href="https://shiftech.my.id">www.shiftech.my.id</a></div>
   <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
