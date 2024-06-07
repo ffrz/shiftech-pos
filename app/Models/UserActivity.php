@@ -23,6 +23,7 @@ class UserActivity extends Model
     public const EXPENSE_MANAGEMENT = 'expense-mgmt';
     public const CASH_TRANSACTION_CATEGORY_MANAGEMENT = 'cash-transaction-category-management';
     public const CASH_ACCOUNT_MANAGEMENT = 'cash-account-management';
+    public const CASH_TRANSACTION_MANAGEMENT = 'cash-transaction-management';
 
     private static $_types = [
         self::AUTHENTICATION => 'Otentikasi',
@@ -38,6 +39,7 @@ class UserActivity extends Model
         self::EXPENSE_MANAGEMENT => 'Pengelolaan Kategori Biaya',
         self::CASH_TRANSACTION_CATEGORY_MANAGEMENT => 'Pengelolaan Kategori Transaksi',
         self::CASH_ACCOUNT_MANAGEMENT => 'Pengelolaan Akun Kas dan Rekening',
+        self::CASH_TRANSACTION_MANAGEMENT => 'Pengelolaan Transaksi Keuangan',
     ];
 
     protected $casts = [

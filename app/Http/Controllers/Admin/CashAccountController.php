@@ -61,7 +61,6 @@ class CashAccountController extends Controller
                 $transaction = new CashTransaction();
                 $transaction->account_id = $item->id;
                 $transaction->date = current_date();
-                $transaction->type = $isNew ? CashTransaction::TYPE_INITIAL_BALANCE : CashTransaction::TYPE_ADJUSTMENT;
                 $transaction->amount = $amount;
                 $transaction->description = $isNew ? 'Saldo awal' : 'Penyesuaian saldo manual';
                 $transaction->save();

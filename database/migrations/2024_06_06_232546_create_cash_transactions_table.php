@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('category_id')->nullable()->default(null);
-            $table->unsignedTinyInteger('type');
             $table->date('date');
             $table->decimal('amount', 10);
             $table->string('description', 100);
