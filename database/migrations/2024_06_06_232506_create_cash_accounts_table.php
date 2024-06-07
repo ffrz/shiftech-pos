@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('cash_accounts', function (Blueprint $table) {
             $table->id();
+            $table->boolean('active')->default(false);
             $table->unsignedTinyInteger('type');
             $table->string('name')->unique();
+            $table->string('number', 20);
             $table->string('bank');
             $table->decimal('balance', 12);
+            $table->text('notes')->nullabel()->default(null);
             $table->datetime('created_datetime')->nullable()->default(null);
             $table->datetime('updated_datetime')->nullable()->default(null);
             $table->unsignedBigInteger('created_by_uid')->nullable()->default(null);

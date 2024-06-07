@@ -84,7 +84,7 @@ class ExpenseController extends Controller
 
             $data = ['Old Data' => $item->toArray()];
             $item->fill($request->all());
-            $item->amount = numberFromInput($request->amount);
+            $item->amount = number_from_input($request->amount);
             $item->save();
             $data['New Data'] = $item->toArray();
 

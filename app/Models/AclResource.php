@@ -23,6 +23,7 @@ class AclResource
     const SETTINGS = 'settings';
 
     const CASH_TRANSACTION_CATEGORY_MANAGEMENT = 'cash-transaction-category-management';
+    const CASH_ACCOUNT_MANAGEMENT = 'cash-account-management';
 
     const SERVICE_ORDER_LIST = 'service-order-list';
     const ADD_SERVICE_ORDER = 'add-service-order';

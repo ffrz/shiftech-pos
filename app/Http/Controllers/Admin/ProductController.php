@@ -116,9 +116,9 @@ class ProductController extends Controller
 
             fill_with_default_value($newData, ['active', 'stock', 'cost', 'price'], 0.);
             
-            $newData['stock'] = numberFromInput($newData['stock']);
-            $newData['cost'] = numberFromInput($newData['cost']);
-            $newData['price'] = numberFromInput($newData['price']);
+            $newData['stock'] = number_from_input($newData['stock']);
+            $newData['cost'] = number_from_input($newData['cost']);
+            $newData['price'] = number_from_input($newData['price']);
             
             $item->fill($newData);
             $item->save();

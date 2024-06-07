@@ -10,8 +10,13 @@ class CashAccount extends BaseModel
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'type', 'bank', 'account_number', 'balance'
+        'name', 'type', 'bank', 'number', 'balance', 'active', 'notes'
     ];
+
+    public function idFormatted()
+    {
+        return 'CA' . str_pad($this->id, 2, '0', STR_PAD_LEFT);
+    }
 
     public function products()
     {

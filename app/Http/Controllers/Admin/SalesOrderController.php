@@ -110,10 +110,10 @@ class SalesOrderController extends Controller
                     $d->id = $row_id;
                     $d->update_id = $item->id;
                     $d->product_id = $product_id;
-                    $d->quantity = -numberFromInput($request->qty[$row_id]);
+                    $d->quantity = -number_from_input($request->qty[$row_id]);
                     $d->cost = $product->cost;
                     $d->stock_before = $product->stock;
-                    $d->price = numberFromInput($request->price[$row_id]);
+                    $d->price = number_from_input($request->price[$row_id]);
                     $item->total_cost += ($d->cost * $d->quantity);
                     $item->total_price += ($d->price * $d->quantity);
 

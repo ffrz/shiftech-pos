@@ -30,7 +30,7 @@ class CashTransactionCategoryController extends Controller
 
         if ($request->method() == 'POST') {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|unique:CASH_TRANSACTION_categories,name,' . $request->id . '|max:100',
+                'name' => 'required|unique:cash_transaction_categories,name,' . $request->id . '|max:100',
             ], [
                 'name.required' => 'Nama kategori harus diisi.',
                 'name.unique' => 'Nama kategori sudah digunakan.',

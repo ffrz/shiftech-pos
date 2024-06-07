@@ -197,9 +197,9 @@ class ServiceOrderController extends Controller
             if (empty($requestData['date_completed']))
                 $requestData['date_completed'] = null;
 
-            $requestData['down_payment'] = numberFromInput($requestData['down_payment']);
-            $requestData['estimated_cost'] = numberFromInput($requestData['estimated_cost']);
-            $requestData['total_cost'] = numberFromInput($requestData['total_cost']);
+            $requestData['down_payment'] = number_from_input($requestData['down_payment']);
+            $requestData['estimated_cost'] = number_from_input($requestData['estimated_cost']);
+            $requestData['total_cost'] = number_from_input($requestData['total_cost']);
 
             empty_string_to_null($requestData, ['date_received', 'date_checked', 'date_worked', 'date_completed', 'date_picked']);
 

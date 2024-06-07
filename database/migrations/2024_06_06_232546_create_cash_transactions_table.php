@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cash_transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable()->default(null);
             $table->unsignedTinyInteger('type');
             $table->date('date');
             $table->decimal('amount', 10);
@@ -26,6 +26,8 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by_uid')->nullable()->default(null);
             $table->foreign('created_by_uid')->references('id')->on('users')->onDelete('set null');
             $table->foreign('updated_by_uid')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('account_id')->references('id')->on('cash_accounts')->onDelete('restrict');
+            $table->foreign('category_id')->references('id')->on('cash_transaction_categories')->onDelete('restrict');
         });
     }
 
