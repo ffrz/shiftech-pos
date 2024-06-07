@@ -25,7 +25,7 @@
         <tr>
           <td>Alamat</td>
           <td>:</td>
-          <td>{{ $item->address }}</td>
+          <td>{{ $item->customer_address }}</td>
         </tr>
         <tr>
           <td>Catatan</td>
