@@ -181,6 +181,44 @@ if (!isset($menu_active)) {
         @endif
         {{-- End of Expense Menu --}}
 
+        {{-- Expense Menu Begin --}}
+        @if (Auth::user()->canAccess(AclResource::FINANCE_MENU))
+          <li class="nav-item {{ $menu_active == 'finance' ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ $menu_active == 'finance' ? 'active' : '' }}">
+              <i class="nav-icon fas fa-money-bill-transfer"></i>
+              <p>
+                Keuangan
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/cash-transaction') }}"
+                  class="nav-link {{ $nav_active == 'cash-transaction' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-money-bill-transfer"></i>
+                  <p>Transaksi</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/cash-transaction-category') }}"
+                  class="nav-link {{ $nav_active == 'cash-transaction-category' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-boxes"></i>
+                  <p>Kategori Transaksi</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/cash-account') }}"
+                  class="nav-link {{ $nav_active == 'cash-account' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-money-check"></i>
+                  <p>Akun / Rek</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
+        @endif
+        {{-- End of Expense Menu --}}
+
         {{-- Report Menu --}}
         @if (Auth::user()->canAccess(AclResource::REPORT_MENU))
           <li class="nav-item {{ $menu_active == 'report' ? 'menu-open' : '' }}">

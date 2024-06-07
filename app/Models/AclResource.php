@@ -12,6 +12,7 @@ class AclResource
     const SERVICE_MENU = 'service-menu';
     const REPORT_MENU = 'report-menu';
     const EXPENSE_MENU = 'cost-menu';
+    const FINANCE_MENU = 'finance-menu';
 
     // system
     const VIEW_REPORTS = 'view-reports'; // sementara digrup, mungkin kedepannya diset spesifik
@@ -20,6 +21,8 @@ class AclResource
     const USER_MANAGEMENT = 'user-management';
     const USER_GROUP_MANAGEMENT = 'user-group-management';
     const SETTINGS = 'settings';
+
+    const CASH_TRANSACTION_CATEGORY_MANAGEMENT = 'cash-transaction-category-management';
 
     const SERVICE_ORDER_LIST = 'service-order-list';
     const ADD_SERVICE_ORDER = 'add-service-order';
@@ -105,6 +108,10 @@ class AclResource
                     self::EDIT_SUPPLIER => 'Ubah',
                     self::DELETE_SUPPLIER => 'Hapus',
                 ]
+            ],
+            'Keuangan' => [
+                self::CASH_TRANSACTION_MENU => 'Menu Keuangan',
+                self::CASH_TRANSACTION_CATEGORY_MANAGEMENT => 'Kelola Kategori Transaksi',
             ],
             'Sistem' => [
                 self::SYSTEM_MENU => 'Menu sistem',
