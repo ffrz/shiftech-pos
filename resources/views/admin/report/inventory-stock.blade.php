@@ -23,9 +23,9 @@
       <?php $sum_cost = 0;
       $sum_price = 0; ?>
       @foreach ($items as $num => $item)
-        <tr>
+        <tr style="vertical-align:top;">
           <td class="text-right">{{ $num + 1 }}</td>
-          <td>{{ $item->idFormatted() }}</td>
+          <td style="white-space:nowrap">{{ $item->idFormatted() }}</td>
           <td>{{ $item->code }}</td>
           <td class="text-right">{{ format_number($item->stock) }}</td>
           <td>{{ $item->uom }}</td>
