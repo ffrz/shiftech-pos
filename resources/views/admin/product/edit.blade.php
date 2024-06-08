@@ -36,10 +36,10 @@ $title = $item->id ? 'Edit ' . $item->idFormatted() : 'Tambah Produk';
           </div>
           <div class="form-group">
             <label for="type">Jenis Produk</label>
-            <select class="custom-select form-control" id="type" name="order_status">
-              <option value="-1" <?= $item->type == Product::NON_STOCKED ? 'selected' : '' ?>>Barang Non Stok</option>
-              <option value="-1" <?= $item->type == Product::STOCKED ? 'selected' : '' ?>>Barang Stok</option>
-              <option value="-1" <?= $item->type == Product::SERVICE ? 'selected' : '' ?>>Servis</option>
+            <select class="custom-select form-control" id="type" name="type">
+              <option value="{{ Product::NON_STOCKED }}" <?= $item->type == Product::NON_STOCKED ? 'selected' : '' ?>>Barang Non Stok</option>
+              <option value="{{ Product::STOCKED }}" <?= $item->type == Product::STOCKED ? 'selected' : '' ?>>Barang Stok</option>
+              <option value="{{ Product::SERVICE }}" <?= $item->type == Product::SERVICE ? 'selected' : '' ?>>Servis</option>
             </select>
           </div>
           <div class="form-group">

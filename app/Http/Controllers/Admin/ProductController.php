@@ -73,6 +73,7 @@ class ProductController extends Controller
         if (!$id) {
             ensure_user_can_access(AclResource::ADD_PRODUCT);
             $item = new Product();
+            $item->type = Product::STOCKED;
             $item->active = true;
             $item->price = 0;
             $item->cost = 0;
