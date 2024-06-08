@@ -14,6 +14,7 @@ use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Number;
 
@@ -32,6 +33,18 @@ class ProductController extends Controller
             'search' => $request->get('search'),
         ];
 
+        $filter_active = true;
+        if ($request->get('action') == 'reset') {
+            $filter_active = false;
+            $filter['type'] = -1;
+            $filter['active'] = -1;
+            $filter['category_id'] = -1;
+            $filter['supplier_id'] = -1;
+            $filter['stock_status'] = -1;
+            $filter['search'] = '';
+        }
+
+
         $q = Product::query();
 
         if ($filter['type'] != -1) {
@@ -49,8 +62,7 @@ class ProductController extends Controller
 
         if ($filter['stock_status'] == 0) {
             $q->where('stock', '=', 0);
-        }
-        else if ($filter['stock_status'] == 1) {
+        } else if ($filter['stock_status'] == 1) {
             $q->whereRaw('stock < minimum_stock');
         }
 
@@ -60,12 +72,20 @@ class ProductController extends Controller
         }
 
         $categories = ProductCategory::orderBy('name', 'asc')->get();
-        $suppliers = Supplier::orderBy('name', 'asc')->get();
+        $suppliers = Supplier::where('type', '=', Party::TYPE_SUPPLIER)
+            ->orderBy('name', 'asc')->get();
         $items = $q->with(['category', 'supplier'])
             ->orderBy('code', 'asc')
             ->paginate(10);
 
-        return view('admin.product.index', compact('items', 'filter', 'suppliers', 'categories'));
+        $request->session()->put('product.filter.type', $filter['type']);
+        $request->session()->put('product.filter.active', $filter['active']);
+        $request->session()->put('product.filter.category_id', $filter['category_id']);
+        $request->session()->put('product.filter.supplier_id', $filter['supplier_id']);
+        $request->session()->put('product.filter.stock_status', $filter['stock_status']);
+        $request->session()->put('product.filter.search', $filter['search']);
+
+        return view('admin.product.index', compact('items', 'filter', 'suppliers', 'categories', 'filter_active'));
     }
 
     public function edit(Request $request, $id = 0)
@@ -101,7 +121,7 @@ class ProductController extends Controller
 
             $data = ['Old Data' => $item->toArray()];
             $newData = $request->all();
-            
+
             $initial_stock = $item->stock;
             $new_stock = $newData['stock'];
 
@@ -116,14 +136,14 @@ class ProductController extends Controller
             }
 
             fill_with_default_value($newData, ['active', 'stock', 'cost', 'price'], 0.);
-            
+
             $newData['stock'] = number_from_input($newData['stock']);
             $newData['cost'] = number_from_input($newData['cost']);
             $newData['price'] = number_from_input($newData['price']);
-            
+
             $item->fill($newData);
             $item->save();
-            
+
             if ($new_stock != $initial_stock) {
                 $qty = $new_stock - $initial_stock;
                 $update = new StockUpdate();
@@ -134,7 +154,7 @@ class ProductController extends Controller
                 $update->open();
                 $update->close(StockUpdate::STATUS_COMPLETED);
                 $update->save();
-                
+
                 $detail = new StockUpdateDetail();
                 $detail->id = 1;
                 $detail->update_id = $update->id;

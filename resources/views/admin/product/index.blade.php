@@ -11,25 +11,31 @@ use App\Models\Product;
   <li class="nav-item">
     <a href="{{ url('/admin/product/edit/0') }}" class="btn plus-btn btn-primary mr-2" title="Baru"><i
         class="fa fa-plus"></i></a>
+    <button class="btn btn-default plus-btn mr-2" data-toggle="modal" data-target="#modal-sm" title="Saring"><i
+        class="fa fa-filter"></i>
+      @if ($filter_active)
+        <span class="badge badge-warning">!</span>
+      @endif
+    </button>
   </li>
 @endSection
 
 @section('content')
-  <div class="accordion" id="filterBox">
-    <div class="card">
-      <form mmethod="GET" action="?">
-        <div class="card-header" id="filterHeading">
-          <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
-            data-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
-            <i class="fa fa-filter mr-2"> </i> Penyaringan
-          </button>
-        </div>
-        <div id="filterCollapse" class="collapse" aria-labelledby="filterHeading" data-parent="#filterBox">
-          <div class="card-body">
-            <div class="form-row">
-              <div class="form-group col-md-2">
-                <label for="type">Jenis Produk:</label>
-                <select class="custom-select select2 form-control" id="type" name="type">
+  <form method="GET" class="form-horizontal">
+    <div class="modal fade" id="modal-sm">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Penyaringan</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="type" class="col-form-label col-sm-4">Jenis Produk:</label>
+              <div class="col-sm-8">
+                <select class="custom-select select2" id="type" name="type">
                   <option value="-1" <?= $filter['type'] == -1 ? 'selected' : '' ?>>Semua</option>
                   <option value="{{ Product::NON_STOCKED }}"
                     {{ $filter['type'] == Product::NON_STOCKED ? 'selected' : '' }}>
@@ -40,17 +46,21 @@ use App\Models\Product;
                     {{ Product::formatType(Product::SERVICE) }}</option>
                 </select>
               </div>
-              <div class="form-group col-md-2">
-                <label for="active">Akitf / Nonaktif:</label>
-                <select class="custom-select select2 form-control" id="active" name="active">
+            </div>
+            <div class="form-group row">
+              <label for="active" class="col-form-label col-sm-4">Akitf / Nonaktif:</label>
+              <div class="col-sm-8">
+                <select class="custom-select select2" id="active" name="active">
                   <option value="-1" {{ $filter['active'] == -1 ? 'selected' : '' }}>Semua</option>
                   <option value="0" {{ $filter['active'] == 0 ? 'selected' : '' }}>Non Aktif</option>
                   <option value="1" {{ $filter['active'] == 1 ? 'selected' : '' }}>Aktif</option>
                 </select>
               </div>
-              <div class="form-group col-md-2">
-                <label for="category_id">Kategori:</label>
-                <select class="custom-select select2 form-control" id="category_id" name="category_id">
+            </div>
+            <div class="form-group row">
+              <label for="category_id" class="col-form-label col-sm-4">Kategori:</label>
+              <div class="col-sm-8">
+                <select class="custom-select select2" id="category_id" name="category_id">
                   <option value="-1" {{ $filter['category_id'] == -1 ? 'selected' : '' }}>Semua</option>
                   @foreach ($categories as $category)
                     <option value="{{ $category->id }}" {{ $filter['category_id'] == $category->id ? 'selected' : '' }}>
@@ -58,9 +68,11 @@ use App\Models\Product;
                   @endforeach
                 </select>
               </div>
-              <div class="form-group col-md-2">
-                <label for="supplier_id">Supplier:</label>
-                <select class="custom-select select2 form-control" id="supplier_id" name="supplier_id">
+            </div>
+            <div class="form-group row">
+              <label for="supplier_id" class="col-form-label col-sm-4">Supplier:</label>
+              <div class="col-sm-8">
+                <select class="custom-select select2" id="supplier_id" name="supplier_id">
                   <option value="-1" {{ $filter['supplier_id'] == -1 ? 'selected' : '' }}>Semua</option>
                   @foreach ($suppliers as $supplier)
                     <option value="{{ $supplier->id }}" {{ $filter['supplier_id'] == $supplier->id ? 'selected' : '' }}>
@@ -68,24 +80,27 @@ use App\Models\Product;
                   @endforeach
                 </select>
               </div>
-              <div class="form-group col-md-2">
-                <label for="stock_status">Status Stok:</label>
-                <select class="custom-select select2 form-control" id="stock_status" name="stock_status">
+            </div>
+            <div class="form-group row">
+              <label for="stock_status" class="col-form-label col-sm-4">Status Stok:</label>
+              <div class="col-sm-8">
+                <select class="custom-select select2" id="stock_status" name="stock_status">
                   <option value="-1" {{ $filter['stock_status'] == -1 ? 'selected' : '' }}>Semua</option>
                   <option value="0" {{ $filter['stock_status'] == 0 ? 'selected' : '' }}>Kosong</option>
                   <option value="1" {{ $filter['stock_status'] == 1 ? 'selected' : '' }}>Stok Minimum</option>
                 </select>
               </div>
             </div>
-
           </div>
-          <div class="card-footer">
+          <div class="modal-footer justify-content-center">
             <button type="submit" class="btn btn-primary"><i class="fas fa-check mr-2"></i> Terapkan</button>
+            <button type="submit" name="action" value="reset" class="btn btn-default"><i
+                class="fa fa-filter-circle-xmark"></i> Reset Filter</button>
           </div>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
+  </form>
   <div class="card card-light">
     <div class="card-body">
       <form action="?">
