@@ -112,7 +112,9 @@ class AclResource
                 ]
             ],
             'Keuangan' => [
-                self::CASH_TRANSACTION_MENU => 'Menu Keuangan',
+                self::FINANCE_MENU => 'Menu Keuangan',
+                self::CASH_ACCOUNT_MANAGEMENT => 'Kelola Akun / Rekening',
+                self::CASH_TRANSACTION_MANAGEMENT => 'Kelola Transaksi Keuangan',
                 self::CASH_TRANSACTION_CATEGORY_MANAGEMENT => 'Kelola Kategori Transaksi',
             ],
             'Sistem' => [
