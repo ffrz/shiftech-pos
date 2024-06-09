@@ -92,19 +92,22 @@ class CustomerController extends Controller
     {
         ensure_user_can_access(AclResource::DELETE_CUSTOMER);
 
-        // fix me, notif kalo kategori ga bisa dihapus
-        if (!$item = Customer::find($id))
-            $message = 'Pelanggan tidak ditemukan.';
-        else if ($item->delete($id)) {
-            $message = 'Pelanggan ' . e($item->name) . ' telah dihapus.';
-            UserActivity::log(
-                UserActivity::CUSTOMER_MANAGEMENT,
-                'Hapus Pelanggan',
-                $message,
-                $item->toArray()
-            );
-        }
+        $item = Customer::findOrFail($id);
+
+        $message = 'Pelanggan ' . e($item->name) . ' telah dihapus.';
+        UserActivity::log(
+            UserActivity::CUSTOMER_MANAGEMENT,
+            'Hapus Pelanggan',
+            $message,
+            $item->toArray()
+        );
 
         return redirect('admin/customer')->with('info', $message);
+    }
+
+    public function detail(Request $request, $id)
+    {
+        $item = Customer::findOrFail($id);
+        return view('admin.customer.detail', compact('item'));
     }
 }

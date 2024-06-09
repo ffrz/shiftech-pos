@@ -90,12 +90,14 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
         Route::get('', 'index');
         Route::match(['get', 'post'], 'edit/{id}', 'edit');
         Route::get('delete/{id}', 'delete');
+        Route::get('detail/{id}', 'detail');
     });
 
     Route::controller(CustomerController::class)->prefix('customer')->group(function () {
         Route::get('', 'index');
         Route::match(['get', 'post'], 'edit/{id}', 'edit');
         Route::get('delete/{id}', 'delete');
+        Route::get('detail/{id}', 'detail');
     });
 
     Route::controller(ProductCategoryController::class)->prefix('product-category')->group(function () {

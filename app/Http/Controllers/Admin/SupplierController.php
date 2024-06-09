@@ -7,6 +7,7 @@ use App\Models\AclResource;
 use App\Models\Party;
 use App\Models\Supplier;
 use App\Models\UserActivity;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -92,10 +93,11 @@ class SupplierController extends Controller
     {
         ensure_user_can_access(AclResource::DELETE_SUPPLIER);
 
-        // fix me, notif kalo kategori ga bisa dihapus
-        if (!$item = Supplier::find($id)) {
-            $message = 'Supplier tidak ditemukan.';
-        } else if ($item->delete($id)) {
+        $item = Supplier::findOrFail($id);
+        $message = '';
+
+        try {
+            $item->delete();
             $message = 'Supplier ' . e($item->name) . ' telah dihapus.';
             UserActivity::log(
                 UserActivity::SUPPLIER_MANAGEMENT,
@@ -103,8 +105,17 @@ class SupplierController extends Controller
                 $message,
                 $item->toArray()
             );
+        } catch (QueryException $ex) {
+            $message = 'Grup pengguna <b>' . e($item->name) . '</b> tidak dapat dihapus. ' .
+                'Grup sudah digunakan atau terdapat kesalahan pada sistem.';
         }
 
         return redirect('admin/supplier')->with('info', $message);
+    }
+
+    public function detail(Request $request, $id)
+    {
+        $item = Supplier::findOrFailed($id);
+        return view('admin.supplier.detail', compact('item'));
     }
 }
