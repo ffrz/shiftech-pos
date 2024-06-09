@@ -5,7 +5,7 @@
 
 @section('content')
   <h5 class="text-center">LAPORAN STOK INVENTORI</h5>
-  <h5 class="text-center">{{ Setting::value('app.business_name') }}</h5>
+  <h5 class="text-center">{{ Setting::value('company.name') }}</h5>
   <h6 class="text-center">Per Tanggal: {{ date('d-m-Y') }}</h6>
   <table class="report-table">
     <thead style="background:#08e;color:#fff;">
