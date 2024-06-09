@@ -36,7 +36,7 @@ class PurchaseOrderController extends Controller
         $items = $q->with('party')->whereRaw('type = ' . StockUpdate::TYPE_PURCHASE_ORDER)
             ->orderBy('id', 'desc')
             ->paginate(10);
-            
+
         return view('admin.purchase-order.index', compact('items', 'filter'));
     }
 
@@ -99,7 +99,7 @@ class PurchaseOrderController extends Controller
 
             $item->total_cost = 0;
             $item->total_price = 0;
-            
+
             DB::delete('delete from stock_update_details where update_id = ?', [$item->id]);
             if (!empty($request->product_id)) {
                 foreach ($request->product_id as $row_id => $product_id) {
@@ -116,7 +116,7 @@ class PurchaseOrderController extends Controller
                     $item->total_price += ($d->price * $d->quantity);
 
                     // saat ini belum ada diskon dan pajak, cukup set total dari total harga
-                    $item->total = $item->total_price;
+                    $item->total = $item->total_cost;
 
                     $d->save();
                 }
@@ -167,7 +167,19 @@ class PurchaseOrderController extends Controller
             ->get();
 
         $details = $item->details;
-        
+
         return view('admin.purchase-order.edit', compact('item', 'parties', 'products', 'barcodes', 'details', 'product_code_by_ids'));
+    }
+
+    public function detail(Request $request, $id)
+    {
+        $item = StockUpdate::with(['created_by', 'closed_by'])->find($id);
+        $details = StockUpdateDetail::with(['product'])->where('update_id', '=', $item->id)->get();
+        // if ($request->get('print') == 1) {
+        //     return view('admin.purchase-order.print', compact('item', 'details'));
+        // } else if ($request->get('print') == 2) {
+        //     return view('admin.purchase-order.print-small', compact('item', 'details'));
+        // }
+        return view('admin.purchase-order.detail', compact('item', 'details'));
     }
 }

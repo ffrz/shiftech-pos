@@ -1,7 +1,7 @@
 <?php $title = ($item->id ? 'Edit' : 'Tambah') . ' Pemasok'; ?>
 @extends('admin._layouts.default', [
     'title' => $title,
-    'menu_active' => 'inventory',
+    'menu_active' => 'purchasing',
     'nav_active' => 'supplier',
     'form_action' => url('admin/supplier/edit/' . (int) $item->id),
 ])
