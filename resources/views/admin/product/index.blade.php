@@ -1,6 +1,7 @@
-<?php
-use App\Models\Product;
-?>
+@php
+  use App\Models\Product;
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => 'Produk',
     'menu_active' => 'inventory',
@@ -145,21 +146,21 @@ use App\Models\Product;
                       <td class="text-center">
                         <div class="btn-group">
                           @if (!$item->deleted_at)
-                            <a href="<?= url("/admin/product/detail/$item->id") ?>" class="btn btn-default btn-sm"><i
+                            <a href="{{ url("/admin/product/detail/$item->id") }}" class="btn btn-default btn-sm"><i
                                 class="fa fa-eye" title="Rincian"></i></a>
-                            <a href="<?= url("/admin/product/duplicate/$item->id") ?>" class="btn btn-default btn-sm"><i
+                            <a href="{{ url("/admin/product/duplicate/$item->id") }}" class="btn btn-default btn-sm"><i
                                 class="fa fa-copy" title="Duplikat"></i></a>
-                            <a href="<?= url("/admin/product/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
+                            <a href="{{ url("/admin/product/edit/$item->id") }}" class="btn btn-default btn-sm"><i
                                 class="fa fa-edit"></i></a>
                             <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                              href="<?= url("/admin/product/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
+                              href="{{ url("/admin/product/delete/$item->id") }}" class="btn btn-danger btn-sm"><i
                                 class="fa fa-trash"></i></a>
                           @else
                             <a onclick="return confirm('Anda yakin akan memulihkan rekaman ini?')"
-                              href="<?= url("/admin/product/restore/$item->id") ?>" class="btn btn-warning btn-sm"><i
+                              href="{{ url("/admin/product/restore/$item->id") }}" class="btn btn-warning btn-sm"><i
                                 class="fa fa-trash-arrow-up" title="Pulihkan"></i></a>
                             <a onclick="return confirm('Anda yakin akan menghapus rekaman ini selamanya?')"
-                              href="<?= url("/admin/product/delete/$item->id?force=true") ?>"
+                              href="{{ url("/admin/product/delete/$item->id?force=true") }}"
                               class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                           @endif
                         </div>

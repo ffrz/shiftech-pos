@@ -60,10 +60,10 @@
                       <div class="btn-group">
                         <a href="{{ url("/admin/supplier/detail/$item->id") }}" class="btn btn-default btn-sm"><i
                             class="fa fa-eye"></i></a>
-                        <a href="<?= url("/admin/supplier/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
+                        <a href="{{ url("/admin/supplier/edit/$item->id") }}" class="btn btn-default btn-sm"><i
                             class="fa fa-edit"></i></a>
                         <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                          href="<?= url("/admin/supplier/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
+                          href="{{ url("/admin/supplier/delete/$item->id") }}" class="btn btn-danger btn-sm"><i
                             class="fa fa-trash"></i></a>
                       </div>
                     </td>

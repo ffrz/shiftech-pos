@@ -1,7 +1,7 @@
-<?php
-use App\Models\StockUpdate;
-$title = 'Stok Opname';
-?>
+@php
+  use App\Models\StockUpdate;
+  $title = 'Stok Opname';
+@endphp
 
 @extends('admin._layouts.default', [
     'title' => $title,
@@ -24,7 +24,7 @@ $title = 'Stok Opname';
     <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true" title="Menu lainnya">
       <i class="fa fa-ellipsis-vertical"></i>
     </a>
-    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right"  style="left: inherit; right: 0px;">
+    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="left: inherit; right: 0px;">
       <a href="{{ url('admin/stock-adjustment/print/' . $item->id) }}" class="dropdown-item" target="_blank">
         <i class="fa fa-print mr-2"></i> Cetak Kartu
       </a>
@@ -42,8 +42,10 @@ $title = 'Stok Opname';
       <div class="row">
         <div class="col col-md-12">
           <h3 class="mt-0">#{{ $item->id2Formatted() }}</h3>
-          <p class="mt-0 mb-0">Dibuat oleh <b>{{ $item->created_by->username }}</b> pada {{ format_datetime($item->created_datetime) }}</p>
-          <p class="mt-0 mb-0">Terakhir kali disimpan oleh <b>{{ $item->updated_by_by->username }}</b> pada {{ format_datetime($item->updated_datetime) }}</p>
+          <p class="mt-0 mb-0">Dibuat oleh <b>{{ $item->created_by->username }}</b> pada
+            {{ format_datetime($item->created_datetime) }}</p>
+          <p class="mt-0 mb-0">Terakhir kali disimpan oleh <b>{{ $item->updated_by_by->username }}</b> pada
+            {{ format_datetime($item->updated_datetime) }}</p>
           <div class="table-responsive mt-4">
             <table id="product-list" class="table table-sm table-bordered table-hover">
               <thead>

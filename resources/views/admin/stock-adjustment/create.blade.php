@@ -1,7 +1,8 @@
-<?php
-use App\Models\StockUpdate;
-$title = 'Buat Kartu Stok';
-?>
+@php
+  use App\Models\StockUpdate;
+  $title = 'Buat Kartu Stok';
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => $title,
     'menu_active' => 'inventory',

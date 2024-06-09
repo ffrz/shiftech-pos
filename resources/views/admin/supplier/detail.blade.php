@@ -3,6 +3,7 @@
   use App\Models\StockUpdate;
   use App\Models\ServiceOrder;
 @endphp
+
 @extends('admin._layouts.default', [
     'title' => $title,
     'menu_active' => 'purchasing',
@@ -106,7 +107,7 @@
                           <td class="text-center">
                             <div class="btn-group">
                               @if ($item->status != StockUpdate::STATUS_OPEN)
-                                <a href="<?= url("/admin/sales-order/detail/$item->id") ?>"
+                                <a href="{{ url("/admin/sales-order/detail/$item->id") }}"
                                   class="btn btn-default btn-sm"><i class="fa fa-eye" title="View"></i></a>
                               @endif
                             </div>

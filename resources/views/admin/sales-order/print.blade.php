@@ -2,7 +2,9 @@
   use App\Models\Setting;
   $title = '#' . $item->id2Formatted();
 @endphp
+
 @extends('admin._layouts.print-receipt-a4')
+
 @section('content')
   <div class="no-print text-center">
     <br>

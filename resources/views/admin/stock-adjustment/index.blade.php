@@ -1,4 +1,6 @@
-<?php use App\Models\StockUpdate; ?>
+@php
+  use App\Models\StockUpdate;
+@endphp
 
 @extends('admin._layouts.default', [
     'title' => 'Stok Opname',
@@ -8,7 +10,7 @@
 
 @section('right-menu')
   <li class="nav-item">
-    <a href="<?= url('/admin/stock-adjustment/create') ?>" class="btn plus-btn btn-primary mr-2" title="Baru"><i
+    <a href="{{ url('/admin/stock-adjustment/create') }}" class="btn plus-btn btn-primary mr-2" title="Baru"><i
         class="fa fa-plus"></i></a>
   </li>
 @endSection
@@ -48,14 +50,14 @@
                     <td class="text-center">
                       <div class="btn-group">
                         @if ($item->status == StockUpdate::STATUS_COMPLETED)
-                          <a href="<?= url("/admin/stock-update/detail/$item->id") ?>" class="btn btn-default btn-sm"><i
+                          <a href="{{ url("/admin/stock-update/detail/$item->id") }}" class="btn btn-default btn-sm"><i
                               class="fa fa-eye" title="View"></i></a>
                         @else
-                          <a href="<?= url("/admin/stock-adjustment/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
+                          <a href="{{ url("/admin/stock-adjustment/edit/$item->id") }}" class="btn btn-default btn-sm"><i
                               class="fa fa-edit" title="Edit"></i></a>
                         @endif
                         <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                          href="<?= url("/admin/stock-update/delete/$item->id?goto=" . url('/admin/stock-adjustment')) ?>" class="btn btn-danger btn-sm"><i
+                          href="{{ url("/admin/stock-update/delete/$item->id?goto=" . url('/admin/stock-adjustment')) }}" class="btn btn-danger btn-sm"><i
                             class="fa fa-trash" title="Hapus"></i></a>
                       </div>
                     </td>

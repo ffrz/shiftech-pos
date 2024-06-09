@@ -1,4 +1,7 @@
-<?php use App\Models\Setting; ?>
+@php
+  use App\Models\Setting;
+@endphp
+
 @extends('admin._layouts.print-report', [
     'title' => 'Laporan Stok Inventori',
 ])

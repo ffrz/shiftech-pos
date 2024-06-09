@@ -1,10 +1,14 @@
-<?php $title = (!$user->id ? 'Tambah' : 'Edit') . ' Pengguna'; ?>
+@php
+  $title = (!$user->id ? 'Tambah' : 'Edit') . ' Pengguna';
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => $title,
     'menu_active' => 'system',
     'nav_active' => 'user',
     'form_action' => url('/admin/user/edit/' . (int) $user->id),
 ])
+
 @section('right-menu')
   <li class="nav-item">
     <button type="submit" class="btn btn-primary mr-1"><i class="fas fa-save mr-1"></i> Simpan</button>
@@ -12,6 +16,7 @@
         class="fas fa-cancel mr-1"></i>Batal</a>
   </li>
 @endSection
+
 @section('content')
   <div class="row">
     <div class="col-lg-5">

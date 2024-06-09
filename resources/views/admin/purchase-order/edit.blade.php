@@ -1,11 +1,13 @@
-<?php
-use App\Models\StockUpdate;
-?>
+@php
+  use App\Models\StockUpdate;
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => 'Order Pembelian',
     'menu_active' => 'purchasing',
     'nav_active' => 'purchase_order',
 ])
+
 @section('content')
   <form method="POST" id="editor" class="pos-editor" action="{{ url('admin/purchase-order/edit/' . (int) $item->id) }}">
     @csrf

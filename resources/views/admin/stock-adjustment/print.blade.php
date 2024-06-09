@@ -1,4 +1,7 @@
-@php use Illuminate\Support\Facades\Auth; @endphp
+@php
+  use Illuminate\Support\Facades\Auth;
+@endphp
+
 @extends('admin._layouts.print-report', [
     'title' => 'Kartu Stok #' . $item->id2Formatted(),
 ])

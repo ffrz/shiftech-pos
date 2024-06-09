@@ -1,4 +1,7 @@
-<?php $title = ($item->id ? 'Edit' : 'Tambah') . ' Akun Kas / Rekening'; ?>
+@php
+  $title = ($item->id ? 'Edit' : 'Tambah') . ' Akun Kas / Rekening';
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => $title,
     'menu_active' => 'finance',

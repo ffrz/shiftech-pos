@@ -1,11 +1,9 @@
-<?php
+@php
+  use App\Models\Product;
+  use App\Models\Setting;
+  $title = $item->id ? 'Edit ' . $item->idFormatted() : 'Tambah Produk';
+@endphp
 
-use App\Models\Product;
-use App\Models\Setting;
-
-$title = $item->id ? 'Edit ' . $item->idFormatted() : 'Tambah Produk';
-
-?>
 @extends('admin._layouts.default', [
     'title' => $title,
     'menu_active' => 'inventory',
@@ -37,9 +35,12 @@ $title = $item->id ? 'Edit ' . $item->idFormatted() : 'Tambah Produk';
           <div class="form-group">
             <label for="type">Jenis Produk</label>
             <select class="custom-select form-control" id="type" name="type">
-              <option value="{{ Product::NON_STOCKED }}" <?= $item->type == Product::NON_STOCKED ? 'selected' : '' ?>>Barang Non Stok</option>
-              <option value="{{ Product::STOCKED }}" <?= $item->type == Product::STOCKED ? 'selected' : '' ?>>Barang Stok</option>
-              <option value="{{ Product::SERVICE }}" <?= $item->type == Product::SERVICE ? 'selected' : '' ?>>Servis</option>
+              <option value="{{ Product::NON_STOCKED }}" <?= $item->type == Product::NON_STOCKED ? 'selected' : '' ?>>
+                Barang Non Stok</option>
+              <option value="{{ Product::STOCKED }}" <?= $item->type == Product::STOCKED ? 'selected' : '' ?>>Barang Stok
+              </option>
+              <option value="{{ Product::SERVICE }}" <?= $item->type == Product::SERVICE ? 'selected' : '' ?>>Servis
+              </option>
             </select>
           </div>
           <div class="form-group">

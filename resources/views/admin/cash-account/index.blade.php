@@ -40,10 +40,10 @@
                     <td class="text-right">{{ format_number($item->balance) }}</td>
                     <td class="text-center">
                       <div class="btn-group">
-                        <a href="<?= url("/admin/cash-account/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
+                        <a href="{{ url("/admin/cash-account/edit/$item->id") }}" class="btn btn-default btn-sm"><i
                             class="fa fa-edit"></i></a>
                         <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                          href="<?= url("/admin/cash-account/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
+                          href="{{ url("/admin/cash-account/delete/$item->id") }}" class="btn btn-danger btn-sm"><i
                             class="fa fa-trash"></i></a>
                       </div>
                     </td>

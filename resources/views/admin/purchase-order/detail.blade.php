@@ -3,13 +3,15 @@
     'menu_active' => 'purchasing',
     'nav_active' => 'purchase-order',
 ])
+
 @section('right-menu')
   <li class="nav-item">
-    <a href="<?= url('/admin/purchase-order/create') ?>" class="btn plus-btn btn-primary mr-1" title="Baru"><i
+    <a href="{{ url('/admin/purchase-order/create') }}" class="btn plus-btn btn-primary mr-1" title="Baru"><i
         class="fa fa-plus"></i></a>
     <a href="?print=1" class="btn btn-default"><i class="fa fa-print mr-1"></i>Nota</a>
   </li>
 @endSection
+
 @section('content')
   <div class="card card-primary">
     <div class="card-body">

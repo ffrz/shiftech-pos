@@ -32,11 +32,11 @@
                     <td>{{ $item->description }}</td>
                     <td class="text-center">
                       <div class="btn-group">
-                        <a href="<?= url("/admin/cash-transaction-category/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
-                            class="fa fa-edit"></i></a>
+                        <a href="{{ url("/admin/cash-transaction-category/edit/$item->id") }}"
+                          class="btn btn-default btn-sm"><i class="fa fa-edit"></i></a>
                         <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                          href="<?= url("/admin/cash-transaction-category/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
-                            class="fa fa-trash"></i></a>
+                          href="{{ url("/admin/cash-transaction-category/delete/$item->id") }}"
+                          class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                       </div>
                     </td>
                   </tr>

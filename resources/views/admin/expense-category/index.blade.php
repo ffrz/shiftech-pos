@@ -30,10 +30,10 @@
                     <td>{{ $item->name }}</td>
                     <td class="text-center">
                       <div class="btn-group">
-                        <a href="<?= url("/admin/expense-category/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
+                        <a href="{{ url("/admin/expense-category/edit/$item->id") }}" class="btn btn-default btn-sm"><i
                             class="fa fa-edit"></i></a>
                         <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                          href="<?= url("/admin/expense-category/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
+                          href="{{ url("/admin/expense-category/delete/$item->id") }}" class="btn btn-danger btn-sm"><i
                             class="fa fa-trash"></i></a>
                       </div>
                     </td>

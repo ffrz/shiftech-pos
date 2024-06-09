@@ -1,4 +1,7 @@
-<?php $title = ($item->id ? 'Edit' : 'Tambah') . ' Pengeluaran'; ?>
+@php
+  $title = ($item->id ? 'Edit' : 'Tambah') . ' Pengeluaran';
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => $title,
     'menu_active' => 'expense',
@@ -21,8 +24,8 @@
         <div class="card-body">
           <div class="form-group">
             <label for="date" class="col-form-label">Tanggal:</label>
-            <input autofocus type="date" class="form-control @error('date') is-invalid @enderror" id="date" name="date"
-              value="{{ old('date', $item->date) }}">
+            <input autofocus type="date" class="form-control @error('date') is-invalid @enderror" id="date"
+              name="date" value="{{ old('date', $item->date) }}">
             @error('date')
               <span class="text-danger">
                 {{ $message }}
@@ -31,7 +34,8 @@
           </div>
           <div class="form-group">
             <label for="category_id">Kategori</label>
-            <select class="custom-select select2 @error('category_id') is-invalid @enderror" id="category_id" name="category_id">
+            <select class="custom-select select2 @error('category_id') is-invalid @enderror" id="category_id"
+              name="category_id">
               <option value="" {{ !$item->category_id ? 'selected' : '' }}>-- Pilih Kategori --</option>
               @foreach ($categories as $category)
                 <option value="{{ $category->id }}"
