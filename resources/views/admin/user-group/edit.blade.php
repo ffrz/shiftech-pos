@@ -7,9 +7,8 @@
 ])
 @section('right-menu')
   <li class="nav-item">
-    <button type="submit" class="btn btn-primary mr-1"><i class="fas fa-save mr-1"></i> Simpan</button>
-    <a onclick="return confirm('Batalkan perubahan?')" class="btn btn-default"
-      href="{{ url('/admin/user-group/') }}"><i class="fas fa-cancel mr-1"></i>Batal</a>
+    <button class="btn btn-primary mr-1" type="submit"><i class="fas fa-save mr-1"></i> Simpan</button>
+    <a class="btn btn-default" href="{{ url('/admin/user-group/') }}" onclick="return confirm('Batalkan perubahan?')"><i class="fas fa-cancel mr-1"></i>Batal</a>
   </li>
 @endSection
 @section('content')
@@ -19,8 +18,8 @@
         <div class="card-body">
           <div class="form-group">
             <label for="name">Nama Grup</label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" autofocus id="name"
-              placeholder="Masukkan Nama Grup" name="name" value="{{ old('name', $item->name) }}">
+            <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text" value="{{ old('name', $item->name) }}" autofocus
+              placeholder="Masukkan Nama Grup">
             @error('name')
               <span class="text-danger">
                 {{ $message }}
@@ -29,9 +28,8 @@
           </div>
           <div class="form-group">
             <label for="description">Deskripsi</label>
-            <input type="text" class="form-control @error('description') is-invalid @enderror" id="description"
-              placeholder="Masukkan deskripsi grup" name="description"
-              value="{{ old('description', $item->description) }}">
+            <input class="form-control @error('description') is-invalid @enderror" id="description" name="description" type="text"
+              value="{{ old('description', $item->description) }}" placeholder="Masukkan deskripsi grup">
             @error('description')
               <span class="text-danger">
                 {{ $message }}
@@ -47,7 +45,7 @@
             <h5>Hak Akses Grup</h5>
           </div>
           @foreach ($resources as $category => $resource)
-            <div style="border: 1px solid #ddd;border-radius:5px;" class="p-2 mt-2 mb-2">
+            <div class="p-2 mt-2 mb-2" style="border: 1px solid #ddd;border-radius:5px;">
               <h5 class="mb-0">{{ $category }}</h5>
               @foreach ($resource as $name => $label)
                 @if (is_array($label))
@@ -55,21 +53,17 @@
                   <div class="d-flex flex-row flex-wrap">
                     @foreach ($label as $subname => $sublabel)
                       <div class="mr-3 custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="{{ $subname }}"
-                          name="acl[{{ $subname }}]" value="1"
+                        <input class="custom-control-input" id="{{ $subname }}" name="acl[{{ $subname }}]" type="checkbox" value="1"
                           @if (isset($item->acl()[$subname]) && $item->acl()[$subname] == true) {{ 'checked="checked"' }} @endif>
-                        <label class="custom-control-label" style="font-weight:normal; white-space: nowrap;"
-                          for="{{ $subname }}">{{ $sublabel }}</label>
+                        <label class="custom-control-label" for="{{ $subname }}" style="font-weight:normal; white-space: nowrap;">{{ $sublabel }}</label>
                       </div>
                     @endforeach
                   </div>
                 @else
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="{{ $name }}"
-                      name="acl[{{ $name }}]" value="1"
+                    <input class="custom-control-input" id="{{ $name }}" name="acl[{{ $name }}]" type="checkbox" value="1"
                       @if (isset($item->acl()[$name]) && $item->acl()[$name] == true) {{ 'checked="checked"' }} @endif>
-                    <label class="custom-control-label" style="font-weight:normal; white-space: nowrap;"
-                      for="{{ $name }}">{{ $label }}</label>
+                    <label class="custom-control-label" for="{{ $name }}" style="font-weight:normal; white-space: nowrap;">{{ $label }}</label>
                   </div>
                 @endif
               @endforeach

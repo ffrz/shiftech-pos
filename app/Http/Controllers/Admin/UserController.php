@@ -7,6 +7,7 @@ use App\Models\AclResource;
 use App\Models\UserActivity;
 use App\Models\User;
 use App\Models\UserGroup;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,13 +32,10 @@ class UserController extends Controller
         'current_password.required' => 'Kata sandi harus diisi.',
     ];
 
-    public function __construct()
-    {
-        ensure_user_can_access(AclResource::USER_MANAGEMENT);
-    }
-    
     public function index(Request $request)
     {
+        ensure_user_can_access(AclResource::USER_MANAGEMENT);
+
         $filter = [
             'search' => $request->get('search', ''),
             'status' => $request->get('status', '-1'),
@@ -55,8 +53,8 @@ class UserController extends Controller
             $q->where('group_id', '=', $filter['group_id']);
         }
         if (!empty($filter['search'])) {
-            $q->where('username', 'like', '%'. $filter['search'] . '%');
-            $q->orWhere('fullname', 'like', '%'. $filter['search'] . '%');
+            $q->where('username', 'like', '%' . $filter['search'] . '%');
+            $q->orWhere('fullname', 'like', '%' . $filter['search'] . '%');
         }
         $items = $q->orderBy('fullname', 'asc')->paginate(10);
         $groups = UserGroup::orderBy('name', 'asc')->get();
@@ -65,12 +63,13 @@ class UserController extends Controller
 
     public function edit(Request $request, $id = 0)
     {
+        ensure_user_can_access(AclResource::USER_MANAGEMENT);
+
         $user = (int)$id == 0 ? new User() : User::find($id);
 
         if (!$user) {
             return redirect('admin/user')->with('warning', 'Pengguna tidak ditemukan.');
-        }
-        else if ($user->username == 'admin') {
+        } else if ($user->username == 'admin') {
             return redirect('admin/user')->with('warning', 'Akun <b>' . $user->username . '</b> tidak boleh diubah.');
         }
 
@@ -79,37 +78,29 @@ class UserController extends Controller
 
             if (!$id) {
                 $rules['username'] = 'required|unique:users,username,' . $id . '|min:3|max:40';
-            }
-            else if (!empty($request->password)) {
+            } else if (!empty($request->password)) {
                 $rules['password'] = self::VALIDATION_RULE_PASSWORD;
             }
 
             $data = $request->all();
-
             $validator = Validator::make($data, $rules, $this->validation_messages);
-
-            if ($validator->fails())
+            if ($validator->fails()) {
                 return redirect()->back()->withInput()->withErrors($validator);
+            }
 
-            if (empty($data['is_active']))
-                $data['is_active'] = false;
+            fill_with_default_value($data, ['is_active', 'is_admin'], false);
+            fill_with_default_value($data, ['group_id'], null);
 
-            if (empty($data['is_admin']))
-                $data['is_admin'] = false;
-
-            if (empty($data['group_id']))
-                $data['group_id'] = null;
-
-            if (empty($request->password))
+            if (empty($request->password)) {
                 unset($data['password']);
+            }
 
             $user->fill($data);
 
             if (!$id) {
-                $message = 'Akun pengguna ' . $data['username'] . ' telah dibuat.';
-            }
-            else {
-                $message = 'Akun pengguna ' . $data['username'] . ' telah diperbarui.';
+                $message = 'Akun pengguna <b>' . $data['username'] . '</b> telah dibuat.';
+            } else {
+                $message = 'Akun pengguna <b>' . $data['username'] . '</b> telah diperbarui.';
             }
 
             $user->save();
@@ -126,8 +117,9 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
-        if (!$user = User::find(Auth::user()->id))
+        if (!$user = User::find(Auth::user()->id)) {
             return redirect('/admin/login');
+        }
 
         if ($request->method() == 'POST') {
             $changedFields = ['fullname'];
@@ -145,7 +137,7 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), $rules, $this->validation_messages);
 
             if (!Hash::check($request->current_password, $user->password)) {
-                $validator->errors()->add('current_password', 'Password anda salah.');   
+                $validator->errors()->add('current_password', 'Password anda salah.');
                 return redirect()->back()->withInput()->withErrors($validator);
             }
 
@@ -165,17 +157,27 @@ class UserController extends Controller
 
     public function delete(Request $request, $id)
     {
+        ensure_user_can_access(AclResource::USER_MANAGEMENT);
+
         $user = User::findOrFail($id);
 
-        if ($user->username == 'admin')
+        if ($user->username == 'admin') {
             return redirect('admin/user')->with('error', 'Akun <b>' . e($user->username) . '</b> tidak boleh dihapus.');
-        else if ($user->id == Auth::user()->id)
+        } else if ($user->id == Auth::user()->id) {
             return redirect('admin/user')->with('error', 'Anda tidak dapat menghapus akun sendiri.');
+        }
 
         if ($request->method() == 'POST') {
-            $user->delete();
-            UserActivity::log(UserActivity::USER_MANAGEMENT, 'Hapus Pengguna', 'Akun pengguna ' . e($user->username) . ' telah dihapus.');
-            return redirect('admin/user')->with('info', 'Akun <b>' . e($user->username) . '</b> telah dihapus.');
+            try {
+                $user->delete();
+                $message = 'Akun pengguna <b>' . e($user->username) . '</b> telah dihapus.';
+                UserActivity::log(UserActivity::USER_MANAGEMENT, 'Hapus Pengguna', $message);
+            } catch (QueryException $ex) {
+                $message = 'Grup pengguna <b>' . e($user->username) . '</b> tidak dapat dihapus. ' .
+                    'Grup sudah digunakan atau terdapat kesalahan pada sistem.';
+            }
+
+            return redirect('admin/user')->with('info', $message);
         }
 
         return view('admin.user.delete', compact('user'));

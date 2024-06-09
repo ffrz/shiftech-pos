@@ -7,6 +7,7 @@ use App\Models\AclResource;
 use App\Models\UserActivity;
 use App\Models\UserGroup;
 use App\Models\UserGroupAccess;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -80,16 +81,22 @@ class UserGroupController extends Controller
 
     public function delete($id)
     {
-        if (!$item = UserGroup::find($id))
-            $message = 'Grup pengguna tidak ditemukan.';
-        else if ($item->delete($id)) {
+        $item = UserGroup::findOrFail($id);
+        $message = '';
+
+        try {
+            $item->delete($id);
             $message = 'Grup pengguna ' . e($item->name) . ' telah dihapus.';
+
             UserActivity::log(
                 UserActivity::USER_GROUP_MANAGEMENT,
                 'Hapus Grup Pengguna',
                 $message,
                 $item->toArray()
             );
+        } catch (QueryException $ex) {
+            $message = 'Grup pengguna <b>' . e($item->name) . '</b> tidak dapat dihapus. ' .
+                'Grup sudah digunakan atau terdapat kesalahan pada sistem.';
         }
 
         return redirect('admin/user-group')->with('info', $message);

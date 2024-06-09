@@ -6,7 +6,7 @@
 
 @section('right-menu')
   <li class="nav-item">
-    <a href="<?= url('/admin/user-group/edit/0') ?>" class="btn plus-btn btn-primary mr-2" title="Baru"><i
+    <a class="btn plus-btn btn-primary mr-2" href="{{ url('/admin/user-group/edit/0') }}" title="Baru"><i
         class="fa fa-plus"></i></a>
   </li>
 @endSection
@@ -31,16 +31,17 @@
                   <td>{{ $item->description }}</td>
                   <td class="text-center">
                     <div class="btn-group">
-                      <a href="<?= url("/admin/user-group/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
-                          class="fa fa-edit"></i></a>
-                      <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                        href="<?= url("/admin/user-group/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
-                          class="fa fa-trash"></i></a>
+                      <a class="btn btn-default btn-sm" href="{{ url("/admin/user-group/edit/$item->id") }}">
+                        <i class="fa fa-edit"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm" href="{{ url("/admin/user-group/delete/$item->id") }}" onclick="return confirm('Anda yakin akan menghapus rekaman ini?')">
+                        <i class="fa fa-trash"></i>
+                      </a>
                     </div>
                   </td>
                 </tr>
               @empty
-              <tr class="empty">
+                <tr class="empty">
                   <td colspan="3">Belum ada rekaman</td>
                 </tr>
               @endforelse

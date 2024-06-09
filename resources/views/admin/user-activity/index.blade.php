@@ -12,7 +12,7 @@
           <div class="col-md-6">
             <div class="form-group form-inline">
               <label class="mr-2" for="user_id">Pengguna:</label>
-              <select class="form-control custom-select" name="user_id" id="user_id" onchange="this.form.submit();">
+              <select class="form-control custom-select" id="user_id" name="user_id" onchange="this.form.submit();">
                 <option value="">Semua</option>
                 @foreach ($users as $user)
                   <option value="{{ $user->id }}" {{ $filter['user_id'] == $user->id ? 'selected' : '' }}>
@@ -20,7 +20,7 @@
                 @endforeach
               </select>
               <label class="ml-4 mr-2" for="type">Tipe:</label>
-              <select class="form-control custom-select" name="type" id="type" onchange="this.form.submit();">
+              <select class="form-control custom-select" id="type" name="type" onchange="this.form.submit();">
                 <option value="">Semua</option>
                 @foreach ($types as $type => $label)
                   <option value="{{ $type }}" {{ $filter['type'] == $type ? 'selected' : '' }}>
@@ -32,16 +32,14 @@
           <div class="col-md-6 d-flex justify-content-end">
             <div class="form-group form-inline">
               <label class="mr-2" for="search">Cari:</label>
-              <input type="text" class="form-control" name="search" id="search" value="{{ $filter['search'] }}"
-                placeholder="Cari deskripsi">
+              <input class="form-control" id="search" name="search" type="text" value="{{ $filter['search'] }}" placeholder="Cari deskripsi">
             </div>
           </div>
         </div>
       </form>
       <div class="row">
         <div class="col-md-12">
-          <form method="POST" action="{{ url('admin/user-activity/delete') }}"
-            onsubmit="return confirm('Hapus rekaman?')">
+          <form method="POST" action="{{ url('admin/user-activity/delete') }}" onsubmit="return confirm('Hapus rekaman?')">
             @csrf
             <div class="table-responsive">
               <table class="table table-bordered table-striped table-sm">
@@ -67,16 +65,14 @@
                       <td>{{ $item->description }}</td>
                       <td class="text-center">
                         <div class="btn-group">
-                          <input type="hidden" name="id" value="{{ $item->id }}">
-                          <a href="{{ url("/admin/user-activity/show/$item->id") }}" class="btn btn-default btn-sm"
-                            title="Lihat"><i class="fa fa-eye"></i></a>
-                          <button href="{{ url('/admin/user-activity/delete') }}" class="btn btn-danger btn-sm"
-                            type="submit" title="Hapus"><i class="fa fa-trash"></i></button>
+                          <input name="id" type="hidden" value="{{ $item->id }}">
+                          <a class="btn btn-default btn-sm" href="{{ url("/admin/user-activity/show/$item->id") }}" title="Lihat"><i class="fa fa-eye"></i></a>
+                          <button class="btn btn-danger btn-sm" type="submit" href="{{ url('/admin/user-activity/delete') }}" title="Hapus"><i class="fa fa-trash"></i></button>
                         </div>
                       </td>
                     </tr>
                   @empty
-                  <tr class="empty">
+                    <tr class="empty">
                       <td colspan="7">Belum ada rekaman</td>
                     </tr>
                   @endforelse
