@@ -1,12 +1,12 @@
 @php use App\Models\Setting; @endphp
 <!DOCTYPE html>
-<html lang="en" class="page-a4">
+<html class="page-a4" lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ $title }}</title>
-  <link rel="stylesheet" href="/assets/css/print.css">
+  <link href="/assets/css/print.css" rel="stylesheet">
   @vite([])
 </head>
 

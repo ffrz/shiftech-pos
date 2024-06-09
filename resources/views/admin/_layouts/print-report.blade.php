@@ -6,10 +6,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ $title }}</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="/dist/css/adminlte.min.css?v=3.2.0">
-  <link rel="stylesheet" href="/assets/css/report.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" rel="stylesheet">
+  <link href="/plugins/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/dist/css/adminlte.min.css?v=3.2.0" rel="stylesheet">
+  <link href="/assets/css/report.css" rel="stylesheet">
   @vite([])
 </head>
 
@@ -27,7 +27,7 @@
     </section>
   </div>
   <script>
-    //window.addEventListener("load", window.print());
+    window.addEventListener("load", window.print());
   </script>
 </body>
 

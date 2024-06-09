@@ -37,11 +37,11 @@
         <li class="nav-item">
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        @if (!empty($back_button_link))
+        {{-- @if (!empty($back_button_link))
           <li class="nav-item">
             <a class="nav-link" href="{{ $back_button_link }}" class="btn"><i class="fas fa-arrow-left"></i></a>
           </li>
-        @endif
+        @endif --}}
         <li class="nav-link">
           <h5 style="cursor:default;">
             @if (!empty($title))
