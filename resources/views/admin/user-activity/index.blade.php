@@ -4,43 +4,77 @@
     'nav_active' => 'user-activity',
 ])
 
+@section('right-menu')
+  <li class="nav-item">
+    <a href="{{ url('/admin/user-activity/clear') }}" class="btn plus-btn btn-default mr-2" title="Hapus"><i
+        class="fa fa-trash mr-2"></i> Bersihkan</a>
+    <button class="btn btn-default plus-btn mr-2" data-toggle="modal" data-target="#filter-dialog" title="Saring"><i
+        class="fa fa-filter"></i>
+      @if ($filter_active)
+        <span class="badge badge-warning">!</span>
+      @endif
+    </button>
+  </li>
+@endsection
+
 @section('content')
-  <div class="card card-light">
-    <div class="card-body">
-      <form action="?" method="GET">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group form-inline">
-              <label class="mr-2" for="user_id">Pengguna:</label>
-              <select class="form-control custom-select" id="user_id" name="user_id" onchange="this.form.submit();">
-                <option value="">Semua</option>
-                @foreach ($users as $user)
-                  <option value="{{ $user->id }}" {{ $filter['user_id'] == $user->id ? 'selected' : '' }}>
-                    {{ $user->username }}</option>
-                @endforeach
-              </select>
-              <label class="ml-4 mr-2" for="type">Tipe:</label>
-              <select class="form-control custom-select" id="type" name="type" onchange="this.form.submit();">
-                <option value="">Semua</option>
-                @foreach ($types as $type => $label)
-                  <option value="{{ $type }}" {{ $filter['type'] == $type ? 'selected' : '' }}>
-                    {{ $label }}</option>
-                @endforeach
-              </select>
+  <form action="?" method="GET">
+    <div class="modal fade" id="filter-dialog">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Penyaringan</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="user_id" class="col-form-label col-sm-4">Pengguna:</label>
+              <div class="col-sm-8">
+                <select class="form-control custom-select select2" id="user_id" name="user_id">
+                  <option value="">Semua</option>
+                  @foreach ($users as $user)
+                    <option value="{{ $user->id }}" {{ $filter['user_id'] == $user->id ? 'selected' : '' }}>
+                      {{ $user->username }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="type" class="col-form-label col-sm-4">Tipe:</label>
+              <div class="col-sm-8">
+                <select class="form-control custom-select select2" id="type" name="type">
+                  <option value="">Semua</option>
+                  @foreach ($types as $type => $label)
+                    <option value="{{ $type }}" {{ $filter['type'] == $type ? 'selected' : '' }}>
+                      {{ $label }}</option>
+                  @endforeach
+                </select>
+              </div>
             </div>
           </div>
-          <div class="col-md-6 d-flex justify-content-end">
+          <div class="modal-footer justify-content-center">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-check mr-2"></i> Terapkan</button>
+            <button type="submit" name="action" value="reset" class="btn btn-default"><i
+                class="fa fa-filter-circle-xmark"></i> Reset Filter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-light">
+      <div class="card-body">
+        <div class="row">
+          <div class="col d-flex justify-content-end">
             <div class="form-group form-inline">
               <label class="mr-2" for="search">Cari:</label>
-              <input class="form-control" id="search" name="search" type="text" value="{{ $filter['search'] }}" placeholder="Cari deskripsi">
+              <input class="form-control" id="search" name="search" type="text" value="{{ $filter['search'] }}"
+                placeholder="Cari deskripsi">
             </div>
           </div>
         </div>
-      </form>
-      <div class="row">
-        <div class="col-md-12">
-          <form method="POST" action="{{ url('admin/user-activity/delete') }}" onsubmit="return confirm('Hapus rekaman?')">
-            @csrf
+        <div class="row">
+          <div class="col-md-12">
             <div class="table-responsive">
               <table class="table table-bordered table-striped table-sm">
                 <thead>
@@ -66,8 +100,10 @@
                       <td class="text-center">
                         <div class="btn-group">
                           <input name="id" type="hidden" value="{{ $item->id }}">
-                          <a class="btn btn-default btn-sm" href="{{ url("/admin/user-activity/show/$item->id") }}" title="Lihat"><i class="fa fa-eye"></i></a>
-                          <button class="btn btn-danger btn-sm" type="submit" href="{{ url('/admin/user-activity/delete') }}" title="Hapus"><i class="fa fa-trash"></i></button>
+                          <a class="btn btn-default btn-sm" href="{{ url("/admin/user-activity/show/$item->id") }}"
+                            title="Lihat"><i class="fa fa-eye"></i></a>
+                          <a class="btn btn-danger btn-sm" type="submit" href="{{ url('/admin/user-activity/delete') }}"
+                            title="Hapus"><i class="fa fa-trash"></i></a>
                         </div>
                       </td>
                     </tr>
@@ -79,10 +115,18 @@
                 </tbody>
               </table>
             </div>
-          </form>
+          </div>
         </div>
+        @include('admin._components.paginator', ['items' => $items])
       </div>
-      @include('admin._components.paginator', ['items' => $items])
     </div>
-  </div>
+  </form>
+@endsection
+
+@section('footscript')
+  <script>
+    $(document).ready(function() {
+      $('.select2').select2();
+    })
+  </script>
 @endsection

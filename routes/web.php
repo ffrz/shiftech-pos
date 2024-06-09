@@ -136,6 +136,7 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
         Route::get('', 'index');
         Route::get('show/{id}', 'show');
         Route::post('delete', 'delete');
+        Route::match(['get', 'post'],'clear', 'clear');
     });
 
     Route::controller(StockUpdateController::class)->prefix('stock-update')->group(function () {
