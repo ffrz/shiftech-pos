@@ -11,7 +11,7 @@ use App\Models\Product;
   <li class="nav-item">
     <a href="{{ url('/admin/product/edit/0') }}" class="btn plus-btn btn-primary mr-2" title="Baru"><i
         class="fa fa-plus"></i></a>
-    <button class="btn btn-default plus-btn mr-2" data-toggle="modal" data-target="#modal-sm" title="Saring"><i
+    <button class="btn btn-default plus-btn mr-2" data-toggle="modal" data-target="#filter-dialog" title="Saring"><i
         class="fa fa-filter"></i>
       @if ($filter_active)
         <span class="badge badge-warning">!</span>
@@ -22,7 +22,7 @@ use App\Models\Product;
 
 @section('content')
   <form method="GET" class="form-horizontal">
-    <div class="modal fade" id="modal-sm">
+    <div class="modal fade" id="filter-dialog">
       <div class="modal-dialog modal-md">
         <div class="modal-content">
           <div class="modal-header">
@@ -100,10 +100,8 @@ use App\Models\Product;
         </div>
       </div>
     </div>
-  </form>
-  <div class="card card-light">
-    <div class="card-body">
-      <form action="?">
+    <div class="card card-light">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-6">
           </div>
@@ -115,71 +113,71 @@ use App\Models\Product;
             </div>
           </div>
         </div>
-      </form>
-      <div class="row mt-3">
-        <div class="col-md-12">
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>Kode</th>
-                  <th>Nama</th>
-                  <th>Kategori</th>
-                  <th>Stok</th>
-                  <th>Satuan</th>
-                  <th>Harga Beli</th>
-                  <th>Harga Jual</th>
-                  <th style="width:5%">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                @forelse ($items as $item)
-                  @php $is_at_low_stock = $item->stock < $item->minimum_stock @endphp
-                  <tr class="{{ $filter['active'] == -1 && !$item->active ? 'table-danger' : '' }}">
-                    <td>{{ $item->idFormatted() }}</td>
-                    <td>{{ $item->code }}</td>
-                    <td>{!! $item->category ? e($item->category->name) : '<i>Tanpa Kategori</i>' !!}</td>
-                    <td class="text-right {{ $is_at_low_stock ? 'text-danger' : '' }}">
-                      {{ format_number($item->stock) }}
-                    </td>
-                    <td>{{ $item->uom }}</td>
-                    <td class="text-right">{{ format_number($item->cost) }}</td>
-                    <td class="text-right">{{ format_number($item->price) }}</td>
-                    <td class="text-center">
-                      <div class="btn-group">
-                        @if (!$item->deleted_at)
-                          <a href="<?= url("/admin/product/detail/$item->id") ?>" class="btn btn-default btn-sm"><i
-                              class="fa fa-eye" title="Rincian"></i></a>
-                          <a href="<?= url("/admin/product/duplicate/$item->id") ?>" class="btn btn-default btn-sm"><i
-                              class="fa fa-copy" title="Duplikat"></i></a>
-                          <a href="<?= url("/admin/product/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
-                              class="fa fa-edit"></i></a>
-                          <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                            href="<?= url("/admin/product/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
-                              class="fa fa-trash"></i></a>
-                        @else
-                          <a onclick="return confirm('Anda yakin akan memulihkan rekaman ini?')"
-                            href="<?= url("/admin/product/restore/$item->id") ?>" class="btn btn-warning btn-sm"><i
-                              class="fa fa-trash-arrow-up" title="Pulihkan"></i></a>
-                          <a onclick="return confirm('Anda yakin akan menghapus rekaman ini selamanya?')"
-                            href="<?= url("/admin/product/delete/$item->id?force=true") ?>"
-                            class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
-                        @endif
-                      </div>
-                    </td>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th>Kategori</th>
+                    <th>Stok</th>
+                    <th>Satuan</th>
+                    <th>Harga Beli</th>
+                    <th>Harga Jual</th>
+                    <th style="width:5%">Aksi</th>
                   </tr>
-                @empty
-                  <tr class="empty">
-                    <td colspan="8">Tidak ada rekaman yang dapat
-                      ditampilkan.</td>
-                  </tr>
-                @endforelse
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  @forelse ($items as $item)
+                    @php $is_at_low_stock = $item->stock < $item->minimum_stock @endphp
+                    <tr class="{{ $filter['active'] == -1 && !$item->active ? 'table-danger' : '' }}">
+                      <td>{{ $item->idFormatted() }}</td>
+                      <td>{{ $item->code }}</td>
+                      <td>{!! $item->category ? e($item->category->name) : '<i>Tanpa Kategori</i>' !!}</td>
+                      <td class="text-right {{ $is_at_low_stock ? 'text-danger' : '' }}">
+                        {{ format_number($item->stock) }}
+                      </td>
+                      <td>{{ $item->uom }}</td>
+                      <td class="text-right">{{ format_number($item->cost) }}</td>
+                      <td class="text-right">{{ format_number($item->price) }}</td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          @if (!$item->deleted_at)
+                            <a href="<?= url("/admin/product/detail/$item->id") ?>" class="btn btn-default btn-sm"><i
+                                class="fa fa-eye" title="Rincian"></i></a>
+                            <a href="<?= url("/admin/product/duplicate/$item->id") ?>" class="btn btn-default btn-sm"><i
+                                class="fa fa-copy" title="Duplikat"></i></a>
+                            <a href="<?= url("/admin/product/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
+                                class="fa fa-edit"></i></a>
+                            <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
+                              href="<?= url("/admin/product/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
+                                class="fa fa-trash"></i></a>
+                          @else
+                            <a onclick="return confirm('Anda yakin akan memulihkan rekaman ini?')"
+                              href="<?= url("/admin/product/restore/$item->id") ?>" class="btn btn-warning btn-sm"><i
+                                class="fa fa-trash-arrow-up" title="Pulihkan"></i></a>
+                            <a onclick="return confirm('Anda yakin akan menghapus rekaman ini selamanya?')"
+                              href="<?= url("/admin/product/delete/$item->id?force=true") ?>"
+                              class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                          @endif
+                        </div>
+                      </td>
+                    </tr>
+                  @empty
+                    <tr class="empty">
+                      <td colspan="8">Tidak ada rekaman yang dapat
+                        ditampilkan.</td>
+                    </tr>
+                  @endforelse
+                </tbody>
+              </table>
+            </div>
+            @include('admin._components.paginator', ['items' => $items])
           </div>
-          @include('admin._components.paginator', ['items' => $items])
         </div>
       </div>
     </div>
-  </div>
+  </form>
 @endSection
