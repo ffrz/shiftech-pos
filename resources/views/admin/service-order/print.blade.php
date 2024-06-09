@@ -2,6 +2,7 @@
   use App\Models\Setting;
   $title = 'Kartu Servis: #' . $item->idFormatted();
 @endphp
+
 @extends('admin._layouts.print-service-note', ['title' => $title])
 
 @section('content')

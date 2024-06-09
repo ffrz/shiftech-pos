@@ -20,26 +20,39 @@ class ServiceOrderController extends Controller
     public function index(Request $request)
     {
         ensure_user_can_access(AclResource::SERVICE_ORDER_LIST);
+        $filter_active = false;
 
         $filter = [
             'order_status'   => (int)$request->get('order_status',   $request->session()->get('service_order.filter.order_status',    0)),
             'service_status' => (int)$request->get('service_status', $request->session()->get('service_order.filter.service_status', -1)),
             'payment_status' => (int)$request->get('payment_status', $request->session()->get('service_order.filter.payment_status', -1)),
+            'pickup_status' => (int)$request->get('pickup_status', $request->session()->get('service_order.filter.pickup_status', 0)),
             'search' => $request->get('search', ''),
         ];
+
+        if ($request->get('action') == 'reset') {
+            $filter['order_status'] = -1;
+            $filter['service_status'] = -1;
+            $filter['payment_status'] = -1;
+            $filter['pickup_status'] = -1;
+            $filter_active = false;
+        }
 
         $q = ServiceOrder::query();
 
         if ($filter['order_status'] != -1) {
             $q->where('order_status', '=', $filter['order_status']);
+            $filter_active = true;
         }
 
         if ($filter['service_status'] != -1) {
             $q->where('service_status', '=', $filter['service_status']);
+            $filter_active = true;
         }
 
         if ($filter['payment_status'] != -1) {
             $q->where('payment_status', '=', $filter['payment_status']);
+            $filter_active = true;
         }
 
         if (!empty($filter['search'])) {
@@ -50,15 +63,22 @@ class ServiceOrderController extends Controller
                 ->orWhere('device_sn', 'like', '%' . $filter['search'] . '%');
         }
 
-        $q->orderBy('id', 'desc');
+        if ($filter['pickup_status'] == 0) {
+            $q->whereRaw('date_picked is null');
+            $filter_active = true;
+        } else if ($filter['pickup_status'] == 1) {
+            $q->whereRaw('date_picked is not null');
+            $filter_active = true;
+        }
 
-        $items = $q->paginate(10);
+        $items = $q->orderBy('id', 'desc')->paginate(10);
 
         $request->session()->put('service_order.filter.order_status', $filter['order_status']);
         $request->session()->put('service_order.filter.service_status', $filter['service_status']);
         $request->session()->put('service_order.filter.payment_status', $filter['payment_status']);
+        $request->session()->put('service_order.filter.pickup_status', $filter['pickup_status']);
 
-        return view('admin.service-order.index', compact('items', 'filter'));
+        return view('admin.service-order.index', compact('items', 'filter', 'filter_active'));
     }
 
     public function action(Request $request, $id)
@@ -69,8 +89,7 @@ class ServiceOrderController extends Controller
         $action = $request->get('action');
         if ($action == 'taken') {
             $item->date_picked = current_date();
-        } 
-        else if ($action == 'service_receive') {
+        } else if ($action == 'service_receive') {
             $item->service_status = ServiceOrder::SERVICE_STATUS_NOT_YET_CHECKED;
             $item->date_received = current_date();
             $item->date_checked = null;
@@ -100,7 +119,7 @@ class ServiceOrderController extends Controller
         } else if ($action == 'activate_order') {
             $item->order_status = ServiceOrder::ORDER_STATUS_ACTIVE;
             $item->closed_datetime = null;
-            $item->closed_by_uid = null;            
+            $item->closed_by_uid = null;
         } else if ($action == 'complete_order') {
             $item->order_status = ServiceOrder::ORDER_STATUS_COMPLETED;
             $item->closed_datetime = current_datetime();

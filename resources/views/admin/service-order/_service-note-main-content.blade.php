@@ -30,9 +30,7 @@
         <tr>
           <td>Catatan</td>
           <td>:</td>
-          <td>
-            {{ $item->notes }}
-          </td>
+          <td>{!! nl2br(e($item->notes)) !!}</td>
         </tr>
       </table>
     </td>
