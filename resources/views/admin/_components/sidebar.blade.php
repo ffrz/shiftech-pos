@@ -1,9 +1,9 @@
 @php
-use App\Models\AclResource;
+  use App\Models\AclResource;
 
-if (!isset($menu_active)) {
-    $menu_active = null;
-}
+  if (!isset($menu_active)) {
+      $menu_active = null;
+  }
 @endphp
 
 <aside class="main-sidebar sidebar-light-primary elevation-4">
@@ -201,6 +201,32 @@ if (!isset($menu_active)) {
           </li>
         @endif
         {{-- End of Expense Menu --}}
+
+        {{-- @if (Auth::user()->canAccess(AclResource::DEBT_MENU)) --}}
+        <li class="nav-item {{ $menu_active == 'debt' ? 'menu-open' : '' }}">
+          <a class="nav-link {{ $menu_active == 'debt' ? 'active' : '' }}" href="#">
+            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+            <p>
+              Utan Piutang
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a class="nav-link {{ $nav_active == 'customer_debt' ? 'active' : '' }}" href="{{ url('/admin/debt/customer') }}">
+                <i class="nav-icon fas fa-file-waveform"></i>
+                <p>Piutang Pelanggan</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{ $nav_active == 'supplier_debt' ? 'active' : '' }}" href="{{ url('/admin/debt/supplier') }}">
+                <i class="nav-icon fas fa-file-waveform"></i>
+                <p>Utang Pemasok</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        {{-- @endif --}}
 
         {{-- Report Menu --}}
         @if (Auth::user()->canAccess(AclResource::REPORT_MENU))
