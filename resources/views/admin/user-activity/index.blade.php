@@ -102,8 +102,8 @@
                           <input name="id" type="hidden" value="{{ $item->id }}">
                           <a class="btn btn-default btn-sm" href="{{ url("/admin/user-activity/show/$item->id") }}"
                             title="Lihat"><i class="fa fa-eye"></i></a>
-                          <a class="btn btn-danger btn-sm" type="submit" href="{{ url('/admin/user-activity/delete') }}"
-                            title="Hapus"><i class="fa fa-trash"></i></a>
+                          <a class="btn btn-danger btn-sm" href="{{ url("/admin/user-activity/delete/$item->id") }}"
+                            title="Hapus" onclick="return confirm('Hapus rekaman?')"><i class="fa fa-trash"></i></a>
                         </div>
                       </td>
                     </tr>

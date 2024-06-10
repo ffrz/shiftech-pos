@@ -135,7 +135,7 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
     Route::controller(UserActivityController::class)->prefix('user-activity')->group(function () {
         Route::get('', 'index');
         Route::get('show/{id}', 'show');
-        Route::post('delete', 'delete');
+        Route::get('delete/{id}', 'delete');
         Route::match(['get', 'post'],'clear', 'clear');
     });
 

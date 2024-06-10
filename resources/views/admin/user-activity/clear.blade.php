@@ -31,9 +31,16 @@
                 @endforeach
               </select>
             </div>
-            {{-- <div class="form-group">
-            <label for="date_range">Tanggal</label>
-          </div> --}}
+            <div class="form-group">
+              <label for="time">Waktu Aktifitas</label>
+              <select class="form-control custom-select select2" id="time" name="time">
+                <option value="all">Semua Waktu</option>
+                <option value="30d">30 hari terakhir</option>
+                <option value="7d">7 hari terakhir</option>
+                <option value="24h">24 jam terakhir</option>
+                <option value="1h">1 jam terakhir</option>
+              </select>
+            </div>
           </div>
           <div class="card-footer">
             <button type="submit" class="btn btn-danger">Bersihkan</button>
@@ -52,7 +59,6 @@
           e.preventDefault();
           return false;
         }
-
         return true;
       });
     });
