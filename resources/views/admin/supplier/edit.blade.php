@@ -1,10 +1,14 @@
-<?php $title = ($item->id ? 'Edit' : 'Tambah') . ' Pemasok'; ?>
+@php
+  $title = ($item->id ? 'Edit' : 'Tambah') . ' Pemasok';
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => $title,
-    'menu_active' => 'inventory',
+    'menu_active' => 'purchasing',
     'nav_active' => 'supplier',
     'form_action' => url('admin/supplier/edit/' . (int) $item->id),
 ])
+
 @section('right-menu')
   <li class="nav-item">
     <button type="submit" class="btn btn-primary mr-1"><i class="fas fa-save mr-1"></i> Simpan</button>
@@ -12,6 +16,7 @@
         class="fas fa-cancel mr-1"></i>Batal</a>
   </li>
 @endSection
+
 @section('content')
   <div class="row">
     <div class="col-lg-5">

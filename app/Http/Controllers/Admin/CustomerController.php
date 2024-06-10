@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\AclResource;
 use App\Models\Customer;
 use App\Models\Party;
+use App\Models\ServiceOrder;
+use App\Models\StockUpdate;
 use App\Models\UserActivity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
@@ -108,6 +111,44 @@ class CustomerController extends Controller
     public function detail(Request $request, $id)
     {
         $item = Customer::findOrFail($id);
-        return view('admin.customer.detail', compact('item'));
+
+        $item->total_sales = DB::select('select ifnull(abs(sum(total)), 0) as sum from stock_updates where type=:type and status=:status and party_id=:party_id', [
+            'type' => StockUpdate::TYPE_SALES_ORDER,
+            'status' => StockUpdate::STATUS_COMPLETED,
+            'party_id' => $item->id,
+        ])[0]->sum;
+
+        $item->sales_count = DB::select('select ifnull(count(0), 0) as count from stock_updates where type=:type and status=:status and party_id=:party_id', [
+            'type' => StockUpdate::TYPE_SALES_ORDER,
+            'status' => StockUpdate::STATUS_COMPLETED,
+            'party_id' => $item->id,
+        ])[0]->count;
+
+        $item->total_profit = DB::select('select ifnull(abs(sum(total-total_cost)), 0) as sum from stock_updates where type=:type and status=:status and party_id=:party_id', [
+            'type' => StockUpdate::TYPE_SALES_ORDER,
+            'status' => StockUpdate::STATUS_COMPLETED,
+            'party_id' => $item->id,
+        ])[0]->sum;
+
+        $item->total_receivable = DB::select('select ifnull(abs(sum(total_receivable)), 0) as sum from stock_updates where type=:type and status=:status and party_id=:party_id', [
+            'type' => StockUpdate::TYPE_SALES_ORDER,
+            'status' => StockUpdate::STATUS_COMPLETED,
+            'party_id' => $item->id,
+        ])[0]->sum;
+
+        $item->service_count = DB::select('select ifnull(count(0), 0) as count from service_orders where customer_id=:customer_id', [
+            'customer_id' => $item->id,
+        ])[0]->count;
+
+        $sales = StockUpdate::where('party_id', '=', $item->id)
+            ->where('status', '<>', StockUpdate::STATUS_OPEN)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        $services = ServiceOrder::where('customer_id', '=', $item->id)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return view('admin.customer.detail', compact('item', 'sales', 'services'));
     }
 }

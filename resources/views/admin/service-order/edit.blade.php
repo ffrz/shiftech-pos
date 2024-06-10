@@ -8,6 +8,7 @@
     'nav_active' => 'service-order',
     'form_action' => url('admin/service-order/edit/' . (int) $item->id),
 ])
+
 @section('right-menu')
   <li class="nav-item">
     <button class="btn btn-primary mr-1" type="submit"><i class="fas fa-save mr-1"></i> Simpan</button>
@@ -15,6 +16,7 @@
         class="fas fa-cancel mr-1"></i>Batal</a>
   </li>
 @endSection
+
 @section('content')
   <input name="id" type="hidden" value="{{ $item->id }}">
   <div class="row justify-content-start">

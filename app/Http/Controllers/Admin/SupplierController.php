@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AclResource;
 use App\Models\Party;
+use App\Models\ServiceOrder;
+use App\Models\StockUpdate;
 use App\Models\Supplier;
 use App\Models\UserActivity;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
@@ -115,7 +118,31 @@ class SupplierController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $item = Supplier::findOrFailed($id);
-        return view('admin.supplier.detail', compact('item'));
+        $item = Supplier::findOrFail($id);
+        
+        $item->total_purchase_order = DB::select('select ifnull(abs(sum(total)), 0) as sum from stock_updates where type=:type and status=:status and party_id=:party_id', [
+            'type' => StockUpdate::TYPE_PURCHASE_ORDER,
+            'status' => StockUpdate::STATUS_COMPLETED,
+            'party_id' => $item->id,
+        ])[0]->sum;
+        
+        $item->purchase_order_count = DB::select('select ifnull(count(0), 0) as count from stock_updates where type=:type and status=:status and party_id=:party_id', [
+            'type' => StockUpdate::TYPE_PURCHASE_ORDER,
+            'status' => StockUpdate::STATUS_COMPLETED,
+            'party_id' => $item->id,
+        ])[0]->count;
+
+        $item->total_receivable = DB::select('select ifnull(abs(sum(total_receivable)), 0) as sum from stock_updates where type=:type and status=:status and party_id=:party_id', [
+            'type' => StockUpdate::TYPE_PURCHASE_ORDER,
+            'status' => StockUpdate::STATUS_COMPLETED,
+            'party_id' => $item->id,
+        ])[0]->sum;
+
+        $sales = StockUpdate::where('party_id', '=', $item->id)
+            ->where('status', '<>', StockUpdate::STATUS_OPEN)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return view('admin.supplier.detail', compact('item', 'sales'));
     }
 }

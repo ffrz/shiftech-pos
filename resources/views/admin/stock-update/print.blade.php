@@ -1,6 +1,7 @@
 @extends('admin._layouts.print-report', [
     'title' => 'Rincian ' . $item->typeFormatted() . ' #' . $item->id2Formatted(),
 ])
+
 @section('content')
   <p class="m-0">Dibuat oleh {{ $item->created_by->username }} pada
     {{ format_datetime($item->created_datetime) }}</p>

@@ -35,7 +35,7 @@
                   <td class="text-right">{{ format_number($item->total_price) }}</td>
                   <td class="text-center">
                     <div class="btn-group">
-                      <a href="<?= url("/admin/stock-update/detail/$item->id") ?>" class="btn btn-default btn-sm"><i
+                      <a href="{{ url("/admin/stock-update/detail/$item->id") }}" class="btn btn-default btn-sm"><i
                           class="fa fa-eye" title="View"></i></a>
                     </div>
                   </td>

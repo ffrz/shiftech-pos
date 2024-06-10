@@ -37,13 +37,14 @@
                     <td>{{ $item->account->name }}</td>
                     <td>{{ $item->category ? $item->category->name : '-Tanpa Kategori-' }}</td>
                     <td>{{ $item->description }}</td>
-                    <td class="text-right {{ $item->amount > 0 ? 'text-success' : 'text-danger' }}">{{ ($item->amount > 0 ? '+' : '') . format_number($item->amount) }}</td>
+                    <td class="text-right {{ $item->amount > 0 ? 'text-success' : 'text-danger' }}">
+                      {{ ($item->amount > 0 ? '+' : '') . format_number($item->amount) }}</td>
                     <td class="text-center">
                       <div class="btn-group">
-                        <a href="<?= url("/admin/cash-transaction/edit/$item->id") ?>" class="btn btn-default btn-sm"><i
+                        <a href="{{ url("/admin/cash-transaction/edit/$item->id") }}" class="btn btn-default btn-sm"><i
                             class="fa fa-edit"></i></a>
                         <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                          href="<?= url("/admin/cash-transaction/delete/$item->id") ?>" class="btn btn-danger btn-sm"><i
+                          href="{{ url("/admin/cash-transaction/delete/$item->id") }}" class="btn btn-danger btn-sm"><i
                             class="fa fa-trash"></i></a>
                       </div>
                     </td>

@@ -1,4 +1,6 @@
-<?php use App\Models\Setting; ?>
+@php
+  use App\Models\Setting;
+@endphp
 
 @extends('admin._layouts.default', [
     'title' => 'Pengaturan',
@@ -61,8 +63,9 @@
               </div>
               <div class="form-group">
                 <label for="company_headline">Headline Usaha</label>
-                <input type="text" class="form-control @error('company_headline') is-invalid @enderror" id="company_headline"
-                  placeholder="Komputer, Laptop, Printer, CCTV, Networking, Software" name="company_headline" value="{{ Setting::value('company.headline', '') }}">
+                <input type="text" class="form-control @error('company_headline') is-invalid @enderror"
+                  id="company_headline" placeholder="Komputer, Laptop, Printer, CCTV, Networking, Software"
+                  name="company_headline" value="{{ Setting::value('company.headline', '') }}">
                 @error('company_headline')
                   <span class="text-danger">
                     {{ $message }}
@@ -91,8 +94,9 @@
               </div>
               <div class="form-group">
                 <label for="company_website">Website</label>
-                <input type="text" class="form-control @error('company_website') is-invalid @enderror" id="company_website"
-                  placeholder="www.perusahaan.com" name="company_website" value="{{ Setting::value('company.website') }}">
+                <input type="text" class="form-control @error('company_website') is-invalid @enderror"
+                  id="company_website" placeholder="www.perusahaan.com" name="company_website"
+                  value="{{ Setting::value('company.website') }}">
                 @error('company_website')
                   <span class="text-danger">
                     {{ $message }}

@@ -1,4 +1,7 @@
-<?php $title = ($item->id ? 'Edit' : 'Tambah') . ' Pelanggan'; ?>
+@php
+  $title = ($item->id ? 'Edit' : 'Tambah') . ' Pelanggan';
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => $title,
     'menu_active' => 'sales',

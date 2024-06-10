@@ -1,11 +1,11 @@
-<?php
+@php
 use App\Models\AclResource;
 
 if (!isset($menu_active)) {
     $menu_active = null;
 }
+@endphp
 
-?>
 <aside class="main-sidebar sidebar-light-primary elevation-4">
   <a class="brand-link" href="{{ url('admin/') }}">
     <img class="brand-image img-circle elevation-3" src="{{ url('dist/img/logo.png') }}" alt="App Logo" style="opacity: .8">

@@ -1,4 +1,7 @@
-<?php $title = ($item->id ? 'Edit' : 'Tambah') . ' Transaksi Keuangan'; ?>
+@php
+  $title = ($item->id ? 'Edit' : 'Tambah') . ' Transaksi Keuangan';
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => $title,
     'menu_active' => 'finance',
@@ -119,6 +122,7 @@
     </div>
   </div>
 @endSection
+
 @section('footscript')
   <script>
     $(document).ready(function() {
