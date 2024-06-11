@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\StockUpdate;
 use App\Models\StockUpdateDetail;
 use App\Models\UserActivity;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -19,14 +20,41 @@ class SalesOrderController extends Controller
 
     public function index(Request $request)
     {
+        $filter_active = false;
+
         $filter = [
-            'status' => (int)$request->get('status', 0),
-            'search' => $request->get('search'),
+            'status'   => (int)$request->get('status', $request->session()->get('sales-order.filter.status', -1)),
+            'datetime' => $request->get('datetime', $request->session()->get('sales-order.filter.datetime', 'today')),
+            'search'   => $request->get('search', ''),
         ];
+
+        if ($request->get('action') == 'reset') {
+            $filter['status'] = -1;
+            $filter['datetime'] = 'today';
+        }
 
         $q = StockUpdate::query();
         if ($filter['status'] != -1) {
+            $filter_active = true;
             $q->where('status', '=', $filter['status']);
+        }
+
+        if ($filter['datetime'] <> 'all') {
+            $filter_active = true;
+            if ($filter['datetime'] == 'today') {
+                $datetime = datetime_range_today();
+            } else if ($filter['datetime'] == 'yesterday') {
+                $datetime = datetime_range_yesterday();
+            } else if ($filter['datetime'] == 'this-week') {
+                $datetime = datetime_range_this_week();
+            } else if ($filter['datetime'] == 'prev-week') {
+                $datetime = datetime_range_previous_week();
+            } else if ($filter['datetime'] == 'this-month') {
+                $datetime = datetime_range_this_month();
+            } else if ($filter['datetime'] == 'prev-month') {
+                $datetime = datetime_range_previous_month();
+            }
+            $q->whereRaw("(datetime between '$datetime[0]' and '$datetime[1]')");
         }
 
         if (!empty($filter['search'])) {
@@ -38,7 +66,10 @@ class SalesOrderController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(10);
 
-        return view('admin.sales-order.index', compact('items', 'filter'));
+        $request->session()->put('sales-order.filter.datetime', $filter['datetime']);
+        $request->session()->put('sales-order.filter.status', $filter['status']);
+
+        return view('admin.sales-order.index', compact('items', 'filter', 'filter_active'));
     }
 
     public function create()
