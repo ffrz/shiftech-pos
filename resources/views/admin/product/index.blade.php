@@ -10,7 +10,7 @@
 
 @section('right-menu')
   <li class="nav-item">
-    <a href="{{ url('/admin/product/edit/0') }}" class="btn plus-btn btn-primary mr-2" title="Baru"><i
+    <a class="btn plus-btn btn-primary mr-2" href="{{ url('/admin/product/edit/0') }}" title="Baru"><i
         class="fa fa-plus"></i></a>
     <button class="btn btn-default plus-btn mr-2" data-toggle="modal" data-target="#filter-dialog" title="Saring"><i
         class="fa fa-filter"></i>
@@ -22,24 +22,23 @@
 @endSection
 
 @section('content')
-  <form method="GET" class="form-horizontal">
+  <form method="GET">
     <div class="modal fade" id="filter-dialog">
       <div class="modal-dialog modal-md">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Penyaringan</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button class="close" data-dismiss="modal" type="button" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="form-group row">
-              <label for="type" class="col-form-label col-sm-4">Jenis Produk:</label>
+              <label class="col-form-label col-sm-4" for="type">Jenis Produk:</label>
               <div class="col-sm-8">
                 <select class="custom-select select2" id="type" name="type">
                   <option value="-1" <?= $filter['type'] == -1 ? 'selected' : '' ?>>Semua</option>
-                  <option value="{{ Product::NON_STOCKED }}"
-                    {{ $filter['type'] == Product::NON_STOCKED ? 'selected' : '' }}>
+                  <option value="{{ Product::NON_STOCKED }}" {{ $filter['type'] == Product::NON_STOCKED ? 'selected' : '' }}>
                     {{ Product::formatType(Product::NON_STOCKED) }}</option>
                   <option value="{{ Product::STOCKED }}" {{ $filter['type'] == Product::STOCKED ? 'selected' : '' }}>
                     {{ Product::formatType(Product::STOCKED) }}</option>
@@ -49,7 +48,7 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="active" class="col-form-label col-sm-4">Akitf / Nonaktif:</label>
+              <label class="col-form-label col-sm-4" for="active">Akitf / Nonaktif:</label>
               <div class="col-sm-8">
                 <select class="custom-select select2" id="active" name="active">
                   <option value="-1" {{ $filter['active'] == -1 ? 'selected' : '' }}>Semua</option>
@@ -59,7 +58,7 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="category_id" class="col-form-label col-sm-4">Kategori:</label>
+              <label class="col-form-label col-sm-4" for="category_id">Kategori:</label>
               <div class="col-sm-8">
                 <select class="custom-select select2" id="category_id" name="category_id">
                   <option value="-1" {{ $filter['category_id'] == -1 ? 'selected' : '' }}>Semua</option>
@@ -71,7 +70,7 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="supplier_id" class="col-form-label col-sm-4">Supplier:</label>
+              <label class="col-form-label col-sm-4" for="supplier_id">Supplier:</label>
               <div class="col-sm-8">
                 <select class="custom-select select2" id="supplier_id" name="supplier_id">
                   <option value="-1" {{ $filter['supplier_id'] == -1 ? 'selected' : '' }}>Semua</option>
@@ -83,7 +82,7 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="stock_status" class="col-form-label col-sm-4">Status Stok:</label>
+              <label class="col-form-label col-sm-4" for="stock_status">Status Stok:</label>
               <div class="col-sm-8">
                 <select class="custom-select select2" id="stock_status" name="stock_status">
                   <option value="-1" {{ $filter['stock_status'] == -1 ? 'selected' : '' }}>Semua</option>
@@ -94,8 +93,8 @@
             </div>
           </div>
           <div class="modal-footer justify-content-center">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-check mr-2"></i> Terapkan</button>
-            <button type="submit" name="action" value="reset" class="btn btn-default"><i
+            <button class="btn btn-primary" type="submit"><i class="fas fa-check mr-2"></i> Terapkan</button>
+            <button class="btn btn-default" name="action" type="submit" value="reset"><i
                 class="fa fa-filter-circle-xmark"></i> Reset Filter</button>
           </div>
         </div>
@@ -109,8 +108,7 @@
           <div class="col-md-6 d-flex justify-content-end">
             <div class="form-group form-inline">
               <label class="mr-2" for="search">Cari:</label>
-              <input type="text" class="form-control" name="search" id="search" value="{{ $filter['search'] }}"
-                placeholder="Cari produk">
+              <input class="form-control" id="search" name="search" type="text" value="{{ $filter['search'] }}" placeholder="Cari produk">
             </div>
           </div>
         </div>
@@ -146,22 +144,21 @@
                       <td class="text-center">
                         <div class="btn-group">
                           @if (!$item->deleted_at)
-                            <a href="{{ url("/admin/product/detail/$item->id") }}" class="btn btn-default btn-sm"><i
+                            <a class="btn btn-default btn-sm" href="{{ url("/admin/product/detail/$item->id") }}"><i
                                 class="fa fa-eye" title="Rincian"></i></a>
-                            <a href="{{ url("/admin/product/duplicate/$item->id") }}" class="btn btn-default btn-sm"><i
+                            <a class="btn btn-default btn-sm" href="{{ url("/admin/product/duplicate/$item->id") }}"><i
                                 class="fa fa-copy" title="Duplikat"></i></a>
-                            <a href="{{ url("/admin/product/edit/$item->id") }}" class="btn btn-default btn-sm"><i
+                            <a class="btn btn-default btn-sm" href="{{ url("/admin/product/edit/$item->id") }}"><i
                                 class="fa fa-edit"></i></a>
-                            <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                              href="{{ url("/admin/product/delete/$item->id") }}" class="btn btn-danger btn-sm"><i
+                            <a class="btn btn-danger btn-sm" href="{{ url("/admin/product/delete/$item->id") }}"
+                              onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"><i
                                 class="fa fa-trash"></i></a>
                           @else
-                            <a onclick="return confirm('Anda yakin akan memulihkan rekaman ini?')"
-                              href="{{ url("/admin/product/restore/$item->id") }}" class="btn btn-warning btn-sm"><i
+                            <a class="btn btn-warning btn-sm" href="{{ url("/admin/product/restore/$item->id") }}"
+                              onclick="return confirm('Anda yakin akan memulihkan rekaman ini?')"><i
                                 class="fa fa-trash-arrow-up" title="Pulihkan"></i></a>
-                            <a onclick="return confirm('Anda yakin akan menghapus rekaman ini selamanya?')"
-                              href="{{ url("/admin/product/delete/$item->id?force=true") }}"
-                              class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-danger btn-sm" href="{{ url("/admin/product/delete/$item->id?force=true") }}"
+                              onclick="return confirm('Anda yakin akan menghapus rekaman ini selamanya?')"><i class="fa fa-trash"></i></a>
                           @endif
                         </div>
                       </td>
