@@ -100,7 +100,7 @@
             <label for="amount">Jumlah</label>
             <input type="text" class="form-control col-md-5 text-right @error('amount') is-invalid @enderror"
               id="amount" placeholder="Jumlah pengeluaran" name="amount"
-              value="{{ format_number(old('amount', $item->amount)) }}">
+              value="{{ old('amount', format_number($item->amount)) }}">
             @error('amount')
               <span class="text-danger">
                 {{ $message }}

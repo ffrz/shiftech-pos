@@ -1,4 +1,4 @@
-<form id="category-form" method="POST" action="{{ url('admin/ajax/add-product-category') }}">
+<form id="category-form" method="POST" action="{{ url('admin/ajax/add-expense-category') }}">
   @csrf
   <div class="modal fade" id="category-dialog">
     <div class="modal-dialog modal-md">
