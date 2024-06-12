@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CashTransactionCategory;
 use App\Models\ExpenseCategory;
 use App\Models\Party;
 use App\Models\ProductCategory;
@@ -25,6 +26,17 @@ class AjaxController extends Controller
     public function addExpenseCategory(Request $request)
     {
         $category = new ExpenseCategory($request->all());
+        $category->save();
+        return response()->json([
+            'status' => 'success',
+            'data' => $category,
+            'message' => 'Kategori baru telah ditambahkan.'
+        ], 200);
+    }
+
+    public function addCashTransactionCategory(Request $request)
+    {
+        $category = new CashTransactionCategory($request->all());
         $category->save();
         return response()->json([
             'status' => 'success',

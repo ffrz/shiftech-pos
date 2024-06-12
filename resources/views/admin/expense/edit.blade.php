@@ -32,9 +32,11 @@
             @enderror
           </div>
           <div class="form-group">
-            <label for="category_id">Kategori <button class="btn btn-sm btn-default plus-btn" data-toggle="modal" data-target="#category-dialog" type="button" title="Tambah"><i
-                  class="fa fa-plus"></i>
-              </button></label>
+            <label for="category_id">Kategori
+              <button class="btn btn-sm btn-default plus-btn" data-toggle="modal" data-target="#category-dialog" type="button" title="Tambah">
+                <i class="fa fa-plus"></i>
+              </button>
+            </label>
             <select class="custom-select select2 @error('category_id') is-invalid @enderror" id="category_id" name="category_id">
               <option value="" {{ !$item->category_id ? 'selected' : '' }}>-- Pilih Kategori --</option>
               @foreach ($categories as $category)

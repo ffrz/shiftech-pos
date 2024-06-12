@@ -191,6 +191,7 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
     Route::controller(AjaxController::class)->prefix('ajax')->group(function() {
         Route::post('add-expense-category', 'addExpenseCategory');
         Route::post('add-product-category', 'addProductCategory');
+        Route::post('add-cash-transaction-category', 'addCashTransactionCategory');
         Route::post('add-supplier', 'addSupplier');
     });
 });

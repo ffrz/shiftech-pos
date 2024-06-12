@@ -51,7 +51,7 @@
                   </tr>
                 @empty
                   <tr class="empty">
-                    <td colspan="3">Tidak ada rekaman untuk ditampilkan.</td>
+                    <td colspan="7">Tidak ada rekaman untuk ditampilkan.</td>
                   </tr>
                 @endforelse
               </tbody>

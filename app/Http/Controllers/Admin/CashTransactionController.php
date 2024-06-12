@@ -92,7 +92,7 @@ class CashTransactionController extends Controller
 
             return redirect('admin/cash-transaction')->with('info', 'Kategori transaksi telah disimpan.');
         }
-        $categories = CashTransactionCategory::orderBy('id', 'asc');
+        $categories = CashTransactionCategory::orderBy('id', 'asc')->get();
         $accounts = CashAccount::where('active', '=', 1)->orderBy('name', 'asc')->get();
         return view('admin.cash-transaction.edit', compact('item', 'categories', 'accounts'));
     }
