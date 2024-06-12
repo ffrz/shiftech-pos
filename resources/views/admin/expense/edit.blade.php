@@ -91,6 +91,9 @@
       allowMinus: false
     }, INPUTMASK_OPTIONS)).mask("#amount");
     $('.select2').select2();
+    $('#cancel-add-category').click(function() {
+      $('#category-dialog').modal('hide');
+    });
     $('#category-form').submit(function(e) {
       e.preventDefault();
       let frm = $(this);

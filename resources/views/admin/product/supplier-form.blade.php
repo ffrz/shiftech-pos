@@ -27,8 +27,7 @@
         </div>
         <div class="modal-footer justify-content-center">
           <button type="submit" class="btn btn-primary"><i class="fas fa-check mr-1"></i> Simpan</button>
-          <button type="reset" name="action" value="reset" class="btn btn-default"><i class="fa fa-xmark mr-1"></i>
-            Reset</button>
+          <button type="button" id="cancel-add-supplier" class="btn btn-default"><i class="fa fa-xmark mr-1"></i> Batal</button>
         </div>
       </div>
     </div>
