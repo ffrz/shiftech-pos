@@ -27,6 +27,7 @@
         <h5>Laporan Inventori</h5>
         <ul>
           <li><a href="{{ url('admin/report/inventory-stock') }}">Laporan Stok Barang</a></li>
+          <li><a href="{{ url('admin/report/inventory-stock-recap-by-category') }}">Laporan Rekap Stok Barang Per Kategori</a></li>
           <li><a href="{{ url('admin/report/inventory-minimum-stock') }}">Laporan Stok Barang Minimum</a></li>
         </ul>
       </section>

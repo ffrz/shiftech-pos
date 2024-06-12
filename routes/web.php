@@ -59,6 +59,7 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
         Route::get('', 'index');
         Route::get('inventory-stock', 'inventoryStock');
         Route::get('inventory-minimum-stock', 'inventoryMinimumStock');
+        Route::get('inventory-stock-recap-by-category', 'inventoryStockRecapByCategory');
     });
 
     Route::controller(ServiceOrderController::class)->prefix('service-order')->group(function () {

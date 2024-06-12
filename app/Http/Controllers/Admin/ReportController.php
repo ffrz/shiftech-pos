@@ -40,4 +40,45 @@ class ReportController extends Controller
 
         return view('admin.report.inventory-minimum-stock', compact('items'));
     }
+
+    public function inventoryStockRecapByCategory()
+    {
+        $records = ProductCategory::orderBy('name', 'asc')->get();
+        $uncategorized = [
+            'name' => 'Tanpa Kategori',
+            'total_cost' => 0,
+            'total_price' => 0,
+        ];
+        $categories = [0 => $uncategorized];
+        foreach ($records as $cat) {
+            $categories[$cat->id] = [
+                'name' => $cat->name,
+                'total_cost' => 0,
+                'total_price' => 0,
+            ];
+        }
+
+        $products = Product::where('type', '=', Product::STOCKED)
+            ->orderBy('code', 'asc')
+            ->get();
+
+        $total_cost = 0;
+        $total_price = 0;
+        foreach ($products as $product) {
+            $subtotal_cost = $product->stock * $product->cost;
+            $subtotal_price = $product->stock * $product->price;
+            $categories[$product->category_id]['total_cost'] += $subtotal_cost;
+            $categories[$product->category_id]['total_price'] += $subtotal_price;
+            $total_cost += $subtotal_cost;
+            $total_price += $subtotal_price;
+        }
+
+        $data = [
+            'categories' => $categories,
+            'total_cost' => $total_cost,
+            'total_price' => $total_price,
+        ];
+
+        return view('admin.report.inventory-stock-recap-by-category', compact('data'));
+    }
 }
