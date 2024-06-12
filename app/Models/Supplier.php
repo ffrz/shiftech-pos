@@ -6,9 +6,9 @@ class Supplier extends Party
 {
     public $table = 'parties';
 
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
-        parent::__construct();
+        parent::__construct($attributes);
         $this->type = Party::TYPE_SUPPLIER;
     }
 
