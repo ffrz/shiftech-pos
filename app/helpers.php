@@ -2,7 +2,48 @@
 
 use Illuminate\Support\Facades\Auth;
 
-function years($from, $to) {
+function datetime_range_today()
+{
+    return [date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59')];
+}
+
+function datetime_range_yesterday()
+{
+    $datetime = strtotime("-1 days");
+    return [date('Y-m-d 00:00:00', $datetime), date('Y-m-d 23:59:59', $datetime)];
+}
+
+function datetime_range_this_week()
+{
+    $start = strtotime('next Monday -1 week');
+    $start = date('w', $start) == date('w') ? strtotime(date("Y-m-d", $start) . " +7 days") : $start;
+    $end = strtotime(date("Y-m-d", $start) . " +6 days");
+    return [date('Y-m-d 00:00:00', $start), date('Y-m-d 23:59:59', $end)];
+}
+
+function datetime_range_previous_week()
+{
+    $previous_week = strtotime("-1 week +1 day");
+
+    $start_week = strtotime("last sunday midnight", $previous_week);
+    $end_week = strtotime("next saturday", $start_week);
+
+    return [date('Y-m-d 00:00:00', $start_week), date('Y-m-d 23:59:59', $end_week)];
+}
+
+function datetime_range_this_month()
+{
+    return [date('Y-m-01 00:00:00'), date('Y-m-t 23:59:59')];
+}
+
+function datetime_range_previous_month()
+{
+    $end = strtotime("last day of previous month");
+    return [date('Y-m-01 00:00:00', $end), date('Y-m-d 23:59:59', $end)];
+}
+
+function years($from, $to)
+{
     $years = [];
     for ($y = $from; $y <= $to; $y++) {
         $years[] = $y;
@@ -10,9 +51,10 @@ function years($from, $to) {
     return $years;
 }
 
-function months() {
+function months()
+{
     $months = [];
-    
+
     for ($m = 1; $m <= 12; $m++) {
         $months[$m] = month_names($m);
     }
@@ -20,7 +62,8 @@ function months() {
     return $months;
 }
 
-function current_user_id() {
+function current_user_id()
+{
     return Auth::user()->id;
 }
 
@@ -31,7 +74,7 @@ function empty_string_to_null(&$arr, $key)
             empty_string_to_null($arr, $k);
         }
     }
-    
+
     if (is_string($key) && empty($arr[$key])) {
         $arr[$key] = null;
     }
