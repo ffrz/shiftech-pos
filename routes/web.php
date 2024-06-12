@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CashAccountController;
 use App\Http\Controllers\Admin\CashTransactionCategoryController;
@@ -57,6 +58,7 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
     Route::controller(ReportController::class)->prefix('report')->group(function () {
         Route::get('', 'index');
         Route::get('inventory-stock', 'inventoryStock');
+        Route::get('inventory-minimum-stock', 'inventoryMinimumStock');
     });
 
     Route::controller(ServiceOrderController::class)->prefix('service-order')->group(function () {
@@ -184,5 +186,10 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
 
     Route::get('refresh-csrf', function () {
         return csrf_token();
+    });
+
+    Route::controller(AjaxController::class)->prefix('ajax')->group(function() {
+        Route::post('add-category', 'addCategory');
+        Route::post('add-supplier', 'addSupplier');
     });
 });

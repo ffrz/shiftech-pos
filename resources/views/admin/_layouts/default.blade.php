@@ -72,6 +72,7 @@
   @if (!empty($form_action))
     </form>
   @endif
+  @yield('modal')
   <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('plugins/pace-progress/pace.min.js') }}"></script>

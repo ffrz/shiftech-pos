@@ -81,7 +81,9 @@
             </div>
           @endif
           <div class="form-group">
-            <label for="category_id">Kategori</label>
+            <label for="category_id">Kategori <button type="button" class="btn btn-sm btn-default plus-btn"
+                data-toggle="modal" data-target="#category-dialog" title="Tambah"><i class="fa fa-plus"></i>
+              </button></label>
             <select class="custom-select select2" id="category_id" name="category_id">
               <option value="-1" {{ !$item->category_id ? 'selected' : '' }}>-- Pilih Kategori --</option>
               @foreach ($categories as $category)
@@ -99,16 +101,20 @@
           <h4 class="mb-1">Info Inventori</h4>
           <hr class="mb-3 mt-0">
           <div class="form-group">
-            <label for="supplier_id">Supplier Tetap</label>
-            <select class="custom-select select2" id="supplier_id" name="supplier_id">
-              <option value="-1" {{ !$item->supplier_id ? 'selected' : '' }}>-- Pilih Supplier --</option>
-              @foreach ($suppliers as $supplier)
-                <option value="{{ $supplier->id }}"
-                  {{ old('supplier_id', $item->supplier_id) == $supplier->id ? 'selected' : '' }}>
-                  {{ $supplier->name }}
-                </option>
-              @endforeach
-            </select>
+            <label for="supplier_id">Supplier Tetap <button type="button" class="btn btn-sm btn-default plus-btn"
+                data-toggle="modal" data-target="#supplier-dialog" title="Tambah"><i class="fa fa-plus"></i>
+              </button></label>
+            <div class="input-group">
+              <select class="custom-select select2" id="supplier_id" name="supplier_id">
+                <option value="-1" {{ !$item->supplier_id ? 'selected' : '' }}>-- Pilih Supplier --</option>
+                @foreach ($suppliers as $supplier)
+                  <option value="{{ $supplier->id }}"
+                    {{ old('supplier_id', $item->supplier_id) == $supplier->id ? 'selected' : '' }}>
+                    {{ $supplier->name }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
           </div>
           <div class="form-group">
             <label for="uom">Satuan</label>
@@ -232,6 +238,53 @@
       });
       updateProfitMargin();
       $('.is-invalid').focus();
+
+      $('#supplier-form').submit(function(e) {
+        console.log($(this));
+        e.preventDefault();
+        let frm = $(this);
+        $.ajax({
+          type: frm.attr('method'),
+          url: frm.attr('action'),
+          data: frm.serialize(),
+          success: function(data) {
+            let supplier = data.data;
+            var newOption = new Option(supplier.name, supplier.id, true, true);
+            $('#supplier_id').append(newOption).trigger('change');
+            toastr["info"](data.message);
+            frm.trigger("reset");
+            $('#supplier-dialog').modal('hide');
+          },
+          error: function(data) {
+            toastr["error"]('Terdapat kesalahan saat menambahkan supplier.');
+          },
+        });
+      });
+      $('#category-form').submit(function(e) {
+        e.preventDefault();
+        let frm = $(this);
+        $.ajax({
+          type: frm.attr('method'),
+          url: frm.attr('action'),
+          data: frm.serialize(),
+          success: function(data) {
+            let category = data.data;
+            var newOption = new Option(category.name, category.id, true, true);
+            $('#category_id').append(newOption).trigger('change');
+            toastr["info"](data.message);
+            frm.trigger("reset");
+            $('#category-dialog').modal('hide');
+          },
+          error: function(data) {
+            toastr["error"]('Terdapat kesalahan saat menambahkan kategori.');
+          },
+        });
+      });
     });
   </script>
+@endsection
+
+@section('modal')
+  @include('admin.product.supplier-form')
+  @include('admin.product.category-form')
 @endsection
