@@ -19,6 +19,7 @@ class ReportController extends Controller
 
     public function index()
     {
+        return view('admin.report.index');
     }
 
     public function inventoryStock()
@@ -28,5 +29,15 @@ class ReportController extends Controller
             ->get();
 
         return view('admin.report.inventory-stock', compact('items'));
+    }
+
+    public function inventoryMinimumStock()
+    {
+        $items = Product::where('type', '=', Product::STOCKED)
+            ->whereRaw('stock < minimum_stock')
+            ->orderBy('code', 'asc')
+            ->get();
+
+        return view('admin.report.inventory-minimum-stock', compact('items'));
     }
 }
