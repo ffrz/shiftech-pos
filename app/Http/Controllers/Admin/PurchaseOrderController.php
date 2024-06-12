@@ -22,9 +22,9 @@ class PurchaseOrderController extends Controller
         $filter_active = false;
 
         $filter = [
-            'status'   => (int)$request->get('status', $request->session()->get('sales-order.filter.status', -1)),
-            'datetime' => $request->get('datetime', $request->session()->get('sales-order.filter.datetime', 'today')),
-            'search'   => $request->get('search', ''),
+            'status'   => (int)$request->get('status', $request->session()->get('purchase-order.filter.status', -1)),
+            'datetime' => $request->get('datetime', $request->session()->get('purchase-order.filter.datetime', 'today')),
+            'search'   => $request->get('search', $request->session()->get('purchase-order.filter.search', '')),
         ];
 
         if ($request->get('action') == 'reset') {
@@ -63,6 +63,10 @@ class PurchaseOrderController extends Controller
         $items = $q->with('party')->whereRaw('type = ' . StockUpdate::TYPE_PURCHASE_ORDER)
             ->orderBy('id', 'desc')
             ->paginate(10);
+
+        $request->session()->put('purchase-order.filter.datetime', $filter['datetime']);
+        $request->session()->put('purchase-order.filter.status', $filter['status']);
+        $request->session()->put('purchase-order.filter.search', $filter['search']);
 
         return view('admin.purchase-order.index', compact('items', 'filter', 'filter_active'));
     }

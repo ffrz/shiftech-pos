@@ -27,7 +27,7 @@ class ServiceOrderController extends Controller
             'service_status' => (int)$request->get('service_status', $request->session()->get('service_order.filter.service_status', -1)),
             'payment_status' => (int)$request->get('payment_status', $request->session()->get('service_order.filter.payment_status', -1)),
             'pickup_status' => (int)$request->get('pickup_status', $request->session()->get('service_order.filter.pickup_status', 0)),
-            'search' => $request->get('search', ''),
+            'search' => $request->get('search', $request->session()->get('service_order.filter.search', '')),
         ];
 
         if ($request->get('action') == 'reset') {
@@ -77,6 +77,7 @@ class ServiceOrderController extends Controller
         $request->session()->put('service_order.filter.service_status', $filter['service_status']);
         $request->session()->put('service_order.filter.payment_status', $filter['payment_status']);
         $request->session()->put('service_order.filter.pickup_status', $filter['pickup_status']);
+        $request->session()->put('service_order.filter.search', $filter['search']);
 
         return view('admin.service-order.index', compact('items', 'filter', 'filter_active'));
     }

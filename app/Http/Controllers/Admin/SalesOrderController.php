@@ -25,7 +25,7 @@ class SalesOrderController extends Controller
         $filter = [
             'status'   => (int)$request->get('status', $request->session()->get('sales-order.filter.status', -1)),
             'datetime' => $request->get('datetime', $request->session()->get('sales-order.filter.datetime', 'today')),
-            'search'   => $request->get('search', ''),
+            'search'   => $request->get('search', $request->session()->get('sales-order.filter.search', '')),
         ];
 
         if ($request->get('action') == 'reset') {
@@ -68,6 +68,7 @@ class SalesOrderController extends Controller
 
         $request->session()->put('sales-order.filter.datetime', $filter['datetime']);
         $request->session()->put('sales-order.filter.status', $filter['status']);
+        $request->session()->put('sales-order.filter.search', $filter['search']);
 
         return view('admin.sales-order.index', compact('items', 'filter', 'filter_active'));
     }
