@@ -11,9 +11,8 @@
 
 @section('right-menu')
   <li class="nav-item">
-    <button type="submit" class="btn btn-primary mr-1"><i class="fas fa-save mr-1"></i> Simpan</button>
-    <a onclick="return confirm('Batalkan perubahan?')" class="btn btn-default"
-      href="{{ url('/admin/cash-transaction/') }}"><i class="fas fa-cancel mr-1"></i>Batal</a>
+    <button class="btn btn-primary mr-1" type="submit"><i class="fas fa-save mr-1"></i> Simpan</button>
+    <a class="btn btn-default" href="{{ url('/admin/cash-transaction/') }}" onclick="return confirm('Batalkan perubahan?')"><i class="fas fa-cancel mr-1"></i>Batal</a>
   </li>
 @endSection
 
@@ -24,12 +23,10 @@
         <div class="card-body">
           <div class="form-group">
             <label for="account_id">Akun</label>
-            <select class="custom-select select2 @error('account_id') is-invalid @enderror" id="account_id"
-              name="account_id">
+            <select class="custom-select select2 @error('account_id') is-invalid @enderror" id="account_id" name="account_id">
               <option value="" {{ !$item->account_id ? 'selected' : '' }}>-- Pilih Akun --</option>
               @foreach ($accounts as $account)
-                <option value="{{ $account->id }}"
-                  {{ old('account_id', $item->account_id) == $account->id ? 'selected' : '' }}>
+                <option value="{{ $account->id }}" {{ old('account_id', $item->account_id) == $account->id ? 'selected' : '' }}>
                   {{ $account->idFormatted() }} - {{ $account->name }}
                 </option>
               @endforeach
@@ -41,13 +38,15 @@
             @enderror
           </div>
           <div class="form-group">
-            <label for="category_id">Kategori</label>
-            <select class="custom-select select2 @error('category_id') is-invalid @enderror" id="category_id"
-              name="category_id">
+            <label for="category_id">Kategori
+              <button class="btn btn-sm btn-default plus-btn" data-toggle="modal" data-target="#category-dialog" type="button" title="Tambah">
+                <i class="fa fa-plus"></i>
+              </button>
+            </label>
+            <select class="custom-select select2 @error('category_id') is-invalid @enderror" id="category_id" name="category_id">
               <option value="" {{ !$item->category_id ? 'selected' : '' }}>-- Pilih Kategori --</option>
               @foreach ($categories as $category)
-                <option value="{{ $category->id }}"
-                  {{ old('category_id', $item->category_id) == $category->id ? 'selected' : '' }}>
+                <option value="{{ $category->id }}" {{ old('category_id', $item->category_id) == $category->id ? 'selected' : '' }}>
                   {{ $category->name }}
                 </option>
               @endforeach
@@ -59,9 +58,8 @@
             @enderror
           </div>
           <div class="form-group">
-            <label for="date" class="col-form-label">Tanggal:</label>
-            <input autofocus type="date" class="form-control @error('date') is-invalid @enderror" id="date"
-              name="date" value="{{ old('date', $item->date) }}">
+            <label class="col-form-label" for="date">Tanggal:</label>
+            <input class="form-control @error('date') is-invalid @enderror" id="date" name="date" type="date" value="{{ old('date', $item->date) }}" autofocus>
             @error('date')
               <span class="text-danger">
                 {{ $message }}
@@ -70,9 +68,8 @@
           </div>
           <div class="form-group">
             <label for="description">Deskripsi</label>
-            <input type="text" class="form-control @error('description') is-invalid @enderror" autofocus
-              id="description" placeholder="Deskripsi" name="description"
-              value="{{ old('description', $item->description) }}">
+            <input class="form-control @error('description') is-invalid @enderror" id="description" name="description" type="text"
+              value="{{ old('description', $item->description) }}" autofocus placeholder="Deskripsi">
             @error('description')
               <span class="text-danger">
                 {{ $message }}
@@ -80,17 +77,15 @@
             @enderror
           </div>
           <div class="form-group">
-            <label for="type" class="col-form-label">Jenis</label>
+            <label class="col-form-label" for="type">Jenis</label>
             <div class="form-group clearfix">
               <div class="icheck-primary d-inline mr-2">
-                <input type="radio" id="radioPrimary1" name="type" value="income"
-                  {{ old('type', $item->type) == 'income' ? 'checked' : '' }}>
+                <input id="radioPrimary1" name="type" type="radio" value="income" {{ old('type', $item->type) == 'income' ? 'checked' : '' }}>
                 <label for="radioPrimary1">Pemasukan
                 </label>
               </div>
               <div class="icheck-primary d-inline">
-                <input type="radio" id="radioPrimary2" name="type" value="expense"
-                {{ old('type', $item->type) == 'expense' ? 'checked' : '' }}>
+                <input id="radioPrimary2" name="type" type="radio" value="expense" {{ old('type', $item->type) == 'expense' ? 'checked' : '' }}>
                 <label for="radioPrimary2">Pengeluaran
                 </label>
               </div>
@@ -98,9 +93,8 @@
           </div>
           <div class="form-group">
             <label for="amount">Jumlah</label>
-            <input type="text" class="form-control col-md-5 text-right @error('amount') is-invalid @enderror"
-              id="amount" placeholder="Jumlah pengeluaran" name="amount"
-              value="{{ format_number(old('amount', $item->amount)) }}">
+            <input class="form-control col-md-5 text-right @error('amount') is-invalid @enderror" id="amount" name="amount" type="text"
+              value="{{ old('amount', format_number($item->amount)) }}" placeholder="Jumlah pengeluaran">
             @error('amount')
               <span class="text-danger">
                 {{ $message }}
@@ -109,8 +103,7 @@
           </div>
           <div class="form-group">
             <label for="notes">Catatan</label>
-            <textarea class="form-control @error('notes') is-invalid @enderror" name="notes" id="notes" cols="30"
-              rows="4">{{ old('notes', $item->notes) }}</textarea>
+            <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" name="notes" cols="30" rows="4">{{ old('notes', $item->notes) }}</textarea>
             @error('notes')
               <span class="text-danger">
                 {{ $message }}
@@ -130,5 +123,36 @@
         allowMinus: true
       }, INPUTMASK_OPTIONS)).mask("#amount");
     });
+    
+    $('.select2').select2();
+    
+    $('#cancel_button').click(function() {
+      $('#category-dialog').modal('hide');
+    });
+
+    $('#category-form').submit(function(e) {
+      e.preventDefault();
+      let frm = $(this);
+      $.ajax({
+        type: frm.attr('method'),
+        url: frm.attr('action'),
+        data: frm.serialize(),
+        success: function(data) {
+          let category = data.data;
+          var newOption = new Option(category.name, category.id, true, true);
+          $('#category_id').append(newOption).trigger('change');
+          toastr["info"](data.message);
+          frm.trigger("reset");
+          $('#category-dialog').modal('hide');
+        },
+        error: function(data) {
+          toastr["error"]('Terdapat kesalahan saat menambahkan kategori.');
+        },
+      });
+    });
   </script>
 @endSection
+
+@section('modal')
+  @include('admin.cash-transaction.category-form')
+@endsection

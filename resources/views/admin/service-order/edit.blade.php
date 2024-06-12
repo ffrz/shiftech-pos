@@ -238,7 +238,7 @@
           <div class="form-group">
             <label for="estimated_cost">Perkiraan Biaya:</label>
             <input class="form-control text-right @error('estimated_cost') is-invalid @enderror" id="estimated_cost" name="estimated_cost" type="text"
-              value="{{ format_number(old('estimated_cost', $item->estimated_cost)) }}">
+              value="{{ old('estimated_cost', format_number($item->estimated_cost)) }}">
             @error('estimated_cost')
               <span class="text-danger">
                 {{ $message }}
@@ -248,7 +248,7 @@
           <div class="form-group">
             <label for="down_payment">Uang Muka:</label>
             <input class="form-control text-right @error('down_payment') is-invalid @enderror" id="down_payment" name="down_payment" type="text"
-              value="{{ format_number(old('down_payment', $item->down_payment)) }}">
+              value="{{ old('down_payment', format_number($item->down_payment)) }}">
             @error('down_payment')
               <span class="text-danger">
                 {{ $message }}
@@ -258,7 +258,7 @@
           <div class="form-group">
             <label for="total_cost">Total Biaya:</label>
             <input class="form-control text-right @error('total_cost') is-invalid @enderror" id="total_cost" name="total_cost" type="text"
-              value="{{ format_number(old('total_cost', $item->total_cost)) }}">
+              value="{{ old('total_cost', format_number($item->total_cost)) }}">
             @error('total_cost')
               <span class="text-danger">
                 {{ $message }}

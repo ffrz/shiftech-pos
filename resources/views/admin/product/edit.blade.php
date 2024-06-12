@@ -130,7 +130,7 @@
             <label for="stock">Stok</label>
             <input type="text" class="form-control col-md-5 text-right @error('stock') is-invalid @enderror"
               id="stock" placeholder="Masukkan stok produk" name="stock"
-              value="{{ format_number(old('stock', $item->stock)) }}">
+              value="{{ old('stock', format_number($item->stock)) }}">
             @error('stock')
               <span class="text-danger">
                 {{ $message }}
@@ -141,7 +141,7 @@
             <label for="minimum_stock">Stok Minimum</label>
             <input type="text" class="form-control col-md-5 text-right @error('minimum_stock') is-invalid @enderror"
               id="minimum_stock" placeholder="Masukkan stok produk minimum" name="minimum_stock"
-              value="{{ format_number(old('minimum_stock', $item->minimum_stock)) }}">
+              value="{{ old('minimum_stock', format_number($item->minimum_stock)) }}">
             @error('minimum_stock')
               <span class="text-danger">
                 {{ $message }}
@@ -158,7 +158,7 @@
             <label for="cost">Modal / Harga Beli</label>
             <input type="text" class="form-control col-md-5 text-right @error('cost') is-invalid @enderror"
               id="cost" placeholder="Masukkan modal / harga beli produk" name="cost"
-              value="{{ format_number(old('cost', $item->cost)) }}">
+              value="{{ old('cost', format_number($item->cost)) }}">
             @error('cost')
               <span class="text-danger">
                 {{ $message }}
@@ -169,7 +169,7 @@
             <label for="price">Harga Jual</label>
             <input type="text" class="form-control col-md-5 text-right @error('price') is-invalid @enderror"
               id="price" placeholder="Masukkan harga jual produk" name="price"
-              value="{{ format_number(old('price', $item->price)) }}">
+              value="{{ old('price', format_number($item->price)) }}">
             @error('price')
               <span class="text-danger">
                 {{ $message }}

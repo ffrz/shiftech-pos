@@ -1,4 +1,4 @@
-<form id="category-form" method="POST" action="{{ url('admin/ajax/add-product-category') }}">
+<form id="category-form" method="POST" action="{{ url('admin/ajax/add-cash-transaction-category') }}">
   @csrf
   <div class="modal fade" id="category-dialog">
     <div class="modal-dialog modal-md">
@@ -21,8 +21,7 @@
         </div>
         <div class="modal-footer justify-content-center">
           <button type="submit" class="btn btn-primary"><i class="fas fa-check mr-1"></i> Simpan</button>
-          <button type="reset" name="action" value="reset" class="btn btn-default"><i
-            class="fa fa-xmark mr-1"></i> Reset</button>
+          <button id="cancel_button" type="button" class="btn btn-default"><i class="fa fa-xmark mr-1"></i> Batal</button>
         </div>
       </div>
     </div>

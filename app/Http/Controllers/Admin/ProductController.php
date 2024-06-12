@@ -30,7 +30,7 @@ class ProductController extends Controller
             'category_id' => (int)$request->get('category_id', $request->session()->get('product.filter.category_id', -1)),
             'supplier_id' => (int)$request->get('supplier_id', $request->session()->get('product.filter.supplier_id', -1)),
             'stock_status' => (int)$request->get('stock_status', $request->session()->get('product.filter.stock_status', -1)),
-            'search' => $request->get('search'),
+            'search' => $request->get('search', $request->session()->get('product.filter.search', '')),
         ];
 
         $filter_active = true;
