@@ -7,15 +7,15 @@
 ])
 
 @section('content')
-  <h5 class="text-center">LAPORAN REKAP STOK PER KATEGORI</h5>
+  <h5 class="text-center">LAPORAN REKAPITULASI STOK PER KATEGORI</h5>
   <h5 class="text-center">{{ Setting::value('company.name') }}</h5>
   <h6 class="text-center">Per Tanggal: {{ date('d-m-Y') }}</h6>
-  <table class="table info table-sm table-striped">
-    <thead>
-      <tr>
-        <th>Kategori</th>
-        <th>Modal (Rp)</th>
-        <th>Harga (Rp)</th>
+  <table class="report-table">
+    <thead style="background:#08e;color:#fff;">
+      <tr class="bg-primary">
+        <th>KATEGORI</th>
+        <th>MODAL / HARGA BELI (Rp)</th>
+        <th>HARGA JUAL (Rp)</th>
       </tr>
     </thead>
     <tbody>
@@ -27,9 +27,9 @@
         </tr>
       @endforeach
     </tbody>
-    <tfoot>
+    <tfoot style="background:#08e;color:#fff;">
       <tr>
-        <th>Total</th>
+        <th class="text-right">TOTAL</th>
         <th class="text-right">{{ format_number($data['total_cost']) }}</th>
         <th class="text-right">{{ format_number($data['total_price']) }}</th>
       </tr>
