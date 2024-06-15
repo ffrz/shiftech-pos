@@ -43,11 +43,11 @@ class StockUpdate extends BaseModel
         'total_receivable',
 
         'notes',
-        
+
         'created_datetime',
         'updated_datetime',
         'closed_datetime',
-        
+
         'created_by_uid',
         'updated_by_uid',
         'closed_by_uid',
@@ -86,8 +86,23 @@ class StockUpdate extends BaseModel
 
     public function id2Formatted()
     {
+        return static::formatId2($this->id2, $this->type, $this->created_datetime);
+    }
+
+    public function statusFormatted()
+    {
+        return static::formatStatus($this->status);
+    }
+
+    public function typeFormatted()
+    {
+        return static::formatType($this->type);
+    }
+
+    public static function formatId2($id2, $type, $datetime)
+    {
         $prefix = '';
-        switch ($this->type) {
+        switch ($type) {
             case self::TYPE_SINGLE_ADJUSTMENT:
                 $prefix = 'STA';
                 break;
@@ -107,17 +122,7 @@ class StockUpdate extends BaseModel
                 $prefix = 'POR';
                 break;
         }
-        return $prefix . '-' . date_from_datetime($this->created_datetime) . '-' . str_pad($this->id2, 5, '0', STR_PAD_LEFT);
-    }
-
-    public function statusFormatted()
-    {
-        return static::formatStatus($this->status);
-    }
-
-    public function typeFormatted()
-    {
-        return static::formatType($this->type);
+        return $prefix . '-' . date_from_datetime($datetime) . '-' . str_pad($id2, 5, '0', STR_PAD_LEFT);
     }
 
     public static function formatStatus($status)

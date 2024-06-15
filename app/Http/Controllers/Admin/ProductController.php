@@ -88,6 +88,26 @@ class ProductController extends Controller
         return view('admin.product.index', compact('items', 'filter', 'suppliers', 'categories', 'filter_active'));
     }
 
+    public function detail(Request $request, $id)
+    {
+        $item = Product::with(['category', 'supplier'])->findOrFail($id);
+        $stock_update_details = DB::select('
+            select
+              u.id update_id, u.id2 update_id2, u.type update_type, u.created_datetime update_created_datetime,
+              a.id party_id, a.name party_name, a.type party_type,
+              d.quantity, d.cost, d.price
+            from stock_update_details d
+            inner join products p on p.id=d.product_id
+            inner join stock_updates u on u.id=d.update_id
+            left join parties a on a.id = u.party_id
+            where p.id=:id and u.status=:status
+            order by u.id desc limit 50', [
+            'id' => $item->id,
+            'status' => StockUpdate::STATUS_COMPLETED
+        ]);
+        return view('admin.product.detail', compact('item', 'stock_update_details'));
+    }
+
     public function edit(Request $request, $id = 0)
     {
         if (!$id) {
