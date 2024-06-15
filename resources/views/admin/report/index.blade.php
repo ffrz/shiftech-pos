@@ -12,15 +12,15 @@
         <ul>
           <li><a href="#">Laporan Rincian Penjualan</a></li>
           <li><a href="#">Laporan Rekapitulasi Penjualan</a></li>
-          <li><a href="#">Laporan Laba / Rugi</a></li>
+          <li><a href="{{ url('admin/report/net-income-statement') }}">Laporan Laba / Rugi</a></li>
         </ul>
       </section>
       <section>
         <h5>Laporan Servis</h5>
         <ul>
-          <li><a href="#">Laporan Transaksi Servis</a></li>
-          <li><a href="#">Laporan Servis Selesai</a></li>
-          <li><a href="#">Laporan Servis Dalam Proses</a></li>
+          <li><a href="{{ url('admin/report/service-orders') }}">Laporan Transaksi Servis</a></li>
+          <li><a href="{{ url('admin/report/service-orders-completed') }}">Laporan Servis Selesai</a></li>
+          <li><a href="{{ url('admin/report/service-orders-on-process') }}">Laporan Servis Dalam Proses</a></li>
         </ul>
       </section>
       <section>

@@ -97,7 +97,7 @@
         <div class="card-body">
           <h4 class="mb-1">Info Inventori</h4>
           <hr class="mb-3 mt-0">
-          <div class="form-group">
+          <div class="form-group" id="supplier-container">
             <label for="supplier_id">Supplier Tetap <button class="btn btn-sm btn-default plus-btn" data-toggle="modal" data-target="#supplier-dialog" type="button"
                 title="Tambah"><i class="fa fa-plus"></i>
               </button></label>
@@ -122,7 +122,7 @@
               </span>
             @enderror
           </div>
-          <div class="form-group">
+          <div class="form-group" id="stock-container">
             <label for="stock">Stok</label>
             <input class="form-control col-md-5 text-right @error('stock') is-invalid @enderror" id="stock" name="stock" type="text"
               value="{{ old('stock', format_number($item->stock)) }}" placeholder="Masukkan stok produk">
@@ -132,7 +132,7 @@
               </span>
             @enderror
           </div>
-          <div class="form-group">
+          <div class="form-group" id="minimum-stock-container">
             <label for="minimum_stock">Stok Minimum</label>
             <input class="form-control col-md-5 text-right @error('minimum_stock') is-invalid @enderror" id="minimum_stock" name="minimum_stock" type="text"
               value="{{ old('minimum_stock', format_number($item->minimum_stock)) }}" placeholder="Masukkan stok produk minimum">
@@ -276,6 +276,13 @@
           },
         });
       });
+      $('#type').change(function() {
+        const isStocked = $(this).val() == 0;
+        $('#supplier-container').toggle(isStocked);
+        $('#stock-container').toggle(isStocked);
+        $('#minimum-stock-container').toggle(isStocked);
+      });
+      $('#type').trigger('change');
     });
   </script>
 @endsection

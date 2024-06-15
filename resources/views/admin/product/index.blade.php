@@ -135,8 +135,8 @@
                       <td>{{ $item->idFormatted() }}</td>
                       <td>{{ $item->code }}</td>
                       <td>{!! $item->category ? e($item->category->name) : '<i>Tanpa Kategori</i>' !!}</td>
-                      <td class="text-right {{ $is_at_low_stock ? 'text-danger' : '' }}">
-                        {{ format_number($item->stock) }}
+                      <td class="text-right {{ $item->type == Product::STOCKED && $is_at_low_stock ? 'text-danger' : '' }}">
+                        {{ $item->type == Product::STOCKED ? format_number($item->stock) : '-' }}
                       </td>
                       <td>{{ $item->uom }}</td>
                       <td class="text-right">{{ format_number($item->cost) }}</td>

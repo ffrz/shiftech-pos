@@ -160,8 +160,10 @@ class SalesOrderController extends Controller
                 $details = StockUpdateDetail::with('product')->whereRaw('update_id=' . $item->id)->get();
                 foreach ($details as $detail) {
                     $product = $detail->product;
-                    $product->stock += $detail->quantity; // qty negative
-                    $product->save();
+                    if ($product->type == Product::STOCKED) {
+                        $product->stock += $detail->quantity; // qty negative
+                        $product->save();
+                    }
                 }
             }
 
