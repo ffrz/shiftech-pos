@@ -1,11 +1,23 @@
 @php
   use App\Models\ServiceOrder;
+  use App\Models\Setting;
+
+  $company_name = Setting::value('company.name');
   $title = 'Rincian Order Servis';
+  $wa_notification =
+      '*' . $company_name . ' - Pemberitahuan*'
+      . "%0aPerangkat $item->device_type $item->device atas nama " . $item->customer_name . " telah kami terima dengan No bukti servis *{$item->idFormatted()}*"
+      . " pada tanggal " . format_date($item->date_received, 'd MMMM yyyy')
+      . ($item->estimated_cost ? ' dan biaya perkiraan Rp. ' . format_number($item->estimated_cost) : '') . '. ' .
+      ' Anda dapat memeriksa status servis perangkat Anda dengan membuka tautan dibawah ini.' .
+      '%0a' . url('track-service-order/' . encrypt_id($item->id)) .
+      '%0aApabila link tidak dapat dibuka, anda dapat menyimpan dan menghubungi nomor ini.';
+
 @endphp
 
 @extends('admin._layouts.default', [
     'title' => $title,
-    'menu_active' => 'sales',
+    'menu_active' => 'service-order',
     'nav_active' => 'service-order',
 ])
 
@@ -43,6 +55,17 @@
                   <td>oleh <b>{{ $item->closed_by->username }}</b> pada {{ format_datetime($item->closed_datetime) }}</td>
                 </tr>
               @endif
+              <tr>
+                <td>Tracking URL</td>
+                <td>:</td>
+                <td>
+                  @if ($wa_url = wa_me_url($item->customer_phone, $wa_notification))
+                    <a class="btn btn-xs btn-success" href="{!! $wa_url !!}" target="_blank"><i class="fas fa-paper-plane mr-1"></i> Kirim melalui WA</a>
+                  @else
+                    <span>Invalid phone number</span>
+                  @endif
+                </td>
+              </tr>
             </table>
           </div>
           <div class="col-md-4">
