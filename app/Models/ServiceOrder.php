@@ -57,7 +57,7 @@ class ServiceOrder extends BaseModel
 
     public function idFormatted()
     {
-        return 'SVC-' . date('Ymd', strtotime($this->date_created)) . '-' . str_pad($this->id, 6, '0', STR_PAD_LEFT);
+        return 'SVC-' . date('Ymd', strtotime($this->created_datetime)) . '-' . str_pad($this->id, 6, '0', STR_PAD_LEFT);
     }
 
     static function formatOrderStatus($status)
