@@ -2,6 +2,26 @@
 
 use Illuminate\Support\Facades\Auth;
 
+function encrypt_id($string)
+{
+    return base64_encode($string);
+}
+
+function decrypt_id($string)
+{
+    return base64_decode($string);
+}
+
+function wa_me_url($phone, $message = '')
+{
+    $phone = str_replace(' ', '', $phone);
+    $phone = str_replace('-', '', $phone);
+    if (substr($phone, 0, 1) == 0) {
+        $phone = '62' . substr($phone, 1, strlen($phone));
+    }
+    return 'http://wa.me/' . $phone . '?text=' . $message;
+}
+
 function datetime_range_today()
 {
     return [date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59')];
@@ -181,18 +201,6 @@ function format_date($date, $format = 'dd-MM-yyyy', $locale = null)
         $date = new DateTime($date);
     }
     return IntlDateFormatter::formatObject($date, $format, $locale);
-}
-
-function wa_send_url($contact)
-{
-    $contact = str_replace('-', '', $contact);
-    if (substr($contact, 0, 1) == '0') {
-        $contact = '62' . substr($contact, 1, strlen($contact));
-    }
-    if (strlen($contact) > 10) {
-        return "https://web.whatsapp.com/send?phone=$contact";
-    }
-    return '#';
 }
 
 function month_names($month)
