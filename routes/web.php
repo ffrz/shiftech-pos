@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UserActivityController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserGroupController;
+use App\Http\Controllers\Public\ServiceOrderController as PublicServiceOrderController;
+use App\Http\Controllers\Public\TrackServiceController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\OnlyAdmin;
 use App\Http\Middleware\OnlyGuest;
@@ -48,6 +50,9 @@ Route::redirect('/admin', '/admin/dashboard');
 Route::middleware([OnlyGuest::class])->group(function () {
     Route::get('admin/login', [AuthController::class, 'login'])->name('login');
     Route::post('admin/login', [AuthController::class, 'authenticate']);
+    Route::controller(TrackServiceController::class)->prefix('track-service')->group(function () {
+        Route::get('', 'index');
+    });
 });
 
 Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->group(function () {
@@ -140,7 +145,7 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
         Route::get('', 'index');
         Route::get('show/{id}', 'show');
         Route::get('delete/{id}', 'delete');
-        Route::match(['get', 'post'],'clear', 'clear');
+        Route::match(['get', 'post'], 'clear', 'clear');
     });
 
     Route::controller(StockUpdateController::class)->prefix('stock-update')->group(function () {
@@ -190,7 +195,7 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
         return csrf_token();
     });
 
-    Route::controller(AjaxController::class)->prefix('ajax')->group(function() {
+    Route::controller(AjaxController::class)->prefix('ajax')->group(function () {
         Route::post('add-expense-category', 'addExpenseCategory');
         Route::post('add-product-category', 'addProductCategory');
         Route::post('add-cash-transaction-category', 'addCashTransactionCategory');
