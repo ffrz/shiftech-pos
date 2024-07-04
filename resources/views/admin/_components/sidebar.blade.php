@@ -207,7 +207,7 @@
           <a class="nav-link {{ $menu_active == 'debt' ? 'active' : '' }}" href="#">
             <i class="nav-icon fas fa-file-invoice-dollar"></i>
             <p>
-              Utan Piutang
+              Utang Piutang
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
