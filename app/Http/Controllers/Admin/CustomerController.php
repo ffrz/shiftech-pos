@@ -96,14 +96,27 @@ class CustomerController extends Controller
         ensure_user_can_access(AclResource::DELETE_CUSTOMER);
 
         $item = Customer::findOrFail($id);
+        $orderCount = DB::select("select count(0) as count from service_orders where customer_id=:id", [":id" => $item->id])[0]->count;
+        $serviceOrderCount = DB::select("select count(0) as count from stock_updates where party_id=:id", [":id" => $item->id])[0]->count;
 
-        $message = 'Pelanggan ' . e($item->name) . ' telah dihapus.';
+        DB::beginTransaction();
+        if ($orderCount > 0 || $serviceOrderCount > 0) {
+            $item->active = false;
+            $item->save();
+            $message = 'Pelanggan ' . e($item->name) . ' telah dinonaktifkan.';
+        }
+        else {
+            $item->delete();
+            $message = 'Pelanggan ' . e($item->name) . ' telah dihapus.';
+        }
+
         UserActivity::log(
             UserActivity::CUSTOMER_MANAGEMENT,
             'Hapus Pelanggan',
             $message,
             $item->toArray()
         );
+        DB::commit();
 
         return redirect('admin/customer')->with('info', $message);
     }
