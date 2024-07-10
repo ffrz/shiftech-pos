@@ -220,28 +220,27 @@ class ProductController extends Controller
     public function delete(Request $request, $id)
     {
         ensure_user_can_access(AclResource::DELETE_PRODUCT);
+        $item = Product::findOrFail($id);
+        $productUsedCount = DB::select("select count(0) as count from stock_update_details where product_id=:id", [":id" => $item->id])[0]->count;
 
-        if ($request->force === 'true') {
-            $item = Product::withTrashed()->findOrFail($id);
-            $msg = ' telah dihapus selamanya.';
-            $action = 'forceDelete';
+        DB::beginTransaction();
+        if ($productUsedCount > 0) {
+            $item->active = false;
+            $item->save();
+            $msg = ' telah dinonaktifkan.';
         } else {
-            $item = Product::findOrFail($id);
-            $msg = ' telah dipindahkan ke tong sampah.';
-            $action = 'delete';
+            $item->delte();
+            $msg = ' telah dihapus.';
         }
 
-        if (!$item) {
-            $message = 'Produk tidak ditemukan.';
-        } else if ($item->$action($id)) {
-            $message = 'Produk ' . e($item->name) . $msg;
-            UserActivity::log(
-                UserActivity::PRODUCT_MANAGEMENT,
-                'Hapus Produk',
-                $message,
-                $item->toArray()
-            );
-        }
+        $message = 'Produk ' . e($item->name) . $msg;
+        UserActivity::log(
+            UserActivity::PRODUCT_MANAGEMENT,
+            'Hapus Produk',
+            $message,
+            $item->toArray()
+        );
+        DB::commit();
 
         return redirect('admin/product')->with('info', $message);
     }
