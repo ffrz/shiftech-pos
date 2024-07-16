@@ -79,7 +79,7 @@
               <tr>
                 <td>Kontak</td>
                 <td>:</td>
-                <td>{{ $item->customer_phone }}</td>
+                <td>{{ $item->customer_phone }} @if($item->customer_phone)<a href="{{ wa_me_url($item->customer_phone) }}">(Buka WA)</a>@endif</td>
               </tr>
               <tr>
                 <td>Alamat</td>

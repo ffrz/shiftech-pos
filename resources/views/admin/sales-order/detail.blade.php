@@ -42,7 +42,7 @@
             <tr>
               <td>No Telepon</td>
               <td>:</td>
-              <td>{{ $item->party_phone }}</td>
+              <td>{{ $item->party_phone }} @if($item->party_phone)<a href="{{ wa_me_url($item->party_phone) }}">(Buka WA)</a>@endif</td>
             </tr>
             <tr>
               <td>Alamat</td>

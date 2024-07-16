@@ -14,6 +14,10 @@ function decrypt_id($string)
 
 function wa_me_url($phone, $message = '')
 {
+    if (empty($phone) || strlen($phone) > 15 ) {
+        return '#';
+    }
+
     $phone = str_replace(' ', '', $phone);
     $phone = str_replace('-', '', $phone);
     if (substr($phone, 0, 1) == 0) {

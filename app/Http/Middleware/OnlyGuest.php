@@ -17,15 +17,15 @@ class OnlyGuest
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        
-        if ($user) {
-            if ($user->role_id == 1) {
-                return redirect('dashboard');
-            }
 
-            if ($user->role_id == 2) {
-                return redirect('books');
-            }
+        if ($user) {
+            // if ($user->role_id == 1) {
+            //     return redirect('dashboard');
+            // }
+
+            // if ($user->role_id == 2) {
+            //     return redirect('books');
+            // }
         }
 
         return $next($request);
