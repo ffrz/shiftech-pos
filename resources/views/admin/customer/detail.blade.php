@@ -48,7 +48,7 @@
                   <tr>
                     <td>Telepon</td>
                     <td>:</td>
-                    <td>{{ $item->phone }} @if($item->phone)<a href="{{ wa_me_url($item->phone) }}">(Buka WA)</a>@endif</td>
+                    <td>{{ $item->phone }} @if($item->phone)<a href="{{ wa_me_url($item->phone) }}" target="_blank">(Buka WA)</a>@endif</td>
                   </tr>
                   <tr>
                     <td>Alamat</td>
