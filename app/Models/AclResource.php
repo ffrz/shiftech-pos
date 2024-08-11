@@ -13,6 +13,8 @@ class AclResource
     const REPORT_MENU = 'report-menu';
     const EXPENSE_MENU = 'cost-menu';
     const FINANCE_MENU = 'finance-menu';
+    const DEBT_MENU = 'debt-menu';
+    const EXECUTIVE_DASHBOARD = 'executive-dashboard';
 
     // system
     const VIEW_REPORTS = 'view-reports'; // sementara digrup, mungkin kedepannya diset spesifik
@@ -64,6 +66,9 @@ class AclResource
     public static function all()
     {
         return [
+            'Dashboard' => [
+                self::EXECUTIVE_DASHBOARD => 'Dashboard Eksekutif',
+            ],
             'Penjualan' => [
                 self::SALES_MENU => 'Menu penjualan',
                 'Order Penjualan' => [
@@ -116,6 +121,9 @@ class AclResource
                 self::CASH_ACCOUNT_MANAGEMENT => 'Kelola Akun / Rekening',
                 self::CASH_TRANSACTION_MANAGEMENT => 'Kelola Transaksi Keuangan',
                 self::CASH_TRANSACTION_CATEGORY_MANAGEMENT => 'Kelola Kategori Transaksi',
+            ],
+            'Utang Piutang' => [
+                self::DEBT_MENU => 'Menu Utang / Piutang',
             ],
             'Sistem' => [
                 self::SYSTEM_MENU => 'Menu sistem',

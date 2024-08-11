@@ -202,7 +202,7 @@
         @endif
         {{-- End of Expense Menu --}}
 
-        {{-- @if (Auth::user()->canAccess(AclResource::DEBT_MENU)) --}}
+        @if (Auth::user()->canAccess(AclResource::DEBT_MENU))
         <li class="nav-item {{ $menu_active == 'debt' ? 'menu-open' : '' }}">
           <a class="nav-link {{ $menu_active == 'debt' ? 'active' : '' }}" href="#">
             <i class="nav-icon fas fa-file-invoice-dollar"></i>
@@ -226,7 +226,7 @@
             </li>
           </ul>
         </li>
-        {{-- @endif --}}
+        @endif
 
         {{-- Report Menu --}}
         @if (Auth::user()->canAccess(AclResource::REPORT_MENU))
