@@ -43,6 +43,9 @@ class AclResource
     const EDIT_PRODUCT = 'edit-product';
     const DELETE_PRODUCT = 'delete-product';
 
+    CONST MANAGE_STOCK_ADJUSTMENT = 'manage-stock-adjustment';
+    CONST VIEW_STOCK_UPDATE_HISTORY = 'view-stock-update-history';
+
     const SUPPLIER_LIST = 'supplier-list';
     const ADD_SUPPLIER = 'add-supplier';
     const EDIT_SUPPLIER = 'edit-supplier';
@@ -93,7 +96,10 @@ class AclResource
                 ],
             ],
             'Inventori' => [
-                self::PRODUCT_CATEGORY_MANAGEMENT => 'Kategori produk',
+                self::INVENTORY_MENU => 'Menu Inventory',
+                self::PRODUCT_CATEGORY_MANAGEMENT => 'Kelola Kategori produk',
+                self::MANAGE_STOCK_ADJUSTMENT => 'Kelola Stok Opname',
+                self::VIEW_STOCK_UPDATE_HISTORY => 'Lihat Riwayat Stok',
                 'Produk' => [
                     self::PRODUCT_LIST => 'Lihat',
                     self::ADD_PRODUCT => 'Tambah',

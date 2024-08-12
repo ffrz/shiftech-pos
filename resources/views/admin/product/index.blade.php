@@ -1,5 +1,6 @@
 @php
   use App\Models\Product;
+  use App\Models\AclResource;
 @endphp
 
 @extends('admin._layouts.default', [
@@ -123,9 +124,13 @@
                     <th>Kategori</th>
                     <th>Stok</th>
                     <th>Satuan</th>
-                    <th>Harga Beli</th>
+                    @if (Auth::user()->can(AclResource::EDIT_PRODUCT))
+                      <th>Harga Beli</th>
+                    @endif
                     <th>Harga Jual</th>
-                    <th style="width:5%">Aksi</th>
+                    @if (Auth::user()->can(AclResource::EDIT_PRODUCT))
+                      <th style="width:5%">Aksi</th>
+                    @endif
                   </tr>
                 </thead>
                 <tbody>
@@ -139,11 +144,13 @@
                         {{ $item->type == Product::STOCKED ? format_number($item->stock) : '-' }}
                       </td>
                       <td>{{ $item->uom }}</td>
-                      <td class="text-right">{{ format_number($item->cost) }}</td>
+                      @if (Auth::user()->can(AclResource::EDIT_PRODUCT))
+                        <td class="text-right">{{ format_number($item->cost) }}</td>
+                      @endif
                       <td class="text-right">{{ format_number($item->price) }}</td>
-                      <td class="text-center">
-                        <div class="btn-group">
-                          @if (!$item->deleted_at)
+                      @if (Auth::user()->can(AclResource::EDIT_PRODUCT))
+                        <td class="text-center">
+                          <div class="btn-group">
                             <a class="btn btn-default btn-sm" href="{{ url("/admin/product/detail/$item->id") }}"><i
                                 class="fa fa-eye" title="Rincian"></i></a>
                             <a class="btn btn-default btn-sm" href="{{ url("/admin/product/duplicate/$item->id") }}"><i
@@ -153,19 +160,13 @@
                             <a class="btn btn-danger btn-sm" href="{{ url("/admin/product/delete/$item->id") }}"
                               onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"><i
                                 class="fa fa-trash"></i></a>
-                          @else
-                            <a class="btn btn-warning btn-sm" href="{{ url("/admin/product/restore/$item->id") }}"
-                              onclick="return confirm('Anda yakin akan memulihkan rekaman ini?')"><i
-                                class="fa fa-trash-arrow-up" title="Pulihkan"></i></a>
-                            <a class="btn btn-danger btn-sm" href="{{ url("/admin/product/delete/$item->id?force=true") }}"
-                              onclick="return confirm('Anda yakin akan menghapus rekaman ini selamanya?')"><i class="fa fa-trash"></i></a>
-                          @endif
-                        </div>
-                      </td>
+                          </div>
+                        </td>
+                      @endif
                     </tr>
                   @empty
                     <tr class="empty">
-                      <td colspan="8">Tidak ada rekaman yang dapat
+                      <td colspan="{{ Auth::user()->can(AclResource::EDIT_PRODUCT) ? 8 : 6 }}">Tidak ada rekaman yang dapat
                         ditampilkan.</td>
                     </tr>
                   @endforelse

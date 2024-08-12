@@ -71,7 +71,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @if (true)
+              @if (Auth::user()->canAccess(AclResource::MANAGE_STOCK_ADJUSTMENT))
                 <li class="nav-item">
                   <a class="nav-link {{ $nav_active == 'stock-adjustment' ? 'active' : '' }}" href="{{ url('/admin/stock-adjustment') }}">
                     <i class="nav-icon fas fa-right-left"></i>
@@ -79,7 +79,7 @@
                   </a>
                 </li>
               @endif
-              @if (true)
+              @if (Auth::user()->canAccess(AclResource::VIEW_STOCK_UPDATE_HISTORY))
                 <li class="nav-item">
                   <a class="nav-link {{ $nav_active == 'stock-update' ? 'active' : '' }}" href="{{ url('/admin/stock-update') }}">
                     <i class="nav-icon fas fa-file-waveform"></i>
