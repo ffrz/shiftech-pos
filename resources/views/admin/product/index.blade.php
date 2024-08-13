@@ -124,11 +124,11 @@
                     <th>Kategori</th>
                     <th>Stok</th>
                     <th>Satuan</th>
-                    @if (Auth::user()->can(AclResource::EDIT_PRODUCT))
+                    @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
                       <th>Harga Beli</th>
                     @endif
                     <th>Harga Jual</th>
-                    @if (Auth::user()->can(AclResource::EDIT_PRODUCT))
+                    @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
                       <th style="width:5%">Aksi</th>
                     @endif
                   </tr>
@@ -144,11 +144,11 @@
                         {{ $item->type == Product::STOCKED ? format_number($item->stock) : '-' }}
                       </td>
                       <td>{{ $item->uom }}</td>
-                      @if (Auth::user()->can(AclResource::EDIT_PRODUCT))
+                      @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
                         <td class="text-right">{{ format_number($item->cost) }}</td>
                       @endif
                       <td class="text-right">{{ format_number($item->price) }}</td>
-                      @if (Auth::user()->can(AclResource::EDIT_PRODUCT))
+                      @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
                         <td class="text-center">
                           <div class="btn-group">
                             <a class="btn btn-default btn-sm" href="{{ url("/admin/product/detail/$item->id") }}"><i
@@ -166,7 +166,7 @@
                     </tr>
                   @empty
                     <tr class="empty">
-                      <td colspan="{{ Auth::user()->can(AclResource::EDIT_PRODUCT) ? 8 : 6 }}">Tidak ada rekaman yang dapat
+                      <td colspan="{{ Auth::user()->canAccess(AclResource::EDIT_PRODUCT) ? 8 : 6 }}">Tidak ada rekaman yang dapat
                         ditampilkan.</td>
                     </tr>
                   @endforelse
