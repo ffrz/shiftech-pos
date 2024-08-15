@@ -179,53 +179,59 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a class="nav-link {{ $nav_active == 'cash-transaction' ? 'active' : '' }}" href="{{ url('/admin/cash-transaction') }}">
-                  <i class="nav-icon fas fa-money-bill-transfer"></i>
-                  <p>Transaksi</p>
-                </a>
-              </li>
+              @if (Auth::user()->canAccess(AclResource::CASH_TRANSACTION_LIST))
+                <li class="nav-item">
+                  <a class="nav-link {{ $nav_active == 'cash-transaction' ? 'active' : '' }}" href="{{ url('/admin/cash-transaction') }}">
+                    <i class="nav-icon fas fa-money-bill-transfer"></i>
+                    <p>Transaksi</p>
+                  </a>
+                </li>
+              @endif
+              @if (Auth::user()->canAccess(AclResource::CASH_TRANSACTION_CATEGORY_MANAGEMENT))
               <li class="nav-item">
                 <a class="nav-link {{ $nav_active == 'cash-transaction-category' ? 'active' : '' }}" href="{{ url('/admin/cash-transaction-category') }}">
                   <i class="nav-icon fas fa-boxes"></i>
                   <p>Kategori Transaksi</p>
                 </a>
               </li>
+              @endif
+              @if (Auth::user()->canAccess(AclResource::CASH_ACCOUNT_LIST))
               <li class="nav-item">
                 <a class="nav-link {{ $nav_active == 'cash-account' ? 'active' : '' }}" href="{{ url('/admin/cash-account') }}">
                   <i class="nav-icon fas fa-money-check"></i>
                   <p>Akun / Rek</p>
                 </a>
               </li>
+              @endif
             </ul>
           </li>
         @endif
         {{-- End of Expense Menu --}}
 
         @if (Auth::user()->canAccess(AclResource::DEBT_MENU))
-        <li class="nav-item {{ $menu_active == 'debt' ? 'menu-open' : '' }}">
-          <a class="nav-link {{ $menu_active == 'debt' ? 'active' : '' }}" href="#">
-            <i class="nav-icon fas fa-file-invoice-dollar"></i>
-            <p>
-              Utang Piutang
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a class="nav-link {{ $nav_active == 'customer_debt' ? 'active' : '' }}" href="{{ url('/admin/debt/customer') }}">
-                <i class="nav-icon fas fa-file-waveform"></i>
-                <p>Piutang Pelanggan</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {{ $nav_active == 'supplier_debt' ? 'active' : '' }}" href="{{ url('/admin/debt/supplier') }}">
-                <i class="nav-icon fas fa-file-waveform"></i>
-                <p>Utang Pemasok</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+          <li class="nav-item {{ $menu_active == 'debt' ? 'menu-open' : '' }}">
+            <a class="nav-link {{ $menu_active == 'debt' ? 'active' : '' }}" href="#">
+              <i class="nav-icon fas fa-file-invoice-dollar"></i>
+              <p>
+                Utang Piutang
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a class="nav-link {{ $nav_active == 'customer_debt' ? 'active' : '' }}" href="{{ url('/admin/debt/customer') }}">
+                  <i class="nav-icon fas fa-file-waveform"></i>
+                  <p>Piutang Pelanggan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ $nav_active == 'supplier_debt' ? 'active' : '' }}" href="{{ url('/admin/debt/supplier') }}">
+                  <i class="nav-icon fas fa-file-waveform"></i>
+                  <p>Utang Pemasok</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         @endif
 
         {{-- Report Menu --}}

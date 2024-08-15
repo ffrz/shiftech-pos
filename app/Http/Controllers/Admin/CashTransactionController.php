@@ -14,27 +14,50 @@ use Illuminate\Support\Facades\Validator;
 
 class CashTransactionController extends Controller
 {
-    public function __construct()
+    public function index(Request $request)
     {
-        ensure_user_can_access(AclResource::CASH_TRANSACTION_MANAGEMENT);
-    }
+        ensure_user_can_access(AclResource::CASH_TRANSACTION_LIST);
 
-    public function index()
-    {
-        $items = CashTransaction::with(['account', 'category'])->orderBy('id', 'desc')->get();
+        $filter = [
+            'account_id' => (int)$request->get('account_id', $request->session()->get('cash-transaction.filter.account_id', -1)),
+            'date' => $request->get('date', $request->session()->get('cash-transaction.filter.date', current_date())),
+        ];
+
+        $actual_balance = 0;
+
+        $q = CashTransaction::with(['account', 'category']);
+        if ($filter['account_id'] != -1) {
+            $q->where('account_id', '=', $filter['account_id']);
+
+            $selectedAccountId = CashAccount::find($filter['account_id']);
+            if ($selectedAccountId) {
+                $actual_balance = $selectedAccountId->balance;
+            }
+        }
+        if ($filter['date'] != null) {
+            $q->where('date', '=', $filter['date']);
+        }
+
+        $request->session()->put('cash-transaction.filter.account_id', $filter['account_id']);
+        $request->session()->put('cash-transaction.filter.date', $filter['date']);
+
+        $items = $q->orderBy('id', 'desc')->get();
         $account_by_ids = [];
         $accounts = CashAccount::all();
         foreach ($accounts as $account) {
             $account_by_ids[$account->id] = $account;
         }
-        return view('admin.cash-transaction.index', compact('items', 'account_by_ids'));
+
+        return view('admin.cash-transaction.index', compact('items', 'account_by_ids', 'accounts', 'filter', 'actual_balance'));
     }
 
     public function edit(Request $request, $id = 0)
     {
         if ($id) {
+            ensure_user_can_access(AclResource::ADD_CASH_TRANSACTION);
             $item = CashTransaction::findOrFail($id);
         } else {
+            ensure_user_can_access(AclResource::EDIT_CASH_TRANSACTION);
             $item = new CashTransaction();
             $item->date = current_date();
         }
@@ -99,6 +122,7 @@ class CashTransactionController extends Controller
 
     public function delete($id)
     {
+        ensure_user_can_access(AclResource::DELETE_CASH_TRANSACTION);
         $item = CashTransaction::findOrFail($id);
         $account = CashAccount::find($item->account_id);
         $account->balance -= $item->amount;

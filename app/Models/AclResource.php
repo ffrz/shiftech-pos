@@ -25,8 +25,16 @@ class AclResource
     const SETTINGS = 'settings';
 
     const CASH_TRANSACTION_CATEGORY_MANAGEMENT = 'cash-transaction-category-management';
-    const CASH_ACCOUNT_MANAGEMENT = 'cash-account-management';
-    const CASH_TRANSACTION_MANAGEMENT = 'cash-transaction-management';
+
+    const CASH_ACCOUNT_LIST = 'cash-account-list';
+    const ADD_CASH_ACCOUNT = 'add-cash-account';
+    const EDIT_CASH_ACCOUNT = 'edit-cash-account';
+    const DELETE_CASH_ACCOUNT = 'delete-cash-account';
+
+    const CASH_TRANSACTION_LIST = 'cash-transaction-list';
+    const ADD_CASH_TRANSACTION = 'add-cash-transaction';
+    const EDIT_CASH_TRANSACTION = 'edit-cash-transaction';
+    const DELETE_CASH_TRANSACTION = 'delete-cash-transaction';
 
     const SERVICE_ORDER_LIST = 'service-order-list';
     const ADD_SERVICE_ORDER = 'add-service-order';
@@ -124,9 +132,19 @@ class AclResource
             ],
             'Keuangan' => [
                 self::FINANCE_MENU => 'Menu Keuangan',
-                self::CASH_ACCOUNT_MANAGEMENT => 'Kelola Akun / Rekening',
-                self::CASH_TRANSACTION_MANAGEMENT => 'Kelola Transaksi Keuangan',
                 self::CASH_TRANSACTION_CATEGORY_MANAGEMENT => 'Kelola Kategori Transaksi',
+                'Transaksi' => [
+                    self::CASH_TRANSACTION_LIST => 'Lihat',
+                    self::ADD_CASH_TRANSACTION => 'Tambah',
+                    self::EDIT_CASH_TRANSACTION => 'Ubah',
+                    self::DELETE_CASH_TRANSACTION => 'Hapus',
+                ],
+                'Akun / Rekening' => [
+                    self::CASH_ACCOUNT_LIST => 'Lihat',
+                    self::ADD_CASH_ACCOUNT => 'Tambah',
+                    self::EDIT_CASH_ACCOUNT => 'Ubah',
+                    self::DELETE_CASH_ACCOUNT => 'Hapus',
+                ],
             ],
             'Utang Piutang' => [
                 self::DEBT_MENU => 'Menu Utang / Piutang',

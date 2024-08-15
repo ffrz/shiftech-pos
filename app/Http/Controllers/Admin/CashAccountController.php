@@ -13,13 +13,9 @@ use Illuminate\Support\Facades\Validator;
 
 class CashAccountController extends Controller
 {
-    public function __construct()
-    {
-        ensure_user_can_access(AclResource::CASH_ACCOUNT_MANAGEMENT);
-    }
-
     public function index()
     {
+        ensure_user_can_access(AclResource::CASH_ACCOUNT_LIST);
         $items = CashAccount::orderBy('name', 'asc')->get();
         return view('admin.cash-account.index', compact('items'));
     }
@@ -27,11 +23,13 @@ class CashAccountController extends Controller
     public function edit(Request $request, $id = 0)
     {
         if (!$id) {
+            ensure_user_can_access(AclResource::ADD_CASH_ACCOUNT);
             $item = new CashAccount();
             $item->active = true;
             $item->type = 0;
         }
         else {
+            ensure_user_can_access(AclResource::EDIT_CASH_ACCOUNT);
             $item = CashAccount::findOrFail($id);
         }
 
@@ -84,6 +82,7 @@ class CashAccountController extends Controller
 
     public function delete($id)
     {
+        ensure_user_can_access(AclResource::DELETE_CASH_ACCOUNT);
         if (!$item = CashAccount::find($id)) {
             $message = 'Akun tidak ditemukan.';
         } else if ($item->delete($id)) {

@@ -1,3 +1,7 @@
+@php
+  use App\Models\AclResource;
+@endphp
+
 @extends('admin._layouts.default', [
     'title' => 'Akun Kas / Rekening',
     'menu_active' => 'finance',
@@ -6,7 +10,7 @@
 
 @section('right-menu')
   <li class="nav-item">
-    <a href="{{ url('/admin/cash-account/edit/0') }}" class="btn plus-btn btn-primary mr-2" title="Baru"><i
+    <a class="btn plus-btn btn-primary mr-2" href="{{ url('/admin/cash-account/edit/0') }}" title="Baru"><i
         class="fa fa-plus"></i></a>
   </li>
 @endSection
@@ -40,11 +44,15 @@
                     <td class="text-right">{{ format_number($item->balance) }}</td>
                     <td class="text-center">
                       <div class="btn-group">
-                        <a href="{{ url("/admin/cash-account/edit/$item->id") }}" class="btn btn-default btn-sm"><i
-                            class="fa fa-edit"></i></a>
-                        <a onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"
-                          href="{{ url("/admin/cash-account/delete/$item->id") }}" class="btn btn-danger btn-sm"><i
-                            class="fa fa-trash"></i></a>
+                        @if (Auth::user()->canAccess(AclResource::EDIT_CASH_ACCOUNT))
+                          <a class="btn btn-default btn-sm" href="{{ url("/admin/cash-account/edit/$item->id") }}"><i
+                              class="fa fa-edit"></i></a>
+                        @endif
+                        @if (Auth::user()->canAccess(AclResource::DELTE_CASH_ACCOUNT))
+                          <a class="btn btn-danger btn-sm" href="{{ url("/admin/cash-account/delete/$item->id") }}"
+                            onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"><i
+                              class="fa fa-trash"></i></a>
+                        @endif
                       </div>
                     </td>
                   </tr>
