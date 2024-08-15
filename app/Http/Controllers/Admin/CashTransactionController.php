@@ -53,13 +53,13 @@ class CashTransactionController extends Controller
 
     public function edit(Request $request, $id = 0)
     {
-        if ($id) {
+        if (!$id) {
             ensure_user_can_access(AclResource::ADD_CASH_TRANSACTION);
-            $item = CashTransaction::findOrFail($id);
-        } else {
-            ensure_user_can_access(AclResource::EDIT_CASH_TRANSACTION);
             $item = new CashTransaction();
             $item->date = current_date();
+        } else {
+            ensure_user_can_access(AclResource::EDIT_CASH_TRANSACTION);
+            $item = CashTransaction::findOrFail($id);
         }
         $item->type = $item->amount < 0 ? 'expense' : 'income';
 
