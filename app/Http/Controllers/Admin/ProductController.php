@@ -229,7 +229,7 @@ class ProductController extends Controller
             $item->save();
             $msg = ' telah dinonaktifkan.';
         } else {
-            $item->delte();
+            $item->delete();
             $msg = ' telah dihapus.';
         }
 

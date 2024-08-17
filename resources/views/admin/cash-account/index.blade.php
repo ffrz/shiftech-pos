@@ -48,7 +48,7 @@
                           <a class="btn btn-default btn-sm" href="{{ url("/admin/cash-account/edit/$item->id") }}"><i
                               class="fa fa-edit"></i></a>
                         @endif
-                        @if (Auth::user()->canAccess(AclResource::DELTE_CASH_ACCOUNT))
+                        @if (Auth::user()->canAccess(AclResource::DELETE_CASH_ACCOUNT))
                           <a class="btn btn-danger btn-sm" href="{{ url("/admin/cash-account/delete/$item->id") }}"
                             onclick="return confirm('Anda yakin akan menghapus rekaman ini?')"><i
                               class="fa fa-trash"></i></a>

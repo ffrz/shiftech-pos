@@ -22,11 +22,11 @@
         <div class="col-md-12">
           <form action="?" method="GET">
             @if ($actual_balance > 0)
-            <div class="row">
-              <div class="col">
-                <h3>Saldo Aktual: Rp. {{ format_number($actual_balance) }}</h3>
+              <div class="row">
+                <div class="col">
+                  <h3>Saldo Aktual: Rp. {{ format_number($actual_balance) }}</h3>
+                </div>
               </div>
-            </div>
             @endif
             <div class="row mb-3">
               <div class="col-lg-1">
