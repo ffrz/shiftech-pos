@@ -42,8 +42,8 @@
       <section>
         <h5>Laporan Pengeluaran</h5>
         <ul>
-            <li><a href="#">Laporan Rincian Pengeluaran</a></li>
-            <li><a href="#">Laporan Rekapitulasi Pengeluaran</a></li>
+            <li><a href="{{ url('admin/report/expense/monthly-expense-detail') }}">Laporan Rincian Pengeluaran Bulanan</a></li>
+            <li><a href="{{ url('admin/report/expense/monthly-expense-recap') }}">Laporan Rekapitulasi Pengeluaran Bulanan</a></li>
         </ul>
       </section>
       <section>

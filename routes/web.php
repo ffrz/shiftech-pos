@@ -65,6 +65,11 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
         Route::get('inventory-stock-detail-by-category', 'inventoryStockDetailByCategory');
     });
 
+    Route::controller(ReportController::class)->prefix('report/expense')->group(function () {
+        Route::get('monthly-expense-detail', 'monthlyExpenseDetail');
+        Route::get('monthly-expense-recap', 'monthlyExpenseRecap');
+    });
+
     Route::controller(ServiceOrderController::class)->prefix('service-order')->group(function () {
         Route::get('', 'index');
         Route::match(['get', 'post'], 'edit/{id}', 'edit');
