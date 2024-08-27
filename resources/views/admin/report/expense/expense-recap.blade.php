@@ -8,7 +8,7 @@
   <div class="card">
     <div class="card-body">
       <section>
-        <h5>Laporan Rincian Pengeluaran Bulanan</h5>
+        <h5>Laporan Rekapitulasi Pengeluaran</h5>
         <form action="?" method="GET">
           <div class="form-group">
             <label for="report-period">Periode:</label>

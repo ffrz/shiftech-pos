@@ -135,7 +135,7 @@ class ReportController extends Controller
     public function monthlyExpenseDetail(Request $request)
     {
         if (!$request->has('period')) {
-            return view('admin.report.expense.monthly-expense-detail');
+            return view('admin.report.expense.expense-detail');
         }
 
         $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
@@ -150,13 +150,13 @@ class ReportController extends Controller
         $items = $q->get();
         $categories = ExpenseCategory::query()->orderBy('name', 'asc')->get();
 
-        return view('admin.report.expense.print-monthly-expense-detail', compact('items', 'categories', 'period'));
+        return view('admin.report.expense.print-expense-detail', compact('items', 'categories', 'period'));
     }
 
     public function monthlyExpenseRecap(Request $request)
     {
         if (!$request->has('period')) {
-            return view('admin.report.expense.monthly-expense-recap');
+            return view('admin.report.expense.expense-recap');
         }
 
         $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
@@ -182,6 +182,6 @@ class ReportController extends Controller
 
         $items = $categoryByIds;
 
-        return view('admin.report.expense.print-monthly-expense-recap', compact('items', 'categories', 'period'));
+        return view('admin.report.expense.print-expense-recap', compact('items', 'categories', 'period'));
     }
 }

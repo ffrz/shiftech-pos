@@ -7,7 +7,7 @@
 ])
 
 @section('content')
-  <h5 class="text-center">LAPORAN REKAPITULASI PENGELUARAN BULANAN</h5>
+  <h5 class="text-center">LAPORAN REKAPITULASI PENGELUARAN</h5>
   <h5 class="text-center">{{ Str::upper(Setting::value('company.name')) }}</h5>
   <h6 class="text-center">Periode: {{ $period[0] . ' - ' . $period[1] }}</h6>
   <table class="report-table">
