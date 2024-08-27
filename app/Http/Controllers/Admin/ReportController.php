@@ -134,33 +134,38 @@ class ReportController extends Controller
 
     public function monthlyExpenseDetail(Request $request)
     {
-        $date = explode('-', $request->get('period', date('Y-m-01')));
-        $year = $date[0];
-        $month = $date[1];
+        if (!$request->has('period')) {
+            return view('admin.report.expense.monthly-expense-detail');
+        }
 
-        $period = [date("$year-$month-01"), date("$year-$month-t")];
+        $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
+
+        $startDate = datetime_from_input($period[0]);
+        $endDate = datetime_from_input($period[1]);
 
         $q = Expense::with('category')
-            ->whereRaw("(date between '$period[0]' and '$period[1]')");
+            ->whereRaw("(date between '$startDate' and '$endDate')");
         $q->orderBy('id', 'asc');
 
         $items = $q->get();
         $categories = ExpenseCategory::query()->orderBy('name', 'asc')->get();
 
-        $period = implode('-', $date);
-
-        return view('admin.report.expense.monthly-expense-detail', compact('items', 'categories', 'period'));
+        return view('admin.report.expense.print-monthly-expense-detail', compact('items', 'categories', 'period'));
     }
 
     public function monthlyExpenseRecap(Request $request)
     {
-        $date = explode('-', $request->get('period', date('Y-m-01')));
-        $year = $date[0];
-        $month = $date[1];
+        if (!$request->has('period')) {
+            return view('admin.report.expense.monthly-expense-recap');
+        }
 
-        $period = [date("$year-$month-01"), date("$year-$month-t")];
+        $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
 
-        $q = Expense::whereRaw("(date between '$period[0]' and '$period[1]')")->orderBy('id', 'asc');
+        $startDate = datetime_from_input($period[0]);
+        $endDate = datetime_from_input($period[1]);
+
+        $q = Expense::whereRaw("(date between '$startDate' and '$endDate')")->orderBy('id', 'asc');
+
         $expenses = $q->get();
 
         $categories = ExpenseCategory::query()->orderBy('name', 'asc')->get();
@@ -176,9 +181,7 @@ class ReportController extends Controller
         }
 
         $items = $categoryByIds;
-        $period = implode('-', $date);
 
-
-        return view('admin.report.expense.monthly-expense-recap', compact('items', 'categories', 'period'));
+        return view('admin.report.expense.print-monthly-expense-recap', compact('items', 'categories', 'period'));
     }
 }

@@ -1,50 +1,50 @@
-@php
-  use App\Models\Setting;
-@endphp
-
-@extends('admin._layouts.print-report', [
-    'title' => 'Laporan Rincian Pengeluaran Bulanan',
+@extends('admin._layouts.default', [
+    'title' => 'Laporan-laporan',
+    'menu_active' => 'report',
+    'nav_active' => 'report',
 ])
 
 @section('content')
-  <h5 class="text-center">LAPORAN RINCIAN PENGELUARAN BULANAN</h5>
-  <h5 class="text-center">{{ Setting::value('company.name') }}</h5>
-  <form action="?">
-    <h6 class="text-center"><label for="period">Periode:</label>
-      <input id="period" name="period" type="date" value="<?= isset($period) ? $period : '' ?>" onchange="this.form.submit()">
-    </h6>
-  </form>
-  <table class="report-table">
-    <thead style="background:#08e;color:#fff;">
-      <th>No</th>
-      <th>Tanggal</th>
-      <th>Kategori</th>
-      <th>Deskripsi</th>
-      <th>Jumlah</th>
-      <th>Keterangan</th>
-    </thead>
-    <tbody>
-      @php $sum_cost = 0 @endphp
-      @forelse ($items as $num => $item)
-        <tr style="vertical-align:top;">
-          <td class="text-right">{{ $num + 1 }}</td>
-          <td class="text-right">{{ $item->date }}</td>
-          <td>{{ $item->category ? $item->category->name : '-' }}</td>
-          <td style="white-space:nowrap">{{ $item->description }}</td>
-          <td class="text-right">{{ format_number($item->amount) }}</td>
-          <td style="white-space:nowrap">{{ $item->notes }}</td>
-        </tr>
-        @php $sum_cost += $item->amount @endphp
-      @empty
-        <tr>
-          <td colspan="6" class="text-center font-italic text-muted">Tidak ada rekaman</td>
-        </tr>
-      @endforelse
-    </tbody>
-    <tfoot style="background:#08e;color:#fff;">
-      <th colspan="4">Total</th>
-      <th class="text-right">{{ format_number($sum_cost) }}</th>
-      <th></th>
-    </tfoot>
-  </table>
+  <div class="card">
+    <div class="card-body">
+      <section>
+        <h5>Laporan Rincian Pengeluaran Bulanan</h5>
+        <form action="?" method="GET">
+          <div class="form-group">
+            <label for="report-period">Periode:</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="far fa-calendar-alt"></i>
+                </span>
+              </div>
+              <input class="form-control float-right" id="report-period" type="text" name="period">
+            </div>
+            @error('period')
+              <span class="text-danger">
+                {{ $message }}
+              </span>
+            @enderror
+          </div>
+          <div class="form-group">
+            <button class="btn btn-sm btn-primary" type="submit" title="Cetak Laporan">
+              <i class="fa fa-print"></i> Cetak Laporan
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
 @endSection
+
+@section('footscript')
+  <script>
+    $(document).ready(function() {
+      $('#report-period').daterangepicker({
+        locale: {
+            format: DATE_FORMAT
+        }
+      });
+    });
+  </script>
+@endsection

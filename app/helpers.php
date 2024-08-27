@@ -173,6 +173,14 @@ function extract_daterange($daterange)
     return false;
 }
 
+function extract_daterange_from_input($daterange)
+{
+    if (preg_match("/^((0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}) - ((0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4})$/", $daterange, $matches)) {
+        return [$matches[1], $matches[4]];
+    }
+    return false;
+}
+
 function format_number($number, int $prec = 0)
 {
     return number_format(floatval($number), $prec, ',', '.');
