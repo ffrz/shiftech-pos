@@ -39,7 +39,8 @@
               <div class="col-sm-8">
                 <select class="custom-select select2" id="type" name="type">
                   <option value="-1" <?= $filter['type'] == -1 ? 'selected' : '' ?>>Semua</option>
-                  <option value="{{ Product::NON_STOCKED }}" {{ $filter['type'] == Product::NON_STOCKED ? 'selected' : '' }}>
+                  <option value="{{ Product::NON_STOCKED }}"
+                    {{ $filter['type'] == Product::NON_STOCKED ? 'selected' : '' }}>
                     {{ Product::formatType(Product::NON_STOCKED) }}</option>
                   <option value="{{ Product::STOCKED }}" {{ $filter['type'] == Product::STOCKED ? 'selected' : '' }}>
                     {{ Product::formatType(Product::STOCKED) }}</option>
@@ -106,18 +107,27 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-6">
+            @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
+              <div class="form-group form-inline">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" id="showCost" value="true">
+                  <label for="showCost" class="custom-control-label">Tampilkan Modal</label>
+                </div>
+              </div>
+            @endif
           </div>
           <div class="col-md-6 d-flex justify-content-end">
             <div class="form-group form-inline">
               <label class="mr-2" for="search">Cari:</label>
-              <input class="form-control" id="search" name="search" type="text" value="{{ $filter['search'] }}" placeholder="Cari produk">
+              <input class="form-control" id="search" name="search" type="text"
+                value="{{ $filter['search'] }}" placeholder="Cari produk">
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive">
-              <table class="table table-bordered table-striped table-sm">
+              <table class="table-bordered table-striped table-sm table">
                 <thead>
                   <tr>
                     <th>Kode</th>
@@ -126,7 +136,7 @@
                     <th>Stok</th>
                     <th>Satuan</th>
                     @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
-                      <th>Harga Beli</th>
+                      <th class="cost">Harga Beli</th>
                     @endif
                     <th>Harga Jual</th>
                     @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
@@ -141,12 +151,13 @@
                       <td>{{ $item->idFormatted() }}</td>
                       <td>{{ $item->code }}</td>
                       <td>{!! $item->category ? e($item->category->name) : '<i>Tanpa Kategori</i>' !!}</td>
-                      <td class="text-right {{ $item->type == Product::STOCKED && $is_at_low_stock ? 'text-danger' : '' }}">
+                      <td
+                        class="{{ $item->type == Product::STOCKED && $is_at_low_stock ? 'text-danger' : '' }} text-right">
                         {{ $item->type == Product::STOCKED ? format_number($item->stock) : '-' }}
                       </td>
                       <td>{{ $item->uom }}</td>
                       @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
-                        <td class="text-right">{{ format_number($item->cost) }}</td>
+                        <td class="cost text-right">{{ format_number($item->cost) }}</td>
                       @endif
                       <td class="text-right">{{ format_number($item->price) }}</td>
                       @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
@@ -167,7 +178,8 @@
                     </tr>
                   @empty
                     <tr class="empty">
-                      <td colspan="{{ Auth::user()->canAccess(AclResource::EDIT_PRODUCT) ? 8 : 6 }}">Tidak ada rekaman yang dapat
+                      <td colspan="{{ Auth::user()->canAccess(AclResource::EDIT_PRODUCT) ? 8 : 6 }}">Tidak ada rekaman
+                        yang dapat
                         ditampilkan.</td>
                     </tr>
                   @endforelse
@@ -180,4 +192,20 @@
       </div>
     </div>
   </form>
+@endSection
+@section('footscript')
+  <script>
+    $(document).ready(function() {
+      function onShowCostCheckboxToggled() {
+        if ($('#showCost').prop('checked')) {
+          $('.cost').show()
+        } else {
+          $('.cost').hide()
+        }
+      }
+
+      $('#showCost').change(onShowCostCheckboxToggled)
+      onShowCostCheckboxToggled()
+    })
+  </script>
 @endSection
