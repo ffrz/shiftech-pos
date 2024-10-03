@@ -88,7 +88,8 @@
                 <select class="custom-select select2" id="stock_status" name="stock_status">
                   <option value="-1" {{ $filter['stock_status'] == -1 ? 'selected' : '' }}>Semua</option>
                   <option value="0" {{ $filter['stock_status'] == 0 ? 'selected' : '' }}>Kosong</option>
-                  <option value="1" {{ $filter['stock_status'] == 1 ? 'selected' : '' }}>Stok Minimum</option>
+                  <option value="1" {{ $filter['stock_status'] == 1 ? 'selected' : '' }}>Minimum</option>
+                  <option value="2" {{ $filter['stock_status'] == 2 ? 'selected' : '' }}>Tersedia</option>
                 </select>
               </div>
             </div>

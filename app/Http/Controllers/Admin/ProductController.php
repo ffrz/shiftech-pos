@@ -64,6 +64,8 @@ class ProductController extends Controller
             $q->where('stock', '=', 0);
         } else if ($filter['stock_status'] == 1) {
             $q->whereRaw('stock < minimum_stock');
+        } else if ($filter['stock_status'] == 2) {
+            $q->whereRaw('stock > 0');
         }
 
         if (!empty($filter['search'])) {
