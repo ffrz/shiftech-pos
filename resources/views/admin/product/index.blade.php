@@ -115,6 +115,12 @@
                 </div>
               </div>
             @endif
+            <div class="form-group form-inline">
+              <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="simpleMode" value="true" checked>
+                <label for="simpleMode" class="custom-control-label">Mode Simple</label>
+              </div>
+            </div>
           </div>
           <div class="col-md-6 d-flex justify-content-end">
             <div class="form-group form-inline">
@@ -132,13 +138,13 @@
                   <tr>
                     <th>Kode</th>
                     <th>Nama</th>
-                    <th>Kategori</th>
+                    <th class="category">Kategori</th>
                     <th>Stok</th>
-                    <th>Satuan</th>
+                    <th class="uom">Satuan</th>
                     @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
-                      <th class="cost">Harga Beli</th>
+                      <th class="cost">Modal</th>
                     @endif
-                    <th>Harga Jual</th>
+                    <th>Harga</th>
                     @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
                       <th style="width:5%">Aksi</th>
                     @endif
@@ -150,12 +156,12 @@
                     <tr class="{{ $filter['active'] == -1 && !$item->active ? 'table-danger' : '' }}">
                       <td>{{ $item->idFormatted() }}</td>
                       <td>{{ $item->code }}</td>
-                      <td>{!! $item->category ? e($item->category->name) : '<i>Tanpa Kategori</i>' !!}</td>
+                      <td class="category">{!! $item->category ? e($item->category->name) : '<i>Tanpa Kategori</i>' !!}</td>
                       <td
                         class="{{ $item->type == Product::STOCKED && $is_at_low_stock ? 'text-danger' : '' }} text-right">
                         {{ $item->type == Product::STOCKED ? format_number($item->stock) : '-' }}
                       </td>
-                      <td>{{ $item->uom }}</td>
+                      <td class="uom">{{ $item->uom }}</td>
                       @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
                         <td class="cost text-right">{{ format_number($item->cost) }}</td>
                       @endif
@@ -204,8 +210,20 @@
         }
       }
 
+      function onShowSimpleModeToggled() {
+        if ($('#simpleMode').prop('checked')) {
+          $('.category').hide()
+          $('.uom').hide()
+        } else {
+          $('.category').show()
+          $('.uom').show()
+        }
+      }
+
       $('#showCost').change(onShowCostCheckboxToggled)
+      $('#simpleMode').change(onShowSimpleModeToggled)
       onShowCostCheckboxToggled()
+      onShowSimpleModeToggled()
     })
   </script>
 @endSection
