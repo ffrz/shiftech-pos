@@ -32,7 +32,7 @@ class ExpenseController extends Controller
             $q->where('description', 'like', '%' . $filter['search'] . '%');
         }
 
-        if ($filter['category_id'] != -1) {
+        if (!empty($filter['category_id']) && $filter['category_id'] != -1) {
             $q->where('category_id', '=', $filter['category_id']);
         }
 

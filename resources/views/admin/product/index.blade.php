@@ -39,7 +39,8 @@
               <div class="col-sm-8">
                 <select class="custom-select select2" id="type" name="type">
                   <option value="-1" <?= $filter['type'] == -1 ? 'selected' : '' ?>>Semua</option>
-                  <option value="{{ Product::NON_STOCKED }}" {{ $filter['type'] == Product::NON_STOCKED ? 'selected' : '' }}>
+                  <option value="{{ Product::NON_STOCKED }}"
+                    {{ $filter['type'] == Product::NON_STOCKED ? 'selected' : '' }}>
                     {{ Product::formatType(Product::NON_STOCKED) }}</option>
                   <option value="{{ Product::STOCKED }}" {{ $filter['type'] == Product::STOCKED ? 'selected' : '' }}>
                     {{ Product::formatType(Product::STOCKED) }}</option>
@@ -88,7 +89,8 @@
                 <select class="custom-select select2" id="stock_status" name="stock_status">
                   <option value="-1" {{ $filter['stock_status'] == -1 ? 'selected' : '' }}>Semua</option>
                   <option value="0" {{ $filter['stock_status'] == 0 ? 'selected' : '' }}>Kosong</option>
-                  <option value="1" {{ $filter['stock_status'] == 1 ? 'selected' : '' }}>Stok Minimum</option>
+                  <option value="1" {{ $filter['stock_status'] == 1 ? 'selected' : '' }}>Minimum</option>
+                  <option value="2" {{ $filter['stock_status'] == 2 ? 'selected' : '' }}>Tersedia</option>
                 </select>
               </div>
             </div>
@@ -105,29 +107,44 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-6">
+            @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
+              <div class="form-group form-inline">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" id="showCost" value="true">
+                  <label for="showCost" class="custom-control-label">Tampilkan Modal</label>
+                </div>
+              </div>
+            @endif
+            <div class="form-group form-inline">
+              <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="simpleMode" value="true" checked>
+                <label for="simpleMode" class="custom-control-label">Mode Simple</label>
+              </div>
+            </div>
           </div>
           <div class="col-md-6 d-flex justify-content-end">
             <div class="form-group form-inline">
               <label class="mr-2" for="search">Cari:</label>
-              <input class="form-control" id="search" name="search" type="text" value="{{ $filter['search'] }}" placeholder="Cari produk">
+              <input class="form-control" id="search" name="search" type="text"
+                value="{{ $filter['search'] }}" placeholder="Cari produk">
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive">
-              <table class="table table-bordered table-striped table-sm">
+              <table class="table-bordered table-striped table-sm table">
                 <thead>
                   <tr>
                     <th>Kode</th>
                     <th>Nama</th>
-                    <th>Kategori</th>
+                    <th class="category">Kategori</th>
                     <th>Stok</th>
-                    <th>Satuan</th>
+                    <th class="uom">Satuan</th>
                     @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
-                      <th>Harga Beli</th>
+                      <th class="cost">Modal</th>
                     @endif
-                    <th>Harga Jual</th>
+                    <th>Harga</th>
                     @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
                       <th style="width:5%">Aksi</th>
                     @endif
@@ -139,13 +156,14 @@
                     <tr class="{{ $filter['active'] == -1 && !$item->active ? 'table-danger' : '' }}">
                       <td>{{ $item->idFormatted() }}</td>
                       <td>{{ $item->code }}</td>
-                      <td>{!! $item->category ? e($item->category->name) : '<i>Tanpa Kategori</i>' !!}</td>
-                      <td class="text-right {{ $item->type == Product::STOCKED && $is_at_low_stock ? 'text-danger' : '' }}">
+                      <td class="category">{!! $item->category ? e($item->category->name) : '<i>Tanpa Kategori</i>' !!}</td>
+                      <td
+                        class="{{ $item->type == Product::STOCKED && $is_at_low_stock ? 'text-danger' : '' }} text-right">
                         {{ $item->type == Product::STOCKED ? format_number($item->stock) : '-' }}
                       </td>
-                      <td>{{ $item->uom }}</td>
+                      <td class="uom">{{ $item->uom }}</td>
                       @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
-                        <td class="text-right">{{ format_number($item->cost) }}</td>
+                        <td class="cost text-right">{{ format_number($item->cost) }}</td>
                       @endif
                       <td class="text-right">{{ format_number($item->price) }}</td>
                       @if (Auth::user()->canAccess(AclResource::EDIT_PRODUCT))
@@ -166,7 +184,8 @@
                     </tr>
                   @empty
                     <tr class="empty">
-                      <td colspan="{{ Auth::user()->canAccess(AclResource::EDIT_PRODUCT) ? 8 : 6 }}">Tidak ada rekaman yang dapat
+                      <td colspan="{{ Auth::user()->canAccess(AclResource::EDIT_PRODUCT) ? 8 : 6 }}">Tidak ada rekaman
+                        yang dapat
                         ditampilkan.</td>
                     </tr>
                   @endforelse
@@ -179,4 +198,32 @@
       </div>
     </div>
   </form>
+@endSection
+@section('footscript')
+  <script>
+    $(document).ready(function() {
+      function onShowCostCheckboxToggled() {
+        if ($('#showCost').prop('checked')) {
+          $('.cost').show()
+        } else {
+          $('.cost').hide()
+        }
+      }
+
+      function onShowSimpleModeToggled() {
+        if ($('#simpleMode').prop('checked')) {
+          $('.category').hide()
+          $('.uom').hide()
+        } else {
+          $('.category').show()
+          $('.uom').show()
+        }
+      }
+
+      $('#showCost').change(onShowCostCheckboxToggled)
+      $('#simpleMode').change(onShowSimpleModeToggled)
+      onShowCostCheckboxToggled()
+      onShowSimpleModeToggled()
+    })
+  </script>
 @endSection

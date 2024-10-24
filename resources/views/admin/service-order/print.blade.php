@@ -8,7 +8,7 @@
 @section('content')
   <div class="no-print text-center">
     <br>
-    <a class="btn" href="{{ url('admin/service-order/edit') }}">+ Order Baru</a>
+    <a class="btn" href="{{ url('admin/service-order/edit/0') }}">+ Order Baru</a>
     <a class="btn" href="{{ url('admin/service-order') }}">&leftarrow; List Order Servis</a>
     <a class="btn" href="{{ url('admin/service-order/detail/' . $item->id) }}">&leftarrow; Rincian</a>
     <br><br><br>
