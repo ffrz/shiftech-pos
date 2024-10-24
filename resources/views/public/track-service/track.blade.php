@@ -126,41 +126,6 @@
                   <td>:</td>
                   <td>{{ ServiceOrder::formatServiceStatus($item->service_status) }}</td>
                 </tr>
-                @if ($item->date_received)
-                  <tr>
-                    <td>Tanggal Diterima</td>
-                    <td>:</td>
-                    <td>{{ format_date($item->date_received) }}</td>
-                  </tr>
-                @endif
-                @if ($item->date_checked)
-                  <tr>
-                    <td>Tanggal Diperiksa</td>
-                    <td>:</td>
-                    <td>{{ format_date($item->date_checked) }}</td>
-                  </tr>
-                @endif
-                @if ($item->date_worked)
-                  <tr>
-                    <td>Tanggal Dikerjakan</td>
-                    <td>:</td>
-                    <td>{{ format_date($item->date_worked) }}</td>
-                  </tr>
-                @endif
-                @if ($item->date_completed)
-                  <tr>
-                    <td>Tanggal Selesai</td>
-                    <td>:</td>
-                    <td>{{ $item->date_completed ? format_date($item->date_completed) : '-' }}</td>
-                  </tr>
-                @endif
-                @if ($item->date_picked)
-                  <tr>
-                    <td>Tanggal Diambil</td>
-                    <td>:</td>
-                    <td>{{ $item->date_picked ? format_date($item->date_picked) : '-' }}</td>
-                  </tr>
-                @endif
                 <tr>
                   <td>Teknisi</td>
                   <td>:</td>
@@ -198,9 +163,54 @@
               <p>{!! empty($item->notes) ? '- tidak ada catatan -' : nl2br(e($item->notes)) !!}</p>
             </div>
           </div>
-        </div> {{-- .card-body --}}
-      </div>
+          <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4>Info Status Servis</h4>
+              <ul class="timeline">
+                @if ($item->date_received)
+                  <li>
+                    <div class="timeline-title">{{ carbon_format_date($item->date_received, 'l, j F Y') }}</div>
+                    <p>Barang diterima</p>
+                  </li>
+                @endif
+                @if ($item->date_checked)
+                  <li>
+                    <div class="timeline-title">{{ carbon_format_date($item->date_received, 'l, j F Y') }}</div>
+                    <p>Barang sedang diperiksa</p>
+                  </li>
+                @endif
+                @if ($item->date_worked)
+                  <li>
+                    <div class="timeline-title">{{ carbon_format_date($item->date_worked, 'l, j F Y') }}</div>
+                    <p>Servis sedang dikerjakan</p>
+                  </li>
+                @endif
+                @if ($item->date_completed)
+                  <li>
+                    <div class="timeline-title">{{ carbon_format_date($item->date_picked, 'l, j F Y') }}</div>
+                    <div>Servis Selesai</div>
+                    @if ($item->service_status == ServiceOrder::SERVICE_STATUS_SUCCESS || $item->service_status == ServiceOrder::SERVICE_STATUS_FAILED)
+                      <div>
+                        <span class="btn btn-sm {{ ServiceOrder::SERVICE_STATUS_SUCCESS ? 'btn-success' : (ServiceOrder::SERVICE_STATUS_FAILED ? 'btn-danger' : '') }}">
+                          {{ $item->service_status == ServiceOrder::SERVICE_STATUS_SUCCESS ? 'Sukses' : '' }}
+                        </span>
+                      </div>
+                    @endif
+                  </li>
+                @endif
+                @if ($item->date_completed)
+                  <li>
+                    <div class="timeline-title">{{ carbon_format_date($item->date_picked, 'l, j F Y') }}</div>
+                    <p>Barang telah diambil</p>
+                  </li>
+                @endif
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> {{-- .card-body --}}
     </div>
+  </div>
   </div>
 </body>
 

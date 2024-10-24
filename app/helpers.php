@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 function encrypt_id($string)
@@ -213,6 +214,14 @@ function format_date($date, $format = 'dd-MM-yyyy', $locale = null)
         $date = new DateTime($date);
     }
     return IntlDateFormatter::formatObject($date, $format, $locale);
+}
+
+function carbon_format_date($date, $format = 'd m Y', $locale = null)
+{
+    if (!$date instanceof Carbon) {
+        $date = new Carbon($date);
+    }
+    return $date->format($format);
 }
 
 function month_names($month)

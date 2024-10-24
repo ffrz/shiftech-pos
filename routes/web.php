@@ -22,12 +22,11 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UserActivityController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserGroupController;
-use App\Http\Controllers\Public\ServiceOrderController as PublicServiceOrderController;
 use App\Http\Controllers\Public\TrackServiceController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\OnlyAdmin;
 use App\Http\Middleware\OnlyGuest;
-
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,8 +40,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+setlocale(LC_TIME, 'id_ID');
+Carbon::setLocale('id_ID');
+
 Route::redirect('/', '/admin');
 Route::redirect('/admin', '/admin/dashboard');
+Route::get('/track-service-order/{key}', [TrackServiceController::class, 'track']);
 
 Route::middleware([OnlyGuest::class])->group(function () {
     Route::get('admin/login', [AuthController::class, 'login'])->name('login');
