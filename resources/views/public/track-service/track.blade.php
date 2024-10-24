@@ -198,7 +198,7 @@
                     @endif
                   </li>
                 @endif
-                @if ($item->date_completed)
+                @if ($item->date_picked)
                   <li>
                     <div class="timeline-title">{{ carbon_format_date($item->date_picked, 'l, j F Y') }}</div>
                     <p>Barang telah diambil</p>
