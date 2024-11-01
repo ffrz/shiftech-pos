@@ -9,6 +9,7 @@ use App\Models\ExpenseCategory;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\StockUpdate;
+use App\Models\StockUpdateDetail;
 use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,5 +45,54 @@ class SalesReportController extends Controller
         );
 
         return view('admin.report.sales.print-net-income-statement', compact('total_cost', 'total_sales', 'period'));
+    }
+
+    public function salesDetail(Request $request)
+    {
+        if (!$request->has('period')) {
+            return view('admin.report.sales.sales-detail');
+        }
+
+        $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
+
+        $startDate = datetime_from_input($period[0]);
+        $endDate = datetime_from_input($period[1]);
+        $status = StockUpdate::STATUS_COMPLETED;
+        $sales = StockUpdate::TYPE_SALES_ORDER;
+
+        // Mengambil data dari penjualan yang statusnya selesai
+        $items = StockUpdate::whereRaw("(date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales")->get();
+        // $items = DB::select(
+        //     "select * from stock_updates where (date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales"
+        // );
+
+        return view('admin.report.sales.print-sales-detail', compact('items', 'period'));
+    }
+
+    public function salesDetail2(Request $request)
+    {
+        if (!$request->has('period')) {
+            return view('admin.report.sales.sales-detail');
+        }
+
+        $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
+
+        $startDate = datetime_from_input($period[0]);
+        $endDate = datetime_from_input($period[1]);
+        $status = StockUpdate::STATUS_COMPLETED;
+        $sales = StockUpdate::TYPE_SALES_ORDER;
+
+        // Mengambil data dari penjualan yang statusnya selesai
+        $items = StockUpdate::with(["details", "details.product"])
+            ->whereRaw("(date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales")
+            ->orderBy('datetime', 'asc')->get();
+
+
+
+        // $items = DB::select(
+        //     "select * from stock_updates where (date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales"
+        // );
+
+        return view('admin.report.sales.print-sales-detail2', compact('items', 'period'));
     }
 }

@@ -63,6 +63,9 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
 
     Route::controller(SalesReportController::class)->prefix('report/sales')->group(function () {
         Route::get('net-income-statement', 'netIncomeStatement');
+        Route::get('sales-detail', 'salesDetail');
+        Route::get('sales-detail2', 'salesDetail2');
+        Route::get('sales-recap', 'salesRecap');
     });
 
     Route::controller(ReportController::class)->prefix('report')->group(function () {
@@ -72,8 +75,6 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
         Route::get('inventory-stock-recap-by-category', 'inventoryStockRecapByCategory');
         Route::get('inventory-stock-detail-by-category', 'inventoryStockDetailByCategory');
     });
-
-
 
     Route::controller(ReportController::class)->prefix('report/expense')->group(function () {
         Route::get('monthly-expense-detail', 'monthlyExpenseDetail');
