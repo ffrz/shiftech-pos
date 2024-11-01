@@ -10,9 +10,9 @@
       <section>
         <h5>Laporan Penjualan</h5>
         <ul>
-          <li><a href="#">Laporan Rincian Penjualan</a></li>
-          <li><a href="#">Laporan Rekapitulasi Penjualan</a></li>
-          <li><a href="{{ url('admin/report/net-income-statement') }}">Laporan Laba / Rugi</a></li>
+          <li><a href="{{ url('admin/report/sales/sales-detail') }}">Laporan Rincian Penjualan</a></li>
+          <li><a href="{{ url('admin/report/sales/sales-recap') }}">Laporan Rekapitulasi Penjualan</a></li>
+          <li><a href="{{ url('admin/report/sales/net-income-statement') }}">Laporan Laba / Rugi</a></li>
         </ul>
       </section>
       <section>

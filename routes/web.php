@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ExpenseCategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\Report\SalesReportController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
@@ -60,6 +61,10 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
 
     Route::get('dashboard', [DashboardController::class, 'index']);
 
+    Route::controller(SalesReportController::class)->prefix('report/sales')->group(function () {
+        Route::get('net-income-statement', 'netIncomeStatement');
+    });
+
     Route::controller(ReportController::class)->prefix('report')->group(function () {
         Route::get('', 'index');
         Route::get('inventory-stock', 'inventoryStock');
@@ -67,6 +72,8 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
         Route::get('inventory-stock-recap-by-category', 'inventoryStockRecapByCategory');
         Route::get('inventory-stock-detail-by-category', 'inventoryStockDetailByCategory');
     });
+
+
 
     Route::controller(ReportController::class)->prefix('report/expense')->group(function () {
         Route::get('monthly-expense-detail', 'monthlyExpenseDetail');
