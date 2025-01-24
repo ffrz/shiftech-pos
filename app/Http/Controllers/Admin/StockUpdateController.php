@@ -3,21 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\AclResource;
 use App\Models\Product;
-use App\Models\ProductCategory;
 use App\Models\StockUpdate;
 use App\Models\StockUpdateDetail;
-use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class StockUpdateController extends Controller
 {
-    public function __construct()
-    {
-    }
 
     public function index()
     {
@@ -50,19 +43,12 @@ class StockUpdateController extends Controller
             DB::commit();
 
             $message = 'Rekaman ' . e($item->id2Formatted()) . ' telah dihapus.';
-            // UserActivity::log(
-            //     UserActivity::STOCK_ADJUSTMENT_MANAGEMENT,
-            //     'Hapus Stok Opname',
-            //     $message,
-            //     $item->toArray()
-            // );
-
         }
         $goto = $request->get('goto', url('admin/stock-update'));
 
         return redirect($goto)->with('info', $message);
     }
-    
+
     public function detail(Request $request, $id)
     {
         $item = StockUpdate::with(['created_by', 'closed_by'])->find($id);

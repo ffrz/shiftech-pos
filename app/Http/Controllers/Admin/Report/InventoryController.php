@@ -1,49 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Report;
 
-use App\Http\Controllers\Controller;
-use App\Models\AclResource;
+use App\Http\Controllers\Admin\Report\BaseController;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Product;
 use App\Models\ProductCategory;
-use App\Models\UserActivity;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class ReportController extends Controller
+class InventoryController extends BaseController
 {
-    public function __construct()
-    {
-        ensure_user_can_access(AclResource::VIEW_REPORTS);
-    }
-
-    public function index()
-    {
-        return view('admin.report.index');
-    }
-
-    public function inventoryStock()
+    public function stock()
     {
         $items = Product::where('type', '=', Product::STOCKED)
             ->orderBy('code', 'asc')
             ->get();
 
-        return view('admin.report.inventory-stock', compact('items'));
+        return view('admin.report.inventory.stock', compact('items'));
     }
 
-    public function inventoryMinimumStock()
+    public function minimumStock()
     {
         $items = Product::where('type', '=', Product::STOCKED)
             ->whereRaw('stock < minimum_stock')
             ->orderBy('code', 'asc')
             ->get();
 
-        return view('admin.report.inventory-minimum-stock', compact('items'));
+        return view('admin.report.inventory.minimum-stock', compact('items'));
     }
 
-    public function inventoryStockRecapByCategory()
+    public function stockRecapByCategory()
     {
         $records = ProductCategory::orderBy('name', 'asc')->get();
         $uncategorized = [
@@ -81,10 +68,10 @@ class ReportController extends Controller
             'total_price' => $total_price,
         ];
 
-        return view('admin.report.inventory-stock-recap-by-category', compact('data'));
+        return view('admin.report.inventory.stock-recap-by-category', compact('data'));
     }
 
-    public function inventoryStockDetailByCategory()
+    public function stockDetailByCategory()
     {
         $records = ProductCategory::orderBy('name', 'asc')->get();
         $uncategorized = [
@@ -129,59 +116,6 @@ class ReportController extends Controller
             'total_price' => $total_price,
         ];
 
-        return view('admin.report.inventory-stock-detail-by-category', compact('data'));
-    }
-
-    public function monthlyExpenseDetail(Request $request)
-    {
-        if (!$request->has('period')) {
-            return view('admin.report.expense.expense-detail');
-        }
-
-        $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
-
-        $startDate = datetime_from_input($period[0]);
-        $endDate = datetime_from_input($period[1]);
-
-        $q = Expense::with('category')
-            ->whereRaw("(date between '$startDate' and '$endDate')");
-        $q->orderBy('id', 'asc');
-
-        $items = $q->get();
-        $categories = ExpenseCategory::query()->orderBy('name', 'asc')->get();
-
-        return view('admin.report.expense.print-expense-detail', compact('items', 'categories', 'period'));
-    }
-
-    public function monthlyExpenseRecap(Request $request)
-    {
-        if (!$request->has('period')) {
-            return view('admin.report.expense.expense-recap');
-        }
-
-        $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
-
-        $startDate = datetime_from_input($period[0]);
-        $endDate = datetime_from_input($period[1]);
-
-        $q = Expense::whereRaw("(date between '$startDate' and '$endDate')")->orderBy('id', 'asc');
-
-        $expenses = $q->get();
-
-        $categories = ExpenseCategory::query()->orderBy('name', 'asc')->get();
-        $categoryByIds = [];
-
-        foreach ($categories as $category) {
-            $categoryByIds[$category->id] = $category;
-            $category->total = 0;
-        }
-
-        foreach ($expenses as $expense) {
-            $categoryByIds[$expense->category_id]->total += $expense->amount;
-        }
-
-        $items = $categoryByIds;
-
-        return view('admin.report.expense.print-expense-recap', compact('items', 'categories', 'period'));
+        return view('admin.report.inventory.stock-detail-by-category', compact('data'));
     }
 }

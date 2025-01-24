@@ -92,7 +92,6 @@ class SalesOrderController extends Controller
         }
 
         if ($request->method() == 'POST') {
-            $data = ['Old Data' => $item->toArray()];
             $item->fill($request->all());
 
             if (empty($item->party_id)) {
@@ -110,7 +109,6 @@ class SalesOrderController extends Controller
             DB::beginTransaction();
             if (!$item->party_id) {
                 if (!empty($item->party_name)) {
-
                     $party = new Party();
                     $party->type = Party::TYPE_CUSTOMER;
                     $party->name = $request->party_name;
@@ -135,23 +133,23 @@ class SalesOrderController extends Controller
             $item->total_price = 0;
 
             DB::delete('delete from stock_update_details where update_id = ?', [$item->id]);
+
             if (!empty($request->product_id)) {
                 foreach ($request->product_id as $row_id => $product_id) {
                     $product = $product_by_ids[$product_id];
-                    $d = new StockUpdateDetail();
-                    $d->id = $row_id;
-                    $d->update_id = $item->id;
-                    $d->product_id = $product_id;
-                    $d->quantity = -number_from_input($request->qty[$row_id]);
-                    $d->cost = $product->cost;
-                    $d->stock_before = $product->stock;
-                    $d->price = number_from_input($request->price[$row_id]);
+                    $d = new StockUpdateDetail([
+                        'id' => $row_id,
+                        'update_id' => $item->id,
+                        'product_id' => $product_id,
+                        'quantity' => -number_from_input($request->qty[$row_id]),
+                        'cost' => $product->cost,
+                        'stock_before' => $product->stock,
+                        'price' => number_from_input($request->price[$row_id]),
+                    ]);
+
                     $item->total_cost += ($d->cost * $d->quantity);
                     $item->total_price += ($d->price * $d->quantity);
-
-                    // saat ini belum ada diskon dan pajak, cukup set total dari total harga
                     $item->total = $item->total_price;
-
                     $d->save();
                 }
             }
@@ -161,23 +159,22 @@ class SalesOrderController extends Controller
                 foreach ($details as $detail) {
                     $product = $detail->product;
                     if ($product->type == Product::STOCKED) {
-                        $product->stock += $detail->quantity; // qty negative
+                        $product->stock += $detail->quantity;
                         $product->save();
                     }
                 }
             }
 
             $item->save();
-
-            $data['New Data'] = $item->toArray();
-
             DB::commit();
-
             if ($item->status == StockUpdate::STATUS_OPEN) {
                 return redirect('admin/sales-order/edit/' . $item->id)->with('info', 'Order penjualan telah disimpan.');
             }
-
             return redirect('admin/sales-order/detail/' . $item->id)->with('info', 'Order penjualan telah selesai.');
+        }
+
+        if ($item->status != StockUpdate::STATUS_OPEN) {
+            return redirect('admin/sales-order/detail/' . $item->id)->with('warning', 'Order penjualan tidak dapat diubah karena transaksi telah selesai!');
         }
 
         $tmp_products = Product::select(['id', 'code', 'description', 'stock', 'uom', 'price', 'barcode'])

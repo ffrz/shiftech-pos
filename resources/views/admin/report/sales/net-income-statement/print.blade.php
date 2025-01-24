@@ -7,8 +7,8 @@
 ])
 
 @section('content')
-  <h5 class="text-center">LAPORAN LABA RUGI</h5>
-  <h5 class="text-center">{{ Str::upper(Setting::value('company.name')) }}</h5>
+  <h6 class="text-center text-bold">LAPORAN REKAPITULASI LABA RUGI</h6>
+  <h5 class="text-center text-bold">{{ Str::upper(Setting::value('company.name')) }}</h5>
   <h6 class="text-center">Periode: {{ $period[0] . ' - ' . $period[1] }}</h6>
   <table style="margin: 50px auto 0;">
     <tbody>

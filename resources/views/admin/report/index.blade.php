@@ -10,9 +10,9 @@
       <section>
         <h5>Laporan Penjualan</h5>
         <ul>
-          <li><a href="{{ url('admin/report/sales/sales-detail') }}">Laporan Rincian Penjualan</a></li>
-          <li><a href="{{ url('admin/report/sales/sales-recap') }}">Laporan Rekapitulasi Penjualan</a></li>
-          <li><a href="{{ url('admin/report/sales/net-income-statement') }}">Laporan Laba / Rugi</a></li>
+          <li><a href="{{ url('admin/report/sales/detail') }}">Laporan Rincian Penjualan</a></li>
+          <li><a href="{{ url('admin/report/sales/recap') }}">Laporan Rekapitulasi Penjualan</a></li>
+          <li><a href="{{ url('admin/report/sales/net-income-statement') }}">Laporan Rekapitulasi Laba / Rugi</a></li>
         </ul>
       </section>
       <section>
@@ -26,10 +26,10 @@
       <section>
         <h5>Laporan Inventori</h5>
         <ul>
-          <li><a href="{{ url('admin/report/inventory-stock') }}">Laporan Stok Barang</a></li>
-          <li><a href="{{ url('admin/report/inventory-minimum-stock') }}">Laporan Stok Barang Minimum</a></li>
-          <li><a href="{{ url('admin/report/inventory-stock-detail-by-category') }}">Laporan Rincian Stok Barang Per Kategori</a></li>
-          <li><a href="{{ url('admin/report/inventory-stock-recap-by-category') }}">Laporan Rekap Stok Barang Per Kategori</a></li>
+          <li><a href="{{ url('admin/report/inventory/stock') }}">Laporan Stok Barang</a></li>
+          <li><a href="{{ url('admin/report/inventory/minimum-stock') }}">Laporan Stok Barang Minimum</a></li>
+          <li><a href="{{ url('admin/report/inventory/stock-detail-by-category') }}">Laporan Rincian Stok Barang Per Kategori</a></li>
+          <li><a href="{{ url('admin/report/inventory/stock-recap-by-category') }}">Laporan Rekap Stok Barang Per Kategori</a></li>
         </ul>
       </section>
       <section>

@@ -2,30 +2,17 @@
 
 namespace App\Http\Controllers\Admin\Report;
 
-use App\Http\Controllers\Controller;
 use App\Models\AclResource;
-use App\Models\Expense;
-use App\Models\ExpenseCategory;
-use App\Models\Product;
-use App\Models\ProductCategory;
 use App\Models\StockUpdate;
-use App\Models\StockUpdateDetail;
-use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
-class SalesReportController extends Controller
+class SalesReportController extends BaseController
 {
-    public function __construct()
-    {
-        ensure_user_can_access(AclResource::VIEW_REPORTS);
-    }
-
     public function netIncomeStatement(Request $request)
     {
         if (!$request->has('period')) {
-            return view('admin.report.sales.net-income-statement');
+            return view('admin.report.sales.net-income-statement.form');
         }
 
         $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
@@ -44,13 +31,13 @@ class SalesReportController extends Controller
             "select abs(sum(total_cost)) from stock_updates where (date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales"
         );
 
-        return view('admin.report.sales.print-net-income-statement', compact('total_cost', 'total_sales', 'period'));
+        return view('admin.report.sales.net-income-statement.print', compact('total_cost', 'total_sales', 'period'));
     }
 
-    public function salesDetail(Request $request)
+    public function detail(Request $request)
     {
         if (!$request->has('period')) {
-            return view('admin.report.sales.sales-detail');
+            return view('admin.report.sales.detail.form');
         }
 
         $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
@@ -66,10 +53,10 @@ class SalesReportController extends Controller
         //     "select * from stock_updates where (date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales"
         // );
 
-        return view('admin.report.sales.print-sales-detail', compact('items', 'period'));
+        return view('admin.report.sales.detail.print', compact('items', 'period'));
     }
 
-    public function salesDetail2(Request $request)
+    public function detail2(Request $request)
     {
         if (!$request->has('period')) {
             return view('admin.report.sales.sales-detail');
@@ -86,8 +73,6 @@ class SalesReportController extends Controller
         $items = StockUpdate::with(["details", "details.product"])
             ->whereRaw("(date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales")
             ->orderBy('datetime', 'asc')->get();
-
-
 
         // $items = DB::select(
         //     "select * from stock_updates where (date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales"

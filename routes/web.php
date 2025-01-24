@@ -13,7 +13,9 @@ use App\Http\Controllers\Admin\Report\SalesReportController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
-use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\Report\ExpenseController as ReportExpenseController;
+use App\Http\Controllers\Admin\Report\IndexController;
+use App\Http\Controllers\Admin\Report\InventoryController;
 use App\Http\Controllers\Admin\SalesOrderController;
 use App\Http\Controllers\Admin\ServiceOrderController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -61,25 +63,30 @@ Route::middleware([Authenticate::class, OnlyAdmin::class])->prefix('admin')->gro
 
     Route::get('dashboard', [DashboardController::class, 'index']);
 
-    Route::controller(SalesReportController::class)->prefix('report/sales')->group(function () {
-        Route::get('net-income-statement', 'netIncomeStatement');
-        Route::get('sales-detail', 'salesDetail');
-        Route::get('sales-detail2', 'salesDetail2');
-        Route::get('sales-recap', 'salesRecap');
+    Route::prefix('report')->group(function() {
+        Route::get('', [IndexController::class, 'index']);
+
+        Route::controller(InventoryController::class)->prefix('inventory')->group(function () {
+            Route::get('stock', 'stock');
+            Route::get('minimum-stock', 'minimumStock');
+            Route::get('stock-recap-by-category', 'stockRecapByCategory');
+            Route::get('stock-detail-by-category', 'stockDetailByCategory');
+        });
+
+        Route::controller(ReportExpenseController::class)->prefix('expense')->group(function () {
+            Route::get('monthly-expense-detail', 'monthlyExpenseDetail');
+            Route::get('monthly-expense-recap', 'monthlyExpenseRecap');
+        });
+
+        Route::controller(SalesReportController::class)->prefix('sales')->group(function () {
+            Route::get('net-income-statement', 'netIncomeStatement');
+            Route::get('detail', 'detail');
+            Route::get('recap', 'recap');
+            Route::get('sales-detail2', 'salesDetail2');
+        });
     });
 
-    Route::controller(ReportController::class)->prefix('report')->group(function () {
-        Route::get('', 'index');
-        Route::get('inventory-stock', 'inventoryStock');
-        Route::get('inventory-minimum-stock', 'inventoryMinimumStock');
-        Route::get('inventory-stock-recap-by-category', 'inventoryStockRecapByCategory');
-        Route::get('inventory-stock-detail-by-category', 'inventoryStockDetailByCategory');
-    });
 
-    Route::controller(ReportController::class)->prefix('report/expense')->group(function () {
-        Route::get('monthly-expense-detail', 'monthlyExpenseDetail');
-        Route::get('monthly-expense-recap', 'monthlyExpenseRecap');
-    });
 
     Route::controller(ServiceOrderController::class)->prefix('service-order')->group(function () {
         Route::get('', 'index');

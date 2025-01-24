@@ -47,5 +47,4 @@
       <th class="text-right">{{ format_number($sum_price) }}</th>
     </tfoot>
   </table>
-  <h6 class="mt-4">Perkiraan Laba: Rp. {{ format_number($sum_price - $sum_cost) }}</h6>
 @endSection
