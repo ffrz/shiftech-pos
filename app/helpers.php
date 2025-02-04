@@ -197,31 +197,34 @@ function str_to_int($str)
     return intVal(str_replace('.', '', $str));
 }
 
-function format_datetime($date, $format = 'dd-MM-yyyy HH:mm:ss', $locale = null)
+function format_datetime($date, $format = 'dd-MM-yyyy HH:mm:ss')
 {
     if (!$date) {
         return '?';
     }
-    if (!$date instanceof DateTime) {
-        $date = new DateTime($date);
+
+    if (!$date instanceof Carbon) {
+        $date = new Carbon($date);
     }
-    return IntlDateFormatter::formatObject($date, $format, $locale);
+
+    return $date->translatedFormat($format);
 }
 
-function format_date($date, $format = 'dd-MM-yyyy', $locale = null)
-{
-    if (!$date instanceof DateTime) {
-        $date = new DateTime($date);
-    }
-    return IntlDateFormatter::formatObject($date, $format, $locale);
-}
-
-function carbon_format_date($date, $format = 'd m Y', $locale = null)
+function format_date($date, $format = 'dd-MM-yyyy')
 {
     if (!$date instanceof Carbon) {
         $date = new Carbon($date);
     }
-    return $date->format($format);
+
+    return $date->translatedFormat($format);
+}
+
+function carbon_format_date($date, $format = 'd m Y')
+{
+    if (!$date instanceof Carbon) {
+        $date = new Carbon($date);
+    }
+    return $date->translatedFormat($format);
 }
 
 function month_names($month)
