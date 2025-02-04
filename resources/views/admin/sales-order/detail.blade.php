@@ -8,6 +8,7 @@
   <li class="nav-item">
     <a href="{{ url('/admin/sales-order/create') }}" class="btn plus-btn btn-primary mr-1" title="Baru"><i
         class="fa fa-plus"></i></a>
+    <a href="{{ url('/admin/sales-order/reopen/' . $item->id) }}" class="btn btn-default"><i class="fa fa-edit mr-1"></i>Reopen</a>
     <a href="?print=1" class="btn btn-default"><i class="fa fa-print mr-1"></i>Nota</a>
     <a href="?print=2" class="btn btn-default"><i class="fa fa-print mr-1"></i>Struk Kecil</a>
   </li>

@@ -4,16 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AclResource;
-use App\Models\Customer;
 use App\Models\Party;
 use App\Models\Product;
 use App\Models\StockUpdate;
 use App\Models\StockUpdateDetail;
-use App\Models\UserActivity;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class SalesOrderController extends Controller
 {
@@ -129,11 +125,13 @@ class SalesOrderController extends Controller
                 $item->updated_by_uid = current_user_id();
             }
 
+            // reset
             $item->total_cost = 0;
             $item->total_price = 0;
-
+            $item->total = 0;
             DB::delete('delete from stock_update_details where update_id = ?', [$item->id]);
 
+            // hitung ulang
             if (!empty($request->product_id)) {
                 foreach ($request->product_id as $row_id => $product_id) {
                     $product = $product_by_ids[$product_id];
@@ -147,8 +145,11 @@ class SalesOrderController extends Controller
                         'price' => number_from_input($request->price[$row_id]),
                     ]);
 
-                    $item->total_cost += ($d->cost * $d->quantity);
-                    $item->total_price += ($d->price * $d->quantity);
+                    $subtotal_cost = $d->cost * $d->quantity;
+                    $subtotal_price = $d->price * $d->quantity;
+
+                    $item->total_cost += $subtotal_cost;
+                    $item->total_price += $subtotal_price;
                     $item->total = $item->total_price;
                     $d->save();
                 }
@@ -167,12 +168,15 @@ class SalesOrderController extends Controller
 
             $item->save();
             DB::commit();
+
             if ($item->status == StockUpdate::STATUS_OPEN) {
                 return redirect('admin/sales-order/edit/' . $item->id)->with('info', 'Order penjualan telah disimpan.');
             }
+
             return redirect('admin/sales-order/detail/' . $item->id)->with('info', 'Order penjualan telah selesai.');
         }
 
+        // GET
         if ($item->status != StockUpdate::STATUS_OPEN) {
             return redirect('admin/sales-order/detail/' . $item->id)->with('warning', 'Order penjualan tidak dapat diubah karena transaksi telah selesai!');
         }
@@ -198,6 +202,14 @@ class SalesOrderController extends Controller
             ->get();
         $details = $item->details;
         return view('admin.sales-order.edit', compact('item', 'parties', 'products', 'barcodes', 'details', 'product_code_by_ids'));
+    }
+
+    public function reopen($id) {
+        $item = StockUpdate::find($id);
+        $item->status = StockUpdate::STATUS_OPEN;
+        $item->closed_by_uid = null;
+        $item->save();
+        return redirect('admin/sales-order/edit/' . $item->id)->with('warning', 'Order penjualan telah dibuka kembali.');
     }
 
     public function detail(Request $request, $id)
