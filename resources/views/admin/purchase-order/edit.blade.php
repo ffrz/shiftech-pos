@@ -113,7 +113,7 @@
                 </button>
               </div>
             </div>
-            <table id="product-list" class="table table-sm table-bordered table-hover">
+            <table id="product-list" class="table-sm table-bordered table-hover table">
               <thead>
                 <th style="width:3%">No</th>
                 <th>Produk</th>
@@ -126,7 +126,7 @@
               </thead>
               <tbody>
                 <tr id="empty-item-row">
-                  <td colspan="8" class="text-center text-muted"><i>Belum ada item.</i></td>
+                  <td colspan="8" class="text-muted text-center"><i>Belum ada item.</i></td>
                 </tr>
               </tbody>
             </table>
@@ -137,7 +137,7 @@
     <div class="accordion" id="filterBox">
       <div class="card">
         <div class="card-header" id="filterHeading">
-          <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+          <button class="btn btn-link btn-block collapsed text-left" type="button" data-toggle="collapse"
             data-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
             <b>Info Tambahan</b>
           </button>
@@ -268,13 +268,15 @@
           ']" value="' + toLocaleNumber(cost) + '"></td>' +
           '<td id="subtotal-' + product.id + '" class="subtotal text-right">' + toLocaleNumber(cost * qty) +
           '</td>' +
-          '<td class="text-right"><input class="text-right price" name="price[' + row + ']" value="' + toLocaleNumber(price) + '"></td>' +
+          '<td class="text-right"><input class="text-right price" name="price[' + row + ']" value="' + toLocaleNumber(
+            price) + '"></td>' +
           '<td><button onclick="removeItem(this)" type="button" class="btn btn-sm btn-danger"><i class="fa fa-cancel"></i></button></td>' +
           '</tr>'
         );
         Inputmask("decimal", Object.assign({
           allowMinus: false
-        }, INPUTMASK_OPTIONS)).mask("#item-" + product.id + " .qty, #item-" + product.id + " .cost, #item-" + product.id + " .price");
+        }, INPUTMASK_OPTIONS)).mask("#item-" + product.id + " .qty, #item-" + product.id + " .cost, #item-" + product
+          .id + " .price");
         total += cost * qty;
         updateTotal();
       }
@@ -308,11 +310,12 @@
         $('#empty-item-row').show();
       }
 
-      // reset nomor urut dan field row 
+      // reset nomor urut dan field row
       children.each(function(i, el) {
         $(el).find('.num').text(i);
         $(el).find('.product_id').attr('name', 'product_id[' + i + ']');
         $(el).find('.qty').attr('name', 'qty[' + i + ']');
+        $(el).find('.cost').attr('name', 'cost[' + i + ']');
         $(el).find('.price').attr('name', 'price[' + i + ']');
       });
 
