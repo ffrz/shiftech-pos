@@ -197,7 +197,7 @@ function str_to_int($str)
     return intVal(str_replace('.', '', $str));
 }
 
-function format_datetime($date, $format = 'dd-MM-yyyy HH:mm:ss')
+function format_datetime($date, $format = 'd/m/Y H:i:s')
 {
     if (!$date) {
         return '?';
@@ -210,7 +210,7 @@ function format_datetime($date, $format = 'dd-MM-yyyy HH:mm:ss')
     return $date->translatedFormat($format);
 }
 
-function format_date($date, $format = 'dd-MM-yyyy')
+function format_date($date, $format = 'd/m/Y')
 {
     if (!$date instanceof Carbon) {
         $date = new Carbon($date);
@@ -219,7 +219,7 @@ function format_date($date, $format = 'dd-MM-yyyy')
     return $date->translatedFormat($format);
 }
 
-function carbon_format_date($date, $format = 'd m Y')
+function carbon_format_date($date, $format = 'd/m/Y')
 {
     if (!$date instanceof Carbon) {
         $date = new Carbon($date);

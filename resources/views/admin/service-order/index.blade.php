@@ -128,7 +128,7 @@
                   @forelse ($items as $item)
                     <tr>
                       <td class="text-nowrap">{{ $item->id }}</td>
-                      <td class="text-nowrap">{{ $item->date_received }}</td>
+                      <td class="text-nowrap">{{ format_date($item->date_received) }}</td>
                       <td><b>{{ $item->customer_name }}</b><br>{{ $item->customer_phone }}<br>{{ $item->customer_address }}</td>
                       <td>
                         <b>{{ $item->device }}</b><br>+ {{ $item->equipments }}
