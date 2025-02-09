@@ -41,25 +41,23 @@ class SalesReportController extends BaseController
         }
 
         $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
-
         $startDate = datetime_from_input($period[0]);
         $endDate = datetime_from_input($period[1]);
         $status = StockUpdate::STATUS_COMPLETED;
         $sales = StockUpdate::TYPE_SALES_ORDER;
 
         // Mengambil data dari penjualan yang statusnya selesai
-        $items = StockUpdate::whereRaw("(date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales")->get();
-        // $items = DB::select(
-        //     "select * from stock_updates where (date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales"
-        // );
+        $items = StockUpdate::with(['details', 'details.product'])
+            ->whereRaw("(date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales")
+            ->get();
 
-        return view('admin.report.sales.detail.print', compact('items', 'period'));
+        return view('admin.report.sales.detail.print2', compact('items', 'period'));
     }
 
-    public function detail2(Request $request)
+    public function recap(Request $request)
     {
         if (!$request->has('period')) {
-            return view('admin.report.sales.sales-detail');
+            return view('admin.report.sales.recap.form');
         }
 
         $period = extract_daterange_from_input($request->get('period'), date('01-m-Y') . ' - ' . date('t-m-Y'));
@@ -69,15 +67,18 @@ class SalesReportController extends BaseController
         $status = StockUpdate::STATUS_COMPLETED;
         $sales = StockUpdate::TYPE_SALES_ORDER;
 
-        // Mengambil data dari penjualan yang statusnya selesai
-        $items = StockUpdate::with(["details", "details.product"])
-            ->whereRaw("(date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales")
-            ->orderBy('datetime', 'asc')->get();
+        $tmp_items = StockUpdate::whereRaw("(date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales")->get();
 
-        // $items = DB::select(
-        //     "select * from stock_updates where (date(datetime) between '$startDate' and '$endDate') and status=$status and type=$sales"
-        // );
+        $items = [];
+        foreach ($tmp_items as $item) {
+            $date = explode(' ', $item->closed_datetime)[0];
+            if (empty($items[$date])) {
+                $items[$date] = [];
+            }
 
-        return view('admin.report.sales.print-sales-detail2', compact('items', 'period'));
+            $items[$date][] = $item;
+        }
+
+        return view('admin.report.sales.recap.print', compact('items', 'period'));
     }
 }

@@ -7,7 +7,7 @@
   $wa_notification =
       '*' . $company_name . ' - Pemberitahuan*'
       . "%0aPerangkat $item->device_type $item->device atas nama " . $item->customer_name . " telah kami terima dengan No bukti servis *{$item->idFormatted()}*"
-      . " pada tanggal " . format_date($item->date_received, 'd MMMM yyyy')
+      . " pada tanggal " . format_date($item->date_received, 'd M y')
       . ($item->estimated_cost ? ' dan biaya perkiraan Rp. ' . format_number($item->estimated_cost) : '') . '. ' .
       ' Anda dapat memeriksa status servis perangkat Anda dengan membuka tautan dibawah ini.' .
       '%0a' . url('track-service-order/' . encrypt_id($item->id)) .

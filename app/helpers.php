@@ -215,15 +215,6 @@ function format_date($date, $format = 'd/m/Y')
     if (!$date instanceof Carbon) {
         $date = new Carbon($date);
     }
-
-    return $date->translatedFormat($format);
-}
-
-function carbon_format_date($date, $format = 'd/m/Y')
-{
-    if (!$date instanceof Carbon) {
-        $date = new Carbon($date);
-    }
     return $date->translatedFormat($format);
 }
 

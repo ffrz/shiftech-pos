@@ -169,25 +169,25 @@
               <ul class="timeline">
                 @if ($item->date_received)
                   <li>
-                    <div class="timeline-title">{{ carbon_format_date($item->date_received, 'l, j F Y') }}</div>
+                    <div class="timeline-title">{{ format_date($item->date_received, 'l, j F Y') }}</div>
                     <p>Barang diterima</p>
                   </li>
                 @endif
                 @if ($item->date_checked)
                   <li>
-                    <div class="timeline-title">{{ carbon_format_date($item->date_received, 'l, j F Y') }}</div>
+                    <div class="timeline-title">{{ format_date($item->date_received, 'l, j F Y') }}</div>
                     <p>Barang sedang diperiksa</p>
                   </li>
                 @endif
                 @if ($item->date_worked)
                   <li>
-                    <div class="timeline-title">{{ carbon_format_date($item->date_worked, 'l, j F Y') }}</div>
+                    <div class="timeline-title">{{ format_date($item->date_worked, 'l, j F Y') }}</div>
                     <p>Servis sedang dikerjakan</p>
                   </li>
                 @endif
                 @if ($item->date_completed)
                   <li>
-                    <div class="timeline-title">{{ carbon_format_date($item->date_picked, 'l, j F Y') }}</div>
+                    <div class="timeline-title">{{ format_date($item->date_picked, 'l, j F Y') }}</div>
                     <div>Servis Selesai</div>
                     @if ($item->service_status == ServiceOrder::SERVICE_STATUS_SUCCESS || $item->service_status == ServiceOrder::SERVICE_STATUS_FAILED)
                       <div>
@@ -200,7 +200,7 @@
                 @endif
                 @if ($item->date_picked)
                   <li>
-                    <div class="timeline-title">{{ carbon_format_date($item->date_picked, 'l, j F Y') }}</div>
+                    <div class="timeline-title">{{ format_date($item->date_picked, 'l, j F Y') }}</div>
                     <p>Barang telah diambil</p>
                   </li>
                 @endif
